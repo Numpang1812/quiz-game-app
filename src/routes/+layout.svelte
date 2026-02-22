@@ -1,5 +1,6 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
+	import '../styles/global.css';
 
 	let { children } = $props();
 </script>
@@ -16,10 +17,10 @@
 
 {@render children()}
 
-<style>
-	:global(html, body) {
-		margin: 0;
-		padding: 0;
-		font-family: 'M PLUS Rounded 1c', sans-serif;
-	}
-</style>
+<!-- Footer Scenery: Fence and Garden Bed -->
+<div class="fence-row" aria-hidden="true"></div>
+<div class="fence-line" aria-hidden="true"></div>
+<div class="garden-bed" aria-hidden="true">
+	<div class="grass-top"></div>
+	<div class="soil-bottom"></div>
+</div>
