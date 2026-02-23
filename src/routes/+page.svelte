@@ -1,13 +1,17 @@
 <script lang="ts">
 	import defaultBackgroundImage from '$lib/assets/Background image.png';
+	import { getUsername } from '$lib/utils/saveUsername';
 
 	function onPlayClick(): void {
+		getUsername(username);
 		window.location.href = '/game';
 	}
 
 	function onRankingClick(): void {
 		window.location.href = '/ranking';
 	}
+
+	let username = '';
 </script>
 
 <main class="menu-bg" style={`--custom-background-image: url('${defaultBackgroundImage}');`}>
@@ -51,7 +55,7 @@
 			</div>
 		</div>
 
-		<input type="text" maxlength="12" placeholder="あなたの名前は？" aria-label="Username" />
+		<input type="text" maxlength="12" placeholder="あなたの名前は？" aria-label="Username" bind:value={username}/>
 
 		<div class="actions">
 			<button type="button" class="btn ranking" on:click={onRankingClick}>🏆 RANKING</button>

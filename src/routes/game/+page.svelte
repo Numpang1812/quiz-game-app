@@ -16,6 +16,7 @@
 		plantStyle,
 		plantSvg
 	} from '$lib';
+	import { clearUsername, returnCurrentUser } from '$lib/utils/saveUsername';
 
 	let score = 0;
 	let timeLeft = totalTime;
@@ -29,6 +30,20 @@
 	let choices: Array<[QuestionnaireAnswerKey, string]> = [];
 
 	$: resultTier = getResultTier(score);
+
+	async function saveNameAndScore() {
+		await fetch('/api/scores', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ name: returnCurrentUser(), score })
+		});
+	}
+
+	async function getNameAndScore() {
+		const response = await fetch('/api/scores');
+		const scores = await response.json();
+		return scores;
+	}
 
 	function nextQuestion(): void {
 		currentQuestion = randomQuestion();
@@ -91,16 +106,23 @@
 		}));
 	}
 
-	function endGame(): void {
+	async function endGame(): Promise<void> {
 		gameOver = true;
 		clearTimers();
 		if (score > 15) {
-			spawnConfetti(60);
+		spawnConfetti(60);
 		} else if (score > 5) {
-			spawnConfetti(20);
+		spawnConfetti(20);
 		} else {
-			confetti = [];
+		confetti = [];
 		}
+		console.log('Saving:', { name: returnCurrentUser(), score });
+		
+		await saveNameAndScore();
+		const scores = await getNameAndScore();
+		console.log('Scores from API:', scores);
+
+		clearUsername();
 	}
 
 	function chooseAnswer(choice: QuestionnaireAnswerKey): void {
@@ -124,6 +146,7 @@
 	onDestroy(() => {
 		clearTimers();
 	});
+
 </script>
 
 <main class="page-wrap" style={`--custom-background-image: url('${defaultBackgroundImage}');`}>
