@@ -6,7 +6,6 @@
 		type ResultTier,
 		type ConfettiPiece,
 		type QuestionnaireAnswerKey,
-		questions,
 		totalTime,
 		penaltySeconds,
 		randomQuestion,
