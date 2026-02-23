@@ -79,23 +79,41 @@ export function plantStyle(index: number): string {
 export function plantSvg(level: number): string {
 	if (level < 10) {
 		return `
-			<path d="M10 20 Q10 10 10 5" stroke="#1b5e20" stroke-width="2" fill="none" />
-			<path d="M10 8 Q18 0 20 8 Q15 12 10 8" fill="#a0e080" stroke="#1b5e20" />
-			<path d="M10 8 Q2 0 0 8 Q5 12 10 8" fill="#a0e080" stroke="#1b5e20" />
+			<!-- Stem -->
+            <path d="M10 20 Q10 12 11 8" fill="none" stroke="#1b5e20" stroke-width="1.8" stroke-linecap="round"/>
+            <!-- Leaf 1 -->
+            <path d="M10.5 14 Q4 11 3 16 Q8 18 10.5 14" fill="#a0e080" stroke="#1b5e20" stroke-width="0.5"/>
+            <!-- Leaf 2 -->
+            <path d="M10.5 11 Q17 8 18 13 Q14 15 10.5 11" fill="#a0e080" stroke="#1b5e20" stroke-width="0.5"/>
 		`;
 	}
 
-	if (level < 20) {
-		return `
-			<path d="M10 20 L10 2" stroke="#1b5e20" stroke-width="2" />
-			<circle cx="10" cy="2" r="4" fill="#ffeb3b" stroke="#1b5e20" />
-			<path d="M10 10 Q18 5 20 12" stroke="#1b5e20" fill="none" />
-		`;
-	}
+	if (level < 15) {
+        return `
+            <!-- Stem -->
+            <path d="M10 20 Q10 12 10 7" fill="none" stroke="#1b5e20" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- Leaves -->
+            <path d="M10 15 Q5 13 4 17 Q8 18 10 15" fill="#a0e080" stroke="#1b5e20" stroke-width="0.5"/>
+            <path d="M10 12 Q15 10 16 14 Q12 15 10 12" fill="#a0e080" stroke="#1b5e20" stroke-width="0.5"/>
+            <!-- The Bud -->
+            <path d="M10 7 C7 7, 7 1, 10 0 C13 1, 13 7, 10 7" fill="#F472B6" stroke="#DB2777" stroke-width="0.5"/>
+            <path d="M8.5 6.5 Q10 5 11.5 6.5" fill="none" stroke="#1b5e20" stroke-width="1" stroke-linecap="round"/>
+        `;
+    }
 
-	return `
-		<path d="M10 20 L10 5" stroke="#1b5e20" stroke-width="2" />
-		<circle cx="10" cy="5" r="6" fill="#f44336" stroke="#1b5e20" />
-		<circle cx="10" cy="5" r="2" fill="#ffeb3b" />
-	`;
+    return `
+        <!-- Stem -->
+        <path d="M10 20 Q10 12 10 6" fill="none" stroke="#1b5e20" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Leaf -->
+        <path d="M10 14 Q5 12 4 16 Q8 17 10 14" fill="#a0e080" stroke="#1b5e20" stroke-width="0.5"/>
+        <!-- Flower Head -->
+        <g transform="translate(10, 6) scale(0.25)">
+            <circle cx="0" cy="-12" r="8" fill="#F472B6" />
+            <circle cx="0" cy="12" r="8" fill="#F472B6" />
+            <circle cx="-12" cy="0" r="8" fill="#F472B6" />
+            <circle cx="12" cy="0" r="8" fill="#F472B6" />
+            <!-- Center -->
+            <circle cx="0" cy="0" r="6" fill="#FDE047" stroke="#EAB308" stroke-width="2"/>
+        </g>
+    `;
 }
