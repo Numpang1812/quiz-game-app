@@ -295,6 +295,127 @@ body {
 	border-bottom-width: 0;
 }
 
+.ranking-page {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1.2rem;
+}
+
+.ranking-page .ranking-board-container {
+	position: relative;
+	width: min(680px, 96%);
+	z-index: 30;
+}
+
+.ranking-page .title-badge {
+	position: absolute;
+	top: -50px;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: #308a1c;
+	color: white;
+	font-size: clamp(1.3rem, 3.2vw, 1.8rem);
+	font-weight: 800;
+	letter-spacing: 0.15em;
+	padding: 8px 60px;
+	border-radius: 20px;
+	z-index: 20;
+	white-space: nowrap;
+}
+
+.ranking-page .ranking-table {
+	display: grid;
+	grid-template-columns: 18% 34% 22% 26%;
+	gap: 3px;
+	background-color: #8a5a2b;
+	border: 4px solid #8a5a2b;
+	border-radius: 24px;
+	overflow: hidden;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.ranking-page .ranking-table-scroll {
+	max-height: min(66vh, 560px);
+	overflow-y: auto;
+	border-radius: 24px;
+}
+
+.ranking-page .cell {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 16px 10px;
+	font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+	font-weight: 700;
+	text-align: center;
+}
+
+.ranking-page .header-cell {
+	background-color: #ead2b8;
+	color: #8a5a2b;
+}
+
+.ranking-page .normal-cell {
+	background-color: #ffffff;
+	color: #1a620d;
+}
+
+.ranking-page .highlight-cell {
+	background-color: #d9f7b4;
+	color: #1a620d;
+}
+
+.ranking-page .medal-icon {
+	width: 40px;
+	height: 24px;
+}
+
+.ranking-page .rank-number {
+	color: #1a620d;
+	font-weight: 800;
+	font-size: 1.2rem;
+}
+
+.ranking-page .home-button {
+	z-index: 30;
+	background-color: #2b8a22;
+	color: white;
+	font-family: inherit;
+	font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+	font-weight: 800;
+	border: none;
+	border-radius: 14px;
+	padding: 14px 60px;
+	cursor: pointer;
+	box-shadow: 0 8px 0 #175e0f;
+	transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.ranking-page .home-button:active {
+	transform: translateY(6px);
+	box-shadow: 0 2px 0 #175e0f;
+}
+
+@media (max-width: 500px) {
+	.ranking-page .ranking-table {
+		grid-template-columns: 18% 32% 22% 28%;
+	}
+
+	.ranking-page .cell {
+		padding: 12px 6px;
+	}
+
+	.ranking-page .title-badge {
+		padding: 6px 34px;
+	}
+
+	.ranking-page .home-button {
+		padding: 12px 40px;
+	}
+}
+
 /* Game page */
 .page-wrap {
 	position: relative;
