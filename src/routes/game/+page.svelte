@@ -6,7 +6,6 @@
 		type ResultTier,
 		type ConfettiPiece,
 		type QuestionnaireAnswerKey,
-		questions,
 		totalTime,
 		penaltySeconds,
 		randomQuestion,
@@ -108,6 +107,7 @@
 
 	async function endGame(): Promise<void> {
 		gameOver = true;
+		penaltyVisible = false;
 		clearTimers();
 		if (score > 15) {
 		spawnConfetti(60);
@@ -149,7 +149,7 @@
 
 </script>
 
-<main class="page-wrap" style={`--custom-background-image: url('${defaultBackgroundImage}');`}>
+<main class="page-wrap" style={`--custom-background-image: url('${defaultBackgroundImage}');  background-size: cover;`}>
 	<div class="fence" aria-hidden="true"></div>
 	<div class="garden-floor" aria-hidden="true">
 		<div class="grass-top"></div>
@@ -185,15 +185,55 @@
 					></div>
 				</div>
 
-				<div class="question-card">
-					<div class="translate-pill">Translate</div>
-					<h2 class="question-text">{currentQuestion?.prompt}</h2>
-				</div>
+				<div class="quiz-container">
+					<div class="question-card">
+						<div class="card-header">
+							<div class="mascot-tag">
+								<div class="mini-mascot">
+									<div class="mini-mascot-body">
+										<div class="mini-face">
+										<div class="mini-eyes">
+											<span></span>
+											<span></span>
+										</div>
+										<svg width="9" height="9" viewBox="0 0 20 20">
+											<path
+											d="M2,2 Q5,8 10,2 Q15,8 18,2"
+											stroke="#1d5f22"
+											stroke-width="3"
+											fill="none"
+											stroke-linecap="round"
+											/>
+										</svg>
+										</div>
+				
+										<div class="mini-sprout">
+										<svg width="20" height="20" viewBox="0 0 40 40">
+											<path
+											d="M20 40 Q20 20 20 12"
+											stroke="#1d5f22"
+											stroke-width="4"
+											fill="none"
+											stroke-linecap="round"
+											/>
+											<path d="M20 15 Q35 0 38 18 Q28 25 20 15" fill="#91d685" stroke="#1d5f22" stroke-width="2.5" />
+											<path d="M20 15 Q5 0 2 18 Q12 25 20 15" fill="#91d685" stroke="#1d5f22" stroke-width="2.5" />
+										</svg>
+										</div>
+									</div>
+								</div>
+								<span class="tag-text">TRANSLATE</span>
+							</div>
+						</div>
+						<h2 class="question-text">{currentQuestion?.prompt}</h2>
+					</div>
 
-				<div class="choices-grid">
-					{#each choices as [key, text]}
-						<button type="button" class="choice-btn" on:click={() => chooseAnswer(key)}>{text}</button>
-					{/each}
+					<div class="choices-layout">
+						{#each choices as [key, text]}
+							<button type="button" class="choice-item" on:click={() => chooseAnswer(key)}>{text}</button>
+						
+						{/each}
+					</div>
 				</div>
 			</div>
 		</section>
