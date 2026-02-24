@@ -58,8 +58,8 @@
 		<input type="text" maxlength="12" placeholder="あなたの名前は？" aria-label="Username" bind:value={username}/>
 
 		<div class="actions">
-			<button type="button" class="btn ranking" on:click={onRankingClick}>🏆 RANKING</button>
-			<button type="button" class="btn play" on:click={onPlayClick}>Start🌱</button>
+		    <button type="button" class="btn play" on:click={onPlayClick}>スタート🌱</button>
+			<button type="button" class="btn ranking" on:click={onRankingClick}>ランク🏆</button>
 		</div>
 	</section>
 </main>
