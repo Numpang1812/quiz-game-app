@@ -46,3 +46,17 @@ export async function postScore(name: string, score: number){
         args: [name, score]
     });
 }
+
+export async function getRank(score: number): Promise<number> {
+    const result = await db().execute({
+        sql: `
+            SELECT COUNT(*) AS higher
+            FROM score_table
+            WHERE score > ? OR (score = ? AND created_time < datetime('now'))
+        `,
+        args: [score, score]
+    });
+
+    const higher = Number(result.rows[0].higher);
+    return higher + 1;
+}
