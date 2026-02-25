@@ -449,7 +449,6 @@ export const questionnaires = {
         ],
         correct_answer: 'answer2'
     },
-
     'questionnaire-35': {
         id: '35',
         message: 'I can’t understand.',
@@ -463,4 +462,156 @@ export const questionnaires = {
         ],
         correct_answer: 'answer2'
     },
+    'questionnaire-36': {
+        id: '36',
+        message: 'I am tired.',
+        answers: [
+            {
+                answer1: '疲れました。',
+                answer2: '疲れません。',
+                answer3: '疲れています。',
+                answer4: '疲れそうです。',
+            }
+        ],
+        correct_answer: 'answer1'
+    },
+    'questionnaire-37': {
+        id: '37',
+        message: 'I forgot to bring my wallet.',
+        answers: [
+            {
+                answer1: '財布を持っていくのを忘れた。',
+                answer2: '財布を持ってくるのを忘れた。',
+                answer3: '財布を持ってきて忘れた。',
+                answer4: '財布を持ちながら忘れた。',
+            }
+        ],
+        correct_answer: 'answer2'
+    },
+
+    'questionnaire-38': {
+        id: '38',
+        message: 'I ended up buying it.',
+        answers: [
+            {
+                answer1: '結局、買うことにした。',
+                answer2: '結局、買うようにした。',
+                answer3: '結局、買ってしまった。',
+                answer4: '結局、買うところだった。',
+            }
+        ],
+        correct_answer: 'answer3'
+    },
+
+    'questionnaire-39': {
+        id: '39',
+        message: 'He speaks as if he knew everything.',
+        answers: [
+            {
+                answer1: '彼は何でも知るように話している。',
+                answer2: '彼は何でも知っているそうに話している。',
+                answer3: '彼は何でも知っているみたいに話している。',
+                answer4: '彼は何でも知っているために話している。',
+            }
+        ],
+        correct_answer: 'answer3'
+    },
+
+    'questionnaire-40': {
+        id: '40',
+        message: 'I have to finish this by tomorrow.',
+        answers: [
+            {
+                answer1: '明日までに終わるはずだ。',
+                answer2: '明日までに終わらせることになっている。',
+                answer3: '明日までに終わらなければならない。',
+                answer4: '明日までに終わるべきだった。',
+            }
+        ],
+        correct_answer: 'answer3'
+    },
+
+    'questionnaire-41': {
+        id: '41',
+        message: 'Even if it rains, I will go.',
+        answers: [
+            {
+                answer1: '雨が降ると行く。',
+                answer2: '雨が降っても行く。',
+                answer3: '雨が降ったら行かない。',
+                answer4: '雨が降るので行く。',
+            }
+        ],
+        correct_answer: 'answer2'
+    },
+
+    'questionnaire-42': {
+        id: '42',
+        message: 'He seems to be busy.',
+        answers: [
+            {
+                answer1: '彼は忙しいらしい。',
+                answer2: '彼は忙しそうだ。',
+                answer3: '彼は忙しいようにする。',
+                answer4: '彼は忙しくなさそうだ。',
+            }
+        ],
+        correct_answer: 'answer2'
+    },
+
+    'questionnaire-43': {
+        id: '43',
+        message: 'I am used to living alone.',
+        answers: [
+            {
+                answer1: '一人で住むことに慣れている。',
+                answer2: '一人で住むようにしている。',
+                answer3: '一人で住むことになっている。',
+                answer4: '一人で住みそうだ。',
+            }
+        ],
+        correct_answer: 'answer1'
+    },
+
+    'questionnaire-44': {
+        id: '44',
+        message: 'This problem is too difficult to solve.',
+        answers: [
+            {
+                answer1: 'この問題は解けないほど難しい。',
+                answer2: 'この問題は解くほど難しい。',
+                answer3: 'この問題は解けるほど難しい。',
+                answer4: 'この問題は解いてしまうほど難しい。',
+            }
+        ],
+        correct_answer: 'answer1'
+    },
+
+    'questionnaire-45': {
+        id: '45',
+        message: 'I was about to leave.',
+        answers: [
+            {
+                answer1: '出かけたばかりだ。',
+                answer2: '出かけるところだった。',
+                answer3: '出かけてしまった。',
+                answer4: '出かけることにした。',
+            }
+        ],
+        correct_answer: 'answer2'
+    },
+
+    'questionnaire-46': {
+        id: '46',
+        message: 'Thanks to you, I passed the exam.',
+        answers: [
+            {
+                answer1: 'あなたのせいで、試験に合格した。',
+                answer2: 'あなたのおかげで、試験に合格した。',
+                answer3: 'あなたによって、試験に合格した。',
+                answer4: 'あなたについて、試験に合格した。',
+            }
+        ],
+        correct_answer: 'answer2'
+    }
 }
