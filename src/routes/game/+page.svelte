@@ -18,6 +18,7 @@
 	import { clearUsername, returnCurrentUser } from '$lib/utils/saveUsername';
 
 	let score = 0;
+	let ranking: number | null = null;
 	let timeLeft = totalTime;
 	let gameOver = false;
 	let penaltyVisible = false;
@@ -31,11 +32,21 @@
 	$: resultTier = getResultTier(score);
 
 	async function saveNameAndScore() {
-		await fetch('/api/scores', {
+		const res = await fetch('/api/scores', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ name: returnCurrentUser(), score })
 		});
+		const data = await res.json();
+		if (!res.ok) {
+            console.error('unable to save score', data);
+            // either throw or return a sentinel
+            throw new Error(data.error || 'save failed');
+        }
+
+        console.log('server returned rank', data.rank);
+        // coerce to number just in case it comes back as a string
+        return Number(data.rank);
 	}
 
 	async function getNameAndScore() {
@@ -116,12 +127,12 @@
 		} else {
 		confetti = [];
 		}
-		console.log('Saving:', { name: returnCurrentUser(), score });
-		
-		await saveNameAndScore();
-		const scores = await getNameAndScore();
-		console.log('Scores from API:', scores);
-
+		 try {
+            const r = await saveNameAndScore();
+            ranking = Number.isFinite(r) ? r : null;
+        } catch (err) {
+            ranking = null;
+        }
 		clearUsername();
 	}
 
@@ -287,6 +298,13 @@
 						<h3 class="user-display">{returnCurrentUser()} のスコア</h3>
 						<div class="score-number">{score}</div>
 						<p class="unit-label">正解数</p>
+						<h3 class="user-display">歴代ランキング：
+							{#if ranking !== null}
+								#{ranking}
+							{:else}
+								取得中...
+							{/if}
+						</h3>
 
 						<!-- <button class="ranking-pill">ランキング</button> -->
 						<button class="ranking-pill" on:click={() => window.location.href = '/ranking'}>ランキング</button>
