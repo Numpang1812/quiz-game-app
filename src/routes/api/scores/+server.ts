@@ -18,8 +18,8 @@ export async function POST({ request }) {
     if (!Number.isFinite(score)) return json({ error: 'Score is required' }, {status: 400 });
     if (!name) return json({ error: 'Name is required' }, { status: 400 });
 
-    await postScore(name, score);
-    const rank = await getRank(score);
+    const created_time = await postScore(name, score);
+    const rank = await getRank(score, created_time);
 
     return json({ ok: true, rank}, { status: 201 });
 }

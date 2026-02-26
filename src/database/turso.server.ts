@@ -41,20 +41,22 @@ export async function getScore(){
 
 // Post player's name and score
 export async function postScore(name: string, score: number){
+    const now = new Date().toISOString();
     await db().execute({
-        sql: `INSERT INTO score_table (name, score) VALUES (?, ?)`,
-        args: [name, score]
+        sql: `INSERT INTO score_table (name, score, created_time) VALUES (?, ?, ?)`,
+        args: [name, score, now]
     });
+    return now;
 }
 
-export async function getRank(score: number): Promise<number> {
+export async function getRank(score: number, created_time: string): Promise<number> {
     const result = await db().execute({
         sql: `
             SELECT COUNT(*) AS higher
             FROM score_table
-            WHERE score > ? OR (score = ? AND created_time < datetime('now'))
+            WHERE score > ? OR (score = ? AND created_time < ?)
         `,
-        args: [score, score]
+        args: [score, score, created_time]
     });
 
     const higher = Number(result.rows[0].higher);
