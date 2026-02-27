@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import { getScore, postScore, initTable } from '../../../database/turso.server';
+import { getScore, postScore, initTable, getRank } from '../../../database/turso.server';
 
 export async function GET(){
     await initTable();
@@ -18,7 +18,8 @@ export async function POST({ request }) {
     if (!Number.isFinite(score)) return json({ error: 'Score is required' }, {status: 400 });
     if (!name) return json({ error: 'Name is required' }, { status: 400 });
 
-    await postScore(name, score);
+    const created_time = await postScore(name, score);
+    const rank = await getRank(score, created_time);
 
-    return json({ ok: true }, { status: 201 });
+    return json({ ok: true, rank}, { status: 201 });
 }
