@@ -1,14 +1,24 @@
 <script lang="ts">
 	import defaultBackgroundImage from '$lib/assets/Background image.png';
 	import { getUsername } from '$lib/utils/saveUsername';
+	import { audioManager } from '$lib/utils/audioController';
+	import { goto } from '$app/navigation';
+
 
 	function onPlayClick(): void {
+		audioManager.playStart();
+		audioManager.playClick();
 		getUsername(username);
-		window.location.href = '/game';
+		goto('/game');
 	}
 
 	function onRankingClick(): void {
-		window.location.href = '/ranking';
+		audioManager.playClick();
+		goto('/ranking');
+	}
+
+	function onInputClick(): void {
+		audioManager.playClick();
 	}
 
 	function onCreditsClick(): void {
@@ -77,10 +87,10 @@
 			</div>
 		</button>
 
-		<input type="text" maxlength="12" placeholder="あなたの名前は？" aria-label="Username" bind:value={username}/>
+		<input type="text" maxlength="12" placeholder="あなたの名前は？" aria-label="Username" bind:value={username} on:click={onInputClick}/>
 
 		<div class="actions">
-		    <button type="button" class="btn play" on:click={onPlayClick}>スタート🌱</button>
+			<button type="button" class="btn play" on:click={onPlayClick}>スタート🌱</button>
 			<button type="button" class="btn ranking" on:click={onRankingClick}>ランク🏆</button>
 		</div>
 	</section>

@@ -1,8 +1,10 @@
 <script lang="ts">
+
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import defaultBackgroundImage from '$lib/assets/Background image.png';
 	import { returnCurrentUser } from '$lib/utils/saveUsername';
+	import { audioManager } from '$lib/utils/audioController';
 
 	type ApiScore = {
 		name: string;
@@ -214,6 +216,7 @@
 	}
 
 	function goHome(): void {
+		audioManager.playClick();
 		goto('/');
 	}
 
