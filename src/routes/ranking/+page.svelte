@@ -22,12 +22,12 @@
 	let top10Scores: RankingRow[] = [];
 	let selectedDate: string = getTodayString();
 	let filterRange: string = 'custom';
-	let allScores: ApiScore[] = [];
+	let rankingMode: 'daily' | 'global' = 'daily';
 
 	const TODAY_STR = getTodayString();
 
 	function getTodayString(): string {
-		const today = new Date('2026-02-25');
+		const today = new Date();
 		return today.toISOString().split('T')[0];
 	}
 
@@ -39,22 +39,71 @@
 		return date.toISOString().split('T')[0];
 	}
 
+	function parseCreatedTime(createdTime: string): number {
+		if (createdTime.includes('T')) {
+			const parsed = Date.parse(createdTime);
+			return Number.isFinite(parsed) ? parsed : -1;
+		}
+
+		const normalized = `${createdTime.replace(' ', 'T')}Z`;
+		const parsed = Date.parse(normalized);
+		return Number.isFinite(parsed) ? parsed : -1;
+	}
+
+	function getScoresCacheKey(params: URLSearchParams): string {
+		return `ranking-cache:${params.toString()}`;
+	}
+
+	function readScoresCache(cacheKey: string): ApiScore[] | null {
+		try {
+			const raw = sessionStorage.getItem(cacheKey);
+			if (!raw) return null;
+			const parsed = JSON.parse(raw) as ApiScore[];
+			return Array.isArray(parsed) ? parsed : null;
+		} catch {
+			return null;
+		}
+	}
+
+	function writeScoresCache(cacheKey: string, scores: ApiScore[]): void {
+		try {
+			sessionStorage.setItem(cacheKey, JSON.stringify(scores));
+		} catch {
+			// ignore cache write failures
+		}
+	}
+
 	function buildRows(scores: ApiScore[]): RankingRow[] {
 		const currentUser = returnCurrentUser().trim().toLowerCase();
-		
-		// Filter scores by selected date
-		const filtered = scores
-			.filter(s => formatDate(s.created_time) === selectedDate)
-			.sort((a, b) => b.score - a.score);
+		const sorted = [...scores].sort((a, b) => b.score - a.score);
+		const topScores = sorted.slice(0, 10);
 
-		const rows: RankingRow[] = filtered.slice(0, 10).map((score, index) => ({
-			id: `${score.name}-${score.created_time}-${index}`,
+		let latestCurrentUserId: string | null = null;
+		let latestCurrentUserTime = -1;
+
+		topScores.forEach((score, index) => {
+			if (score.name.trim().toLowerCase() !== currentUser) {
+				return;
+			}
+
+			const timeValue = parseCreatedTime(score.created_time);
+			if (timeValue > latestCurrentUserTime) {
+				latestCurrentUserTime = timeValue;
+				latestCurrentUserId = `${score.name}-${score.created_time}-${index}`;
+			}
+		});
+
+		const rows: RankingRow[] = topScores.map((score, index) => {
+			const id = `${score.name}-${score.created_time}-${index}`;
+			return {
+			id,
 			rank: index + 1,
 			name: score.name,
 			score: score.score,
 			date: formatDate(score.created_time),
-			isCurrentUser: currentUser.length > 0 && score.name.trim().toLowerCase() === currentUser
-		}));
+			isCurrentUser: latestCurrentUserId !== null && id === latestCurrentUserId
+		};
+		});
 
 		for (let rank = rows.length + 1; rank <= 10; rank += 1) {
 			rows.push({
@@ -72,53 +121,96 @@
 
 	async function loadScores(): Promise<void> {
 		try {
-			const response = await fetch('/api/scores');
+			const params = new URLSearchParams({ limit: '10' });
+
+			if (rankingMode === 'daily') {
+				if (filterRange === 'custom') {
+					params.set('from', selectedDate);
+					params.set('to', selectedDate);
+				} else {
+					params.set('from', selectedDate);
+					params.set('to', TODAY_STR);
+				}
+			} else {
+				params.set('uniquePlayers', 'true');
+			}
+
+			const cacheKey = getScoresCacheKey(params);
+			const cachedScores = readScoresCache(cacheKey);
+			if (cachedScores) {
+				top10Scores = buildRows(cachedScores);
+			}
+
+			const response = await fetch(`/api/scores?${params.toString()}`);
 			if (!response.ok) {
-				top10Scores = buildRows([]);
+				if (!cachedScores) {
+					top10Scores = buildRows([]);
+				}
 				return;
 			}
 			const scores = (await response.json()) as ApiScore[];
-			allScores = scores;
 			top10Scores = buildRows(scores);
+			writeScoresCache(cacheKey, scores);
 		} catch {
-			top10Scores = buildRows([]);
+			if (top10Scores.length === 0) {
+				top10Scores = buildRows([]);
+			}
 		}
 	}
 
-	function updateScoresForDate(): void {
-		top10Scores = buildRows(allScores);
+	async function updateScoresForDate(): Promise<void> {
+		await loadScores();
 	}
 
-	function handlePrevDay(): void {
+	async function handlePrevDay(): Promise<void> {
+		if (rankingMode !== 'daily') return;
 		const date = new Date(selectedDate);
 		date.setDate(date.getDate() - 1);
 		selectedDate = date.toISOString().split('T')[0];
 		filterRange = 'custom';
-		updateScoresForDate();
+		await updateScoresForDate();
 	}
 
-	function handleNextDay(): void {
+	async function handleNextDay(): Promise<void> {
+		if (rankingMode !== 'daily') return;
 		if (selectedDate === TODAY_STR) return;
 		const date = new Date(selectedDate);
 		date.setDate(date.getDate() + 1);
 		selectedDate = date.toISOString().split('T')[0];
 		filterRange = 'custom';
-		updateScoresForDate();
+		await updateScoresForDate();
 	}
 
-	function handleRangeChange(e: Event): void {
+	async function handleRangeChange(e: Event): Promise<void> {
+		if (rankingMode !== 'daily') return;
 		const target = e.target as HTMLSelectElement;
 		const val = target.value;
 		filterRange = val;
 		const date = new Date(TODAY_STR);
 
-		if (val === '15days') date.setDate(date.getDate() - 15);
+		if (val === 'custom') {
+			selectedDate = TODAY_STR;
+			await updateScoresForDate();
+			return;
+		}
+
+		if (val === '1week') date.setDate(date.getDate() - 7);
+		else if (val === '2weeks') date.setDate(date.getDate() - 14);
 		else if (val === '1month') date.setMonth(date.getMonth() - 1);
 		else if (val === '2months') date.setMonth(date.getMonth() - 2);
 		else return;
 
 		selectedDate = date.toISOString().split('T')[0];
-		updateScoresForDate();
+		await updateScoresForDate();
+	}
+
+	async function handleModeChange(e: Event): Promise<void> {
+		const target = e.target as HTMLSelectElement;
+		rankingMode = target.value === 'global' ? 'global' : 'daily';
+		if (rankingMode === 'global') {
+			filterRange = 'custom';
+		}
+		await loadScores();
 	}
 
 	function goHome(): void {
@@ -142,9 +234,19 @@
 
 				<!-- Date Controls Container -->
 				<div class="date-controls-wrapper">
+					<div class="filter-select-container mode-filter">
+						<select
+							bind:value={rankingMode}
+							on:change={handleModeChange}
+							class="filter-select"
+						>
+							<option value="daily">日別 TOP10</option>
+							<option value="global">歴代 TOP 10</option>
+						</select>
+					</div>
 					
 					<!-- Jump Filter -->
-					<div class="filter-select-container">
+					<div class="filter-select-container range-filter">
 						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
 							<line x1="16" y1="2" x2="16" y2="6"></line>
@@ -154,19 +256,22 @@
 						<select 
 							bind:value={filterRange}
 							on:change={handleRangeChange}
+							disabled={rankingMode !== 'daily'}
 							class="filter-select"
 						>
 							<option value="custom">日付選択</option>
-							<option value="15days">15日前</option>
+							<option value="1week">1週間</option>
+							<option value="2weeks">2週間</option>
 							<option value="1month">1ヶ月前</option>
 							<option value="2months">2ヶ月前</option>
 						</select>
 					</div>
 
 					<!-- Day Navigator -->
-					<div class="day-navigator">
+					<div class="day-navigator date-filter">
 						<button 
 							on:click={handlePrevDay}
+							disabled={rankingMode !== 'daily'}
 							class="nav-button"
 							aria-label="Previous day"
 						>
@@ -176,14 +281,18 @@
 						</button>
 						
 						<span class="date-display">
-							{selectedDate}
+							{rankingMode === 'daily'
+								? filterRange === 'custom'
+									? selectedDate
+									: `${selectedDate} ~ ${TODAY_STR}`
+								: '歴代 TOP 10'}
 						</span>
 
 						<button 
 							on:click={handleNextDay}
-							disabled={selectedDate === TODAY_STR}
+							disabled={rankingMode !== 'daily' || selectedDate === TODAY_STR}
 							class="nav-button"
-							class:disabled={selectedDate === TODAY_STR}
+							class:disabled={rankingMode !== 'daily' || selectedDate === TODAY_STR}
 							aria-label="Next day"
 						>
 							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

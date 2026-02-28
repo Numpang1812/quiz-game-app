@@ -157,14 +157,14 @@ body {
 }
 
 .menu-content input {
-	width: min(460px, 95%);
-	padding: 1rem 1.2rem;
+	width: min(420px, 95%);
+	padding: 0.85rem 1rem;
 	border-radius: 18px;
 	border: 4px solid #7ed957;
 	background: #f2f2f2;
 	outline: none;
 	text-align: center;
-	font-size: 1.1rem;
+	font-size: 1rem;
 	font-weight: 600;
 	color: #555;
 	box-shadow: 0 6px 0 #5bbf4c;
@@ -191,8 +191,8 @@ body {
 .menu-content .btn {
 	border: none;
 	border-radius: 16px;
-	padding: 0.9rem 1.6rem;
-	font-size: 1.3rem;
+	padding: 0.75rem 1.3rem;
+	font-size: 1.15rem;
 	font-weight: 800;
 	color: #fff;
 	cursor: pointer;
@@ -205,11 +205,12 @@ body {
 	background-color: #e2a72f;
 	color: white;
 	font-family: inherit;
-	font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+	font-size: clamp(1rem, 3vw, 1.25rem);
 	font-weight: 800;
 	border: none;
 	border-radius: 14px;
-	padding: 14px 60px;
+	padding: 11px 44px;
+	min-width: 200px;
 	cursor: pointer;
 	box-shadow: 0 8px 0 #b77e13;
 	transition: transform 0.1s ease, box-shadow 0.1s ease;
@@ -220,11 +221,12 @@ body {
 	background-color: #2b8a22;
 	color: white;
 	font-family: inherit;
-	font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+	font-size: clamp(1rem, 3vw, 1.25rem);
 	font-weight: 800;
 	border: none;
 	border-radius: 14px;
-	padding: 14px 60px;
+	padding: 11px 44px;
+	min-width: 200px;
 	cursor: pointer;
 	box-shadow: 0 8px 0 #175e0f;
 	transition: transform 0.1s ease, box-shadow 0.1s ease;
@@ -249,10 +251,6 @@ body {
 	.menu-content .btn {
 		font-size: clamp(1.1rem, 2.8vw, 1.3rem);
 		padding: 0.85rem 1.3rem;
-	}
-
-	.menu-content .btn.play {
-		font-size: clamp(1.2rem, 3.4vw, 1.5rem);
 	}
 }
 
@@ -298,8 +296,8 @@ body {
 /* Ranking page */
 .ranking-page.page-wrap {
 	min-height: 100dvh;
-	height: 100dvh;
-	padding: 1rem 1rem 1rem;
+	height: auto;
+	padding: clamp(0.5rem, 1.5vw, 1rem);
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -309,6 +307,7 @@ body {
 	align-items: center;
 	justify-content: center;
 	font-family: 'M PLUS Rounded 1c', sans-serif;
+	overflow: auto;
 }
 
 .ranking-page.page-wrap::before {
@@ -328,9 +327,10 @@ body {
 	align-items: center;
 	gap: 1rem;
 	width: 100%;
-	max-width: 1200px;
+	max-width: 1100px;
 	padding: 0 1rem;
-	height: 100%;
+	height: auto;
+	min-height: 0;
 	justify-content: center;
 }
 
@@ -347,7 +347,8 @@ body {
 	display: flex;
 	flex-direction: column;
 	height: fit-content;
-	max-height: calc(100dvh - 2rem);
+	max-height: calc(100dvh - 1rem);
+	min-height: 0;
 }
 
 .ranking-page .header-section {
@@ -361,7 +362,7 @@ body {
 
 .ranking-page .title-badge {
 	background: #e2a72f;
-	color: #ffffff;
+	color: #1a620d;
 	font-size: 1.2rem;
 	font-weight: 800;
 	letter-spacing: 0.05em;
@@ -370,6 +371,7 @@ body {
 	text-align: center;
 	box-shadow: 0 0 15px rgba(226, 167, 47, 0.2);
 	align-self: center;
+	width: 25%;
 }
 
 .ranking-page .date-controls-wrapper {
@@ -378,7 +380,16 @@ body {
 	align-items: center;
 	gap: 0.75rem;
 	justify-content: space-between;
-	width: 98%;
+	width: 100%;
+}
+
+.ranking-page .mode-filter,
+.ranking-page .range-filter {
+	flex: 1 1 220px;
+}
+
+.ranking-page .date-filter {
+	flex: 1 1 280px;
 }
 
 .ranking-page .filter-select-container {
@@ -390,7 +401,7 @@ body {
 	border-radius: 0.75rem;
 	border: 1px solid #d1d5db;
 	flex: 1;
-	min-width: 180px;
+	min-width: 170px;
 }
 
 .ranking-page .filter-select-container svg {
@@ -410,6 +421,8 @@ body {
 	flex: 1;
 	padding: 0.25rem 0.5rem 0.25rem 0;
 	font-family: inherit;
+	min-height: 32px;
+	min-width: 0;
 }
 
 .ranking-page .filter-select option {
@@ -425,6 +438,8 @@ body {
 .ranking-page .day-navigator {
 	display: flex;
 	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
 	gap: 0.75rem;
 	background: rgba(255, 255, 255, 0.7);
 	padding: 0.5rem;
@@ -439,10 +454,11 @@ body {
 	cursor: pointer;
 	padding: 0.5rem;
 	border-radius: 0.5rem;
-	transition: all 0.2s ease;
+	transition: background-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	will-change: transform;
 }
 
 .ranking-page .nav-button:hover:not(.disabled) {
@@ -462,15 +478,17 @@ body {
 	font-size: 0.95rem;
 	letter-spacing: 0.05em;
 	font-family: 'Monaco', 'Courier New', monospace;
-	min-width: 110px;
+	min-width: 140px;
 	text-align: center;
 }
 
 .ranking-page .ranking-table-scroll {
-	max-height: calc(100dvh - 380px);
+	max-height: calc(100dvh - 320px);
 	overflow-y: auto;
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch;
+	overscroll-behavior: contain;
+	scroll-behavior: smooth;
 	border-radius: 1.25rem;
 	border: none;
 	flex: 1;
@@ -530,6 +548,10 @@ body {
 	vertical-align: middle;
 	color: #1a620d;
 	border-right: 2px solid #8a5a2b;
+	position: sticky;
+	top: 0;
+	z-index: 5;
+	background: #e2a72f;
 }
 
 .ranking-page .table-header th:last-child {
@@ -537,7 +559,7 @@ body {
 }
 
 .ranking-page .table-row {
-	transition: all 0.15s ease;
+	transition: background-color 0.2s ease;
 	border-bottom: 2px solid #a0826d;
 	border-right: none;
 }
@@ -622,22 +644,21 @@ body {
 	background-color: #2b8a22;
 	color: white;
 	font-family: inherit;
-	font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+	font-size: clamp(1rem, 3vw, 1.25rem);
 	font-weight: 800;
 	border: none;
 	border-radius: 14px;
-	padding: 14px 60px;
+	padding: 11px 44px;
+	min-width: 200px;
 	cursor: pointer;
 	box-shadow: 0 8px 0 #175e0f;
-	transition: transform 0.1s ease, box-shadow 0.1s ease;
+	transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
 }
 
 .ranking-page .home-button:hover {
-	background: rgba(43, 138, 34, 0.15);
-	border-color: #5ba318;
 	transform: translateY(-2px);
-	box-shadow: 0 8px 16px rgba(122, 198, 110, 0.2);
-	color: #8a5a2b;
+	box-shadow: 0 10px 0 #175e0f;
+	filter: brightness(1.04);
 }
 
 .ranking-page .home-button:hover svg {
@@ -651,6 +672,7 @@ body {
 @media (max-width: 900px) {
 	.ranking-page.page-wrap {
 		padding: 0.75rem 0.75rem 0.75rem;
+		align-items: flex-start;
 	}
 
 	.ranking-page .ranking-board-container {
@@ -663,14 +685,22 @@ body {
 	}
 
 	.ranking-page .date-controls-wrapper {
-		flex-direction: column;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		align-items: stretch;
 		gap: 0.75rem;
 	}
 
 	.ranking-page .filter-select-container,
 	.ranking-page .day-navigator {
 		width: 100%;
-		justify-content: center;
+		justify-content: flex-start;
+		box-sizing: border-box;
+	}
+
+	.ranking-page .date-filter {
+		grid-column: 1 / -1;
+		justify-content: space-between;
 	}
 
 	.ranking-page .table-header th,
@@ -680,6 +710,10 @@ body {
 	.ranking-page .date-cell {
 		padding: 0.5rem 0.4rem;
 		font-size: 0.8rem;
+	}
+
+	.ranking-page .ranking-table-scroll {
+		max-height: calc(100dvh - 350px);
 	}
 
 	.ranking-page .table-header {
@@ -700,6 +734,7 @@ body {
 	.ranking-page.page-wrap {
 		padding: 0.5rem 0.5rem 0.5rem;
 		background-attachment: scroll;
+		align-items: flex-start;
 	}
 
 	.ranking-page .ranking-board-container {
@@ -713,6 +748,7 @@ body {
 	}
 
 	.ranking-page .date-controls-wrapper {
+		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
 	}
@@ -720,6 +756,41 @@ body {
 	.ranking-page .filter-select-container,
 	.ranking-page .day-navigator {
 		width: 100%;
+		min-width: 0;
+		padding: 0.45rem;
+	}
+
+	.ranking-page .filter-select-container {
+		gap: 0.35rem;
+	}
+
+	.ranking-page .filter-select-container svg {
+		margin-left: 0.2rem;
+	}
+
+	.ranking-page .filter-select {
+		font-size: 0.85rem;
+		padding-right: 0.25rem;
+	}
+
+	.ranking-page .day-navigator {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		align-items: center;
+		gap: 0.4rem;
+	}
+
+	.ranking-page .nav-button {
+		padding: 0.35rem;
+	}
+
+	.ranking-page .date-display {
+		font-size: 0.82rem;
+		min-width: 0;
+		width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.ranking-page .home-button {
@@ -740,6 +811,19 @@ body {
 
 	.ranking-page .ranking-table {
 		font-size: 0.8rem;
+		min-width: 560px;
+	}
+
+	.ranking-page .ranking-table-scroll {
+		max-height: calc(100dvh - 360px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ranking-page .nav-button,
+	.ranking-page .home-button,
+	.ranking-page .table-row {
+		transition: none;
 	}
 }
 

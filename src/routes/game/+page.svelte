@@ -15,7 +15,7 @@
 		plantStyle,
 		plantSvg
 	} from '$lib';
-	import { clearUsername, returnCurrentUser } from '$lib/utils/saveUsername';
+	import { returnCurrentUser } from '$lib/utils/saveUsername';
 
 	let score = 0;
 	let ranking: number | null = null;
@@ -133,7 +133,6 @@
         } catch (err) {
             ranking = null;
         }
-		clearUsername();
 	}
 
 	function chooseAnswer(choice: QuestionnaireAnswerKey): void {
