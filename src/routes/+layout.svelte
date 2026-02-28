@@ -1,8 +1,27 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
 	import '../styles/global.css';
+	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
+	import { page } from '$app/stores';
+	
+	import { audioManager } from '$lib/utils/audioController';
+	import AudioControls from '$lib/components/audioControls.svelte';
 
-	let { children } = $props();
+	onMount(() => {
+		audioManager.init();
+	});
+
+	// route-based music control
+	$: if (browser && !audioManager.musicMuted) {
+		const path = $page.url.pathname;
+
+		if (path.startsWith('/game')) {
+			audioManager.playTrack('game');
+		} else {
+			audioManager.playTrack('mainMenu');
+		}
+	}
 </script>
 
 <svelte:head>
@@ -15,7 +34,9 @@
 	/>
 </svelte:head>
 
-{@render children()}
+<slot />
+
+<AudioControls />
 
 <!-- Footer Scenery: Fence and Garden Bed -->
 <div class="fence-row" aria-hidden="true"></div>

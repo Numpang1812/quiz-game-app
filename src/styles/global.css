@@ -927,6 +927,20 @@ body {
 	transform-origin: bottom center;
 }
 
+.warning-flash {
+	position: fixed;
+	inset: 0;
+	background: rgba(239, 68, 68, 0.25);
+	pointer-events: none;
+	z-index: 200;
+	animation: warning-flash-anim 0.25s linear infinite alternate;
+}
+
+@keyframes warning-flash-anim {
+	0% { opacity: 0.2; }
+	100% { opacity: 0.6; }
+}
+
 @keyframes home-sway {
 	0%,
 	100% {

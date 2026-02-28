@@ -3,7 +3,6 @@
 	import defaultBackgroundImage from '$lib/assets/Background image.png';
 	import {
 		type Question,
-		type ResultTier,
 		type ConfettiPiece,
 		type QuestionnaireAnswerKey,
 		totalTime,
@@ -16,11 +15,16 @@
 		plantSvg
 	} from '$lib';
 	import { clearUsername, returnCurrentUser } from '$lib/utils/saveUsername';
+	import { audioManager } from '$lib/utils/audioController';
+	import { goto } from '$app/navigation';
 
 	let score = 0;
 	let ranking: number | null = null;
+
 	let timeLeft = totalTime;
+	let isLowTime = false;
 	let gameOver = false;
+
 	let penaltyVisible = false;
 	let timerId: number | null = null;
 	let penaltyId: number | null = null;
@@ -73,12 +77,13 @@
 
 	function startTimer(): void {
 		timerId = window.setInterval(() => {
-			if (gameOver) {
-				return;
-			}
-
+			if (gameOver) return;
 			timeLeft -= 0.05;
+
+			isLowTime = timeLeft <= 7 && timeLeft > 0;
+
 			if (timeLeft <= 0) {
+				isLowTime = false;
 				endGame();
 			}
 		}, 50);
@@ -90,6 +95,9 @@
 		timeLeft = totalTime;
 		gameOver = false;
 		penaltyVisible = false;
+
+		audioManager.playTrack('game')
+
 		confetti = [];
 		nextQuestion();
 		startTimer();
@@ -117,15 +125,21 @@
 	}
 
 	async function endGame(): Promise<void> {
+		audioManager.stopGameMusic();
+		audioManager.playGameOver();
+		audioManager.playTrack('mainMenu')
+		isLowTime = false;
+
 		gameOver = true;
 		penaltyVisible = false;
 		clearTimers();
+
 		if (score > 15) {
-		spawnConfetti(60);
+			spawnConfetti(60);
 		} else if (score > 5) {
-		spawnConfetti(20);
+			spawnConfetti(20);
 		} else {
-		confetti = [];
+			confetti = [];
 		}
 		 try {
             const r = await saveNameAndScore();
@@ -143,8 +157,10 @@
 
 		if (choice === currentQuestion.correct) {
 			score += 1;
+			audioManager.playCorrect();
 			nextQuestion();
 		} else {
+			audioManager.playWrong();
 			timeLeft -= penaltySeconds;
 			showPenalty();
 		}
@@ -156,6 +172,7 @@
 
 	onDestroy(() => {
 		clearTimers();
+		audioManager.stopGameMusic();
 	});
 
 </script>
@@ -307,14 +324,14 @@
 						</h3>
 
 						<!-- <button class="ranking-pill">ランキング</button> -->
-						<button class="ranking-pill" on:click={() => window.location.href = '/ranking'}>ランキング</button>
+						<button class="ranking-pill" on:click={() => { audioManager.playClick(); goto('/ranking'); }}>ランキング</button>
 
 
 						<div class="nav-buttons">
-							<button class="btn-circle green-dark" on:click={() => window.location.href = '/'} aria-label="Go back to home page">
+							<button class="btn-circle green-dark" on:click={() => { audioManager.playClick(); goto('/'); }} aria-label="Go back to home page">
 								<svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
 							</button>
-							<button class="btn-circle green-light" on:click={startGame} aria-label="Play again">
+							<button class="btn-circle green-light" on:click={() => { audioManager.playClick(); startGame(); }} aria-label="Play again">
 								<svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
 							</button>
 						</div>
@@ -324,16 +341,21 @@
 		</section>
 	{/if}
 
+	<!-- Red flash overlay when time is low -->
+	{#if isLowTime && !gameOver}
+		<div class="warning-flash" aria-hidden="true"></div>
+	{/if}
+
 	<div class={`penalty-flash ${penaltyVisible ? 'show' : ''}`} aria-hidden="true">
 		<span class="penalty-text">-3s</span>
 	</div>
-
-	<div class="confetti-layer" aria-hidden="true">
-		{#each confetti as piece (piece.id)}
-			<div
-				class="confetti"
-				style={`left:${piece.left}vw; background-color:${piece.color}; --dur:${piece.duration}ms; --rot:${piece.rotation}deg;`}
-			></div>
-		{/each}
-	</div>
 </main>
+
+<div class="confetti-layer" aria-hidden="true">
+	{#each confetti as piece (piece.id)}
+		<div
+			class="confetti"
+			style={`left:${piece.left}vw; background-color:${piece.color}; --dur:${piece.duration}ms; --rot:${piece.rotation}deg;`}
+		></div>
+	{/each}
+</div>
