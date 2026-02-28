@@ -358,20 +358,61 @@ body {
 	flex-direction: column;
 	gap: 1rem;
 	width: 100%;
+	isolation: isolate;
 }
 
 .ranking-page .title-badge {
-	background: #e2a72f;
-	color: #1a620d;
-	font-size: 1.2rem;
-	font-weight: 800;
-	letter-spacing: 0.05em;
-	padding: 0.4rem 1.5rem;
-	border-radius: 12px;
+	position: relative;
+	background: linear-gradient(180deg, #f8e5c5 0%, #efcf9d 55%, #e2b97f 100%);
+	color: #6a4033;
+	font-size: 1.03rem;
+	font-weight: 900;
+	letter-spacing: 0.07em;
+	padding: 0.5rem 1.35rem 0.44rem;
+	border-radius: 18px 18px 24px 24px;
 	text-align: center;
-	box-shadow: 0 0 15px rgba(226, 167, 47, 0.2);
+	border: 2px solid #fffaf1;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.32);
+	box-shadow:
+		0 8px 0 #c6955f,
+		0 0 0 5px rgba(255, 255, 255, 0.55),
+		0 14px 24px rgba(121, 78, 37, 0.25),
+		inset 0 1px 0 rgba(255, 255, 255, 0.62),
+		inset 0 -2px 0 rgba(122, 79, 37, 0.15);
 	align-self: center;
-	width: 25%;
+	width: fit-content;
+	min-width: clamp(130px, 18%, 210px);
+	overflow: visible;
+	transform: translateY(-6px);
+}
+
+.ranking-page .title-badge::before {
+	content: '';
+	position: absolute;
+	top: -11px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 44px;
+	height: 15px;
+	border: 2px solid #d47f7f;
+	border-bottom: none;
+	border-radius: 28px 28px 0 0;
+	box-sizing: border-box;
+	pointer-events: none;
+}
+
+.ranking-page .title-badge::after {
+	content: '';
+	position: absolute;
+	top: -3px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 10px;
+	height: 10px;
+	border-radius: 999px;
+	background: #9a5b4f;
+	box-shadow: 0 0 0 2px #fffaf1;
+	pointer-events: none;
 }
 
 .ranking-page .date-controls-wrapper {
@@ -489,6 +530,8 @@ body {
 	-webkit-overflow-scrolling: touch;
 	overscroll-behavior: contain;
 	scroll-behavior: smooth;
+	scrollbar-width: thin;
+	scrollbar-color: #8d8d8d #dfdfdf;
 	border-radius: 1.25rem;
 	border: none;
 	flex: 1;
@@ -496,22 +539,56 @@ body {
 }
 
 .ranking-page .ranking-table-scroll::-webkit-scrollbar {
-	width: 8px;
-	height: 8px;
+	width: 6px;
+	height: 6px;
 }
 
 .ranking-page .ranking-table-scroll::-webkit-scrollbar-track {
-	background: rgba(255, 255, 255, 0.3);
+	background: #dfdfdf;
 	border-radius: 10px;
 }
 
 .ranking-page .ranking-table-scroll::-webkit-scrollbar-thumb {
-	background: #8a5a2b;
+	background: #8d8d8d;
 	border-radius: 10px;
 }
 
 .ranking-page .ranking-table-scroll::-webkit-scrollbar-thumb:hover {
-	background: #8a5a2b;
+	background: #767676;
+}
+
+.ranking-page .ranking-table-scroll::-webkit-scrollbar-button {
+	display: block;
+	width: 10px;
+	height: 10px;
+	background-color: #d0d0d0;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 6px 6px;
+}
+
+.ranking-page .ranking-table-scroll::-webkit-scrollbar-button:single-button:vertical:decrement {
+	background-image: linear-gradient(135deg, transparent 50%, #5f5f5f 50%), linear-gradient(225deg, transparent 50%, #5f5f5f 50%);
+	background-position: calc(50% - 2px) 62%, calc(50% + 2px) 62%;
+}
+
+.ranking-page .ranking-table-scroll::-webkit-scrollbar-button:single-button:vertical:increment {
+	background-image: linear-gradient(315deg, transparent 50%, #5f5f5f 50%), linear-gradient(45deg, transparent 50%, #5f5f5f 50%);
+	background-position: calc(50% - 2px) 38%, calc(50% + 2px) 38%;
+}
+
+.ranking-page .ranking-table-scroll::-webkit-scrollbar-button:single-button:horizontal:decrement {
+	background-image: linear-gradient(45deg, transparent 50%, #5f5f5f 50%), linear-gradient(135deg, transparent 50%, #5f5f5f 50%);
+	background-position: 62% calc(50% - 2px), 62% calc(50% + 2px);
+}
+
+.ranking-page .ranking-table-scroll::-webkit-scrollbar-button:single-button:horizontal:increment {
+	background-image: linear-gradient(225deg, transparent 50%, #5f5f5f 50%), linear-gradient(315deg, transparent 50%, #5f5f5f 50%);
+	background-position: 38% calc(50% - 2px), 38% calc(50% + 2px);
+}
+
+.ranking-page .ranking-table-scroll::-webkit-scrollbar-button:hover {
+	background-color: #c0c0c0;
 }
 
 .ranking-page .ranking-table {
@@ -531,11 +608,11 @@ body {
 }
 
 .ranking-page .table-header {
-	background: #e2a72f;
+	background: linear-gradient(180deg, #f8e5c5 0%, #efcf9d 55%, #e2b97f 100%);
 	border: none;
-	border-bottom: 2px solid #8a5a2b;
+	border-bottom: 2px solid #c6955f;
 	border-radius: 0;
-	color: #ffffff;
+	color: #6a4033;
 	font-weight: 700;
 	letter-spacing: 0.05em;
 	text-transform: uppercase;
@@ -546,12 +623,25 @@ body {
 	padding: 0.75rem 0.8rem;
 	text-align: center;
 	vertical-align: middle;
-	color: #1a620d;
-	border-right: 2px solid #8a5a2b;
+	color: #6a4033;
+	border-right: 2px solid #c6955f;
 	position: sticky;
 	top: 0;
 	z-index: 5;
-	background: #e2a72f;
+	background: linear-gradient(180deg, #f8e5c5 0%, #efcf9d 55%, #e2b97f 100%);
+}
+
+.ranking-page .table-header th .th-icon {
+	display: inline-block;
+	margin-right: 0.28rem;
+	font-size: 0.92rem;
+	line-height: 1;
+	vertical-align: -0.04rem;
+}
+
+.ranking-page .table-header th .th-label {
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .ranking-page .table-header th:last-child {
@@ -720,6 +810,11 @@ body {
 		font-size: 0.7rem;
 	}
 
+	.ranking-page .table-header th .th-icon {
+		font-size: 0.78rem;
+		margin-right: 0.2rem;
+	}
+
 	.ranking-page .ranking-table {
 		font-size: 0.8rem;
 	}
@@ -743,8 +838,23 @@ body {
 	}
 
 	.ranking-page .title-badge {
-		font-size: 1rem;
-		padding: 0.3rem 1.2rem;
+		font-size: 0.9rem;
+		padding: 0.42rem 1rem 0.36rem;
+		width: auto;
+		min-width: 128px;
+		transform: translateY(-4px);
+	}
+
+	.ranking-page .title-badge::before {
+		top: -9px;
+		width: 36px;
+		height: 12px;
+	}
+
+	.ranking-page .title-badge::after {
+		top: -2px;
+		width: 8px;
+		height: 8px;
 	}
 
 	.ranking-page .date-controls-wrapper {
@@ -812,6 +922,11 @@ body {
 	.ranking-page .ranking-table {
 		font-size: 0.8rem;
 		min-width: 560px;
+	}
+
+	.ranking-page .table-header th .th-icon {
+		font-size: 0.72rem;
+		margin-right: 0.14rem;
 	}
 
 	.ranking-page .ranking-table-scroll {

@@ -308,10 +308,10 @@
 				<table class="ranking-table">
 					<thead>
 						<tr class="table-header">
-							<th>順位</th>
-							<th>プレイヤー名</th>
-							<th>スコア</th>
-							<th>プレイ日</th>
+							<th><span class="th-icon" aria-hidden="true">🏅</span><span class="th-label">順位</span></th>
+							<th><span class="th-icon" aria-hidden="true">🌸</span><span class="th-label">プレイヤー名</span></th>
+							<th><span class="th-icon" aria-hidden="true">⭐</span><span class="th-label">スコア</span></th>
+							<th><span class="th-icon" aria-hidden="true">🗓️</span><span class="th-label">プレイ日</span></th>
 						</tr>
 					</thead>
 					<tbody>
