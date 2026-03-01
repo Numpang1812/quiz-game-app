@@ -18,6 +18,8 @@
 	import { audioManager } from '$lib/utils/audioController';
 	import { goto } from '$app/navigation';
 
+	export let data: { sessionId: string; signature: string };
+
 	let score = 0;
 	let ranking: number | null = null;
 
@@ -39,18 +41,23 @@
 		const res = await fetch('/api/scores', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ name: returnCurrentUser(), score })
+			body: JSON.stringify({
+				name: returnCurrentUser(),
+				score,
+				sessionId: data.sessionId,
+				signature: data.signature
+			})
 		});
-		const data = await res.json();
+		const result = await res.json();
 		if (!res.ok) {
-            console.error('unable to save score', data);
-            // either throw or return a sentinel
-            throw new Error(data.error || 'save failed');
-        }
+			console.error('unable to save score', result);
+			// either throw or return a sentinel
+			throw new Error(result.error || 'save failed');
+		}
 
-        console.log('server returned rank', data.rank);
-        // coerce to number just in case it comes back as a string
-        return Number(data.rank);
+		console.log('server returned rank', result.rank);
+		// coerce to number just in case it comes back as a string
+		return Number(result.rank);
 	}
 
 	async function getNameAndScore() {
@@ -97,7 +104,7 @@
 		penaltyVisible = false;
 
 		audioManager.isGameOver = false;
-		audioManager.playTrack('game')
+		audioManager.playTrack('game');
 
 		confetti = [];
 		nextQuestion();
@@ -128,7 +135,7 @@
 	async function endGame(): Promise<void> {
 		audioManager.stopGameMusic();
 		audioManager.playGameOver();
-		audioManager.playTrack('mainMenu')
+		audioManager.playTrack('mainMenu');
 		isLowTime = false;
 
 		gameOver = true;
@@ -142,12 +149,12 @@
 		} else {
 			confetti = [];
 		}
-		 try {
-            const r = await saveNameAndScore();
-            ranking = Number.isFinite(r) ? r : null;
-        } catch (err) {
-            ranking = null;
-        }
+		try {
+			const r = await saveNameAndScore();
+			ranking = Number.isFinite(r) ? r : null;
+		} catch (err) {
+			ranking = null;
+		}
 	}
 
 	function chooseAnswer(choice: QuestionnaireAnswerKey): void {
@@ -174,10 +181,12 @@
 		clearTimers();
 		audioManager.stopGameMusic();
 	});
-
 </script>
 
-<main class="page-wrap" style={`--custom-background-image: url('${defaultBackgroundImage}');  background-size: cover;`}>
+<main
+	class="page-wrap"
+	style={`--custom-background-image: url('${defaultBackgroundImage}');  background-size: cover;`}
+>
 	<div class="fence" aria-hidden="true"></div>
 	<div class="garden-floor" aria-hidden="true">
 		<div class="grass-top"></div>
@@ -220,33 +229,43 @@
 								<div class="mini-mascot">
 									<div class="mini-mascot-body">
 										<div class="mini-face">
-										<div class="mini-eyes">
-											<span></span>
-											<span></span>
+											<div class="mini-eyes">
+												<span></span>
+												<span></span>
+											</div>
+											<svg width="9" height="9" viewBox="0 0 20 20">
+												<path
+													d="M2,2 Q5,8 10,2 Q15,8 18,2"
+													stroke="#1d5f22"
+													stroke-width="3"
+													fill="none"
+													stroke-linecap="round"
+												/>
+											</svg>
 										</div>
-										<svg width="9" height="9" viewBox="0 0 20 20">
-											<path
-											d="M2,2 Q5,8 10,2 Q15,8 18,2"
-											stroke="#1d5f22"
-											stroke-width="3"
-											fill="none"
-											stroke-linecap="round"
-											/>
-										</svg>
-										</div>
-				
+
 										<div class="mini-sprout">
-										<svg width="20" height="20" viewBox="0 0 40 40">
-											<path
-											d="M20 40 Q20 20 20 12"
-											stroke="#1d5f22"
-											stroke-width="4"
-											fill="none"
-											stroke-linecap="round"
-											/>
-											<path d="M20 15 Q35 0 38 18 Q28 25 20 15" fill="#91d685" stroke="#1d5f22" stroke-width="2.5" />
-											<path d="M20 15 Q5 0 2 18 Q12 25 20 15" fill="#91d685" stroke="#1d5f22" stroke-width="2.5" />
-										</svg>
+											<svg width="20" height="20" viewBox="0 0 40 40">
+												<path
+													d="M20 40 Q20 20 20 12"
+													stroke="#1d5f22"
+													stroke-width="4"
+													fill="none"
+													stroke-linecap="round"
+												/>
+												<path
+													d="M20 15 Q35 0 38 18 Q28 25 20 15"
+													fill="#91d685"
+													stroke="#1d5f22"
+													stroke-width="2.5"
+												/>
+												<path
+													d="M20 15 Q5 0 2 18 Q12 25 20 15"
+													fill="#91d685"
+													stroke="#1d5f22"
+													stroke-width="2.5"
+												/>
+											</svg>
 										</div>
 									</div>
 								</div>
@@ -258,8 +277,9 @@
 
 					<div class="choices-layout">
 						{#each choices as [key, text]}
-							<button type="button" class="choice-item" on:click={() => chooseAnswer(key)}>{text}</button>
-						
+							<button type="button" class="choice-item" on:click={() => chooseAnswer(key)}
+								>{text}</button
+							>
 						{/each}
 					</div>
 				</div>
@@ -271,44 +291,52 @@
 				<div class="result-box">
 					<!-- Floating Header Mascot (Issue #15) -->
 					<div class="header-decoration">
-					<div class="mascot-tag">
-
-						<div class="mini-mascot">
-
-									<div class="mini-mascot-body">
-										<div class="mini-face">
+						<div class="mascot-tag">
+							<div class="mini-mascot">
+								<div class="mini-mascot-body">
+									<div class="mini-face">
 										<div class="mini-eyes">
 											<span></span>
 											<span></span>
 										</div>
 										<svg width="9" height="8" viewBox="0 0 20 20">
 											<path
-											d="M2,2 Q5,8 10,2 Q15,8 18,2"
-											stroke="#1d5f22"
-											stroke-width="3"
-											fill="none"
-											stroke-linecap="round"
+												d="M2,2 Q5,8 10,2 Q15,8 18,2"
+												stroke="#1d5f22"
+												stroke-width="3"
+												fill="none"
+												stroke-linecap="round"
 											/>
 										</svg>
-										</div>
-				
-										<div class="mini-sprout">
+									</div>
+
+									<div class="mini-sprout">
 										<svg width="20" height="20" viewBox="0 0 40 40">
 											<path
-											d="M20 40 Q20 20 20 12"
-											stroke="#1d5f22"
-											stroke-width="4"
-											fill="none"
-											stroke-linecap="round"
+												d="M20 40 Q20 20 20 12"
+												stroke="#1d5f22"
+												stroke-width="4"
+												fill="none"
+												stroke-linecap="round"
 											/>
-											<path d="M20 15 Q35 0 38 18 Q28 25 20 15" fill="#91d685" stroke="#1d5f22" stroke-width="2.5" />
-											<path d="M20 15 Q5 0 2 18 Q12 25 20 15" fill="#91d685" stroke="#1d5f22" stroke-width="2.5" />
+											<path
+												d="M20 15 Q35 0 38 18 Q28 25 20 15"
+												fill="#91d685"
+												stroke="#1d5f22"
+												stroke-width="2.5"
+											/>
+											<path
+												d="M20 15 Q5 0 2 18 Q12 25 20 15"
+												fill="#91d685"
+												stroke="#1d5f22"
+												stroke-width="2.5"
+											/>
 										</svg>
-										</div>
 									</div>
 								</div>
-						<div class="tag-text">タイムアップ！</div>
-					</div>
+							</div>
+							<div class="tag-text">タイムアップ！</div>
+						</div>
 					</div>
 
 					<div class="score-content">
@@ -327,15 +355,41 @@
 						</h3>
 
 						<!-- <button class="ranking-pill">ランキング</button> -->
-						<button class="ranking-pill" on:click={() => { audioManager.playClick(); goto('/ranking'); }}>ランキング</button>
-
+						<button
+							class="ranking-pill"
+							on:click={() => {
+								audioManager.playClick();
+								goto('/ranking');
+							}}>ランキング</button
+						>
 
 						<div class="nav-buttons">
-							<button class="btn-circle green-dark" on:click={() => { audioManager.playClick(); goto('/'); }} aria-label="Go back to home page">
-								<svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+							<button
+								class="btn-circle green-dark"
+								on:click={() => {
+									audioManager.playClick();
+									goto('/');
+								}}
+								aria-label="Go back to home page"
+							>
+								<svg viewBox="0 0 24 24" width="24" height="24"
+									><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg
+								>
 							</button>
-							<button class="btn-circle green-light" on:click={() => { audioManager.playClick(); goto('/loading'); }} aria-label="Play again">
-								<svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+							<button
+								class="btn-circle green-light"
+								on:click={() => {
+									audioManager.playClick();
+									goto('/loading');
+								}}
+								aria-label="Play again"
+							>
+								<svg viewBox="0 0 24 24" width="24" height="24"
+									><path
+										fill="currentColor"
+										d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+									/></svg
+								>
 							</button>
 						</div>
 					</div>

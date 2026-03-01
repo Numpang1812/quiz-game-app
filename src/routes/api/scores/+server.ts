@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
-import { getScore, postScore, initTable, getRank, MAX_VALID_SCORE } from '../../../database/turso.server';
+import { getScore, postScore, initTable, getRank, MAX_VALID_SCORE, SPECIAL_NAME } from '../../../database/turso.server';
+import { verifyGameToken, consumeGameToken } from '$lib/server/gameSession.server';
 
 function isValidDateParam(value: string): boolean {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
@@ -10,7 +11,7 @@ function isValidDateParam(value: string): boolean {
     return !Number.isNaN(date.getTime()) && date.toISOString().startsWith(value);
 }
 
-export async function GET({ url }){
+export async function GET({ url }) {
     await initTable();
 
     const from = url.searchParams.get('from') ?? undefined;
@@ -54,16 +55,34 @@ export async function POST({ request }) {
 
     const body = await request.json().catch(() => null);
 
+    // --- Game session token validation ---
+    const sessionId = body?.sessionId;
+    const signature = body?.signature;
+
+    if (!sessionId || !signature) {
+        return json({ error: 'Missing game session token' }, { status: 403 });
+    }
+
+    if (!verifyGameToken(sessionId, signature)) {
+        return json({ error: 'Invalid game session token' }, { status: 403 });
+    }
+
+    if (!consumeGameToken(sessionId)) {
+        return json({ error: 'Game session token already used' }, { status: 403 });
+    }
+    // --- End token validation ---
+
     const name = typeof body?.name === 'string' ? body.name.trim() : '';
     const score = typeof body?.score === 'number' ? body.score : Number(body?.score);
 
-    if (!Number.isFinite(score)) return json({ error: 'Score is required' }, {status: 400 });
+    if (!Number.isFinite(score)) return json({ error: 'Score is required' }, { status: 400 });
     if (!Number.isInteger(score) || score < 0) return json({ error: 'Score must be a non-negative integer' }, { status: 400 });
     if (score > MAX_VALID_SCORE) return json({ error: `Score must be less than or equal to ${MAX_VALID_SCORE}` }, { status: 400 });
     if (!name) return json({ error: 'Name is required' }, { status: 400 });
+    if (name.toUpperCase() === SPECIAL_NAME.toUpperCase()) return json({ error: 'This name is reserved for THE ONE AND ONLY!! NO ONE HACKS MY GAME!!' }, { status: 403 });
 
     const created_time = await postScore(name, score);
     const rank = await getRank(score, created_time);
 
-    return json({ ok: true, rank}, { status: 201 });
+    return json({ ok: true, rank }, { status: 201 });
 }
