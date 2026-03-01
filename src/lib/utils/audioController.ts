@@ -19,6 +19,7 @@ class AudioManager {
     sfxVolume = 0.8;
     musicMuted = true; 
     sfxMuted = false;
+    isGameOver = false;
 
     init() {
         if (!browser) return;
@@ -64,27 +65,47 @@ class AudioManager {
     
 
     // bg music
-    async playTrack(type: TrackType) {
+    async playTrack(type: TrackType, fadeDuration = 0) {
         if (!browser || this.musicMuted) return;
         if (!this.mainMenuMusic || !this.gameMusic) return;
 
-        if (this.currentTrack === type && !this.mainMenuMusic.paused) return;
+        const targetTrack = type === 'mainMenu' ? this.mainMenuMusic : this.gameMusic;
+        const otherTrack = type === 'mainMenu' ? this.gameMusic : this.mainMenuMusic;
 
-        this.stopAllMusic();
+        if (!targetTrack.paused && targetTrack.currentTime > 0) {
+            this.currentTrack = type;
+            return;
+        }
 
-        const track = 
-            type === 'mainMenu'
-                ? this.mainMenuMusic
-                : this.gameMusic;
+        if (otherTrack && !otherTrack.paused) {
+            if (fadeDuration > 0) {
+                this.fade(otherTrack, otherTrack.volume, 0, fadeDuration, () => {
+                    otherTrack.pause();
+                    otherTrack.currentTime = 0;
+                });
+            } else {
+                otherTrack.pause();
+                otherTrack.currentTime = 0;
+            }
+        }
+        
+        if (this.currentTrack !== type) {
+            targetTrack.currentTime = 0;
+        }
 
-        track.currentTime = 0;
-        track.volume = this.musicVolume;
+        this.currentTrack = type;
 
         try {
-            await track.play();
-            this.currentTrack = type;
+            if (fadeDuration > 0) {
+                targetTrack.volume = 0;
+                await targetTrack.play();
+                this.fade(targetTrack, 0, this.musicVolume, fadeDuration);
+            } else {
+                targetTrack.volume = this.musicVolume;
+                await targetTrack.play();
+            }
         } catch (e) {
-            console.log("Autoplay blocked or interrupted")
+            console.log("Autoplay blocked or interrupted");
         }
     }
 
@@ -118,7 +139,7 @@ class AudioManager {
 
         const path = window.location.pathname;
 
-        if (path.startsWith('/game')) {
+        if (path.startsWith('/game') && !this.isGameOver) {
             this.playTrack('game');
         } else {
             this.playTrack('mainMenu');
@@ -201,8 +222,10 @@ class AudioManager {
     }
 
     playGameOver() {
+        this.isGameOver = true;
         if (!this.sfxMuted) this.playSfx(this.gameOverSound);
-    }
+        this.playTrack('mainMenu');
+    }  
 
     // utils
     duckMusic(level = 0.25) {
