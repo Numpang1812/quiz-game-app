@@ -7,7 +7,7 @@ node_modules
 .wrangler
 /.svelte-kit
 /build
-.inject-message.mjs
+inject-message.mjs
 
 # OS
 .DS_Store
