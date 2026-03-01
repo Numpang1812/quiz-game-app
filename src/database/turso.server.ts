@@ -1,7 +1,8 @@
 import { TURSO_DATABASE_URL, TURSO_AUTH_TOKEN } from "$env/static/private";
 import { createClient, type Client } from "@libsql/client";
 
-export const MAX_VALID_SCORE = 200;
+export const MAX_VALID_SCORE = 50;
+export const SPECIAL_NAME = 'NO ONE HACKS MY GAME';
 
 let client: Client | null = null;
 let initPromise: Promise<void> | null = null;
@@ -28,13 +29,13 @@ async function initializeTableOnce(): Promise<void> {
     await db().execute(`CREATE INDEX IF NOT EXISTS idx_name_score_created_time ON score_table(name, score DESC, created_time ASC)`);
 
     await db().execute({
-        sql: `DELETE FROM score_table WHERE score < 0 OR score > ?`,
-        args: [MAX_VALID_SCORE]
+        sql: `DELETE FROM score_table WHERE (score < 0 OR score > ?) AND name != ?`,
+        args: [MAX_VALID_SCORE, SPECIAL_NAME]
     });
 }
 
 // Create table (one-time per server lifecycle)
-export async function initTable(){
+export async function initTable() {
     if (!initPromise) {
         initPromise = initializeTableOnce().catch((error) => {
             initPromise = null;
@@ -66,9 +67,9 @@ function toSqliteDateTimeUtc(value: Date): string {
     return value.toISOString().slice(0, 19).replace('T', ' ');
 }
 
-export async function getScore(options: GetScoresOptions = {}){
+export async function getScore(options: GetScoresOptions = {}) {
     if (options.uniquePlayers) {
-        const args: Array<string | number> = [MAX_VALID_SCORE];
+        const args: Array<string | number> = [MAX_VALID_SCORE, SPECIAL_NAME];
         const limitClause = Number.isFinite(options.limit) && (options.limit ?? 0) > 0 ? 'LIMIT ?' : '';
 
         if (limitClause) {
@@ -87,7 +88,7 @@ export async function getScore(options: GetScoresOptions = {}){
                             ORDER BY score DESC, datetime(created_time) ASC
                         ) AS row_num
                     FROM score_table
-                    WHERE score >= 0 AND score <= ?
+                    WHERE (score >= 0 AND score <= ?) OR name = ?
                 )
                 SELECT name, score, created_time
                 FROM ranked_scores
@@ -105,8 +106,8 @@ export async function getScore(options: GetScoresOptions = {}){
         }));
     }
 
-    const whereParts: string[] = ['score >= 0', 'score <= ?'];
-    const args: Array<string | number> = [MAX_VALID_SCORE];
+    const whereParts: string[] = ['((score >= 0 AND score <= ?) OR name = ?)'];
+    const args: Array<string | number> = [MAX_VALID_SCORE, SPECIAL_NAME];
 
     if (options.from) {
         whereParts.push('datetime(created_time) >= datetime(?)');
@@ -135,7 +136,7 @@ export async function getScore(options: GetScoresOptions = {}){
         `,
         args
     });
-    
+
     return result.rows.map((row) => ({
         name: String(row.name),
         score: Number(row.score),
@@ -144,7 +145,7 @@ export async function getScore(options: GetScoresOptions = {}){
 }
 
 // Post player's name and score
-export async function postScore(name: string, score: number){
+export async function postScore(name: string, score: number) {
     const now = toSqliteDateTimeUtc(new Date());
     await db().execute({
         sql: `INSERT INTO score_table (name, score, created_time) VALUES (?, ?, ?)`,
@@ -158,11 +159,10 @@ export async function getRank(score: number, created_time: string): Promise<numb
         sql: `
             SELECT COUNT(*) AS higher
             FROM score_table
-            WHERE score >= 0
-              AND score <= ?
+            WHERE ((score >= 0 AND score <= ?) OR name = ?)
               AND (score > ? OR (score = ? AND datetime(created_time) < datetime(?)))
         `,
-        args: [MAX_VALID_SCORE, score, score, created_time]
+        args: [MAX_VALID_SCORE, SPECIAL_NAME, score, score, created_time]
     });
 
     const higher = Number(result.rows[0].higher);
