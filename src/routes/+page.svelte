@@ -3,7 +3,7 @@
 	import { getUsername } from '$lib/utils/saveUsername';
 	import { audioManager } from '$lib/utils/audioController';
 	import { goto } from '$app/navigation';
-
+	
 
 	function onPlayClick(): void {
 		audioManager.playStart();
@@ -22,10 +22,21 @@
 	}
 
 	function onCreditsClick(): void {
-		window.location.href = '/credits';
+		audioManager.playClick();
+		goto('/credits');
 	}
 
+	import { onMount } from 'svelte';
 	let username = '';
+
+	onMount(() => {
+		const stored = localStorage.getItem('quiz-username');
+		if (stored && stored !== 'Player') {
+			username = stored;
+		} else {
+			username = '';
+		}
+	});
 	let mascotHovered = false;
 </script>
 
