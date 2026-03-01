@@ -96,6 +96,7 @@
 		gameOver = false;
 		penaltyVisible = false;
 
+		audioManager.isGameOver = false;
 		audioManager.playTrack('game')
 
 		confetti = [];
