@@ -312,7 +312,7 @@
 					<thead>
 						<tr class="table-header">
 							<th><span class="th-icon" aria-hidden="true">🏅</span><span class="th-label">順位</span></th>
-							<th><span class="th-icon" aria-hidden="true">🌸</span><span class="th-label">プレイヤー名</span></th>
+							<th><span class="th-icon" aria-hidden="true">🌸</span><span class="th-label">名前</span></th>
 							<th><span class="th-icon" aria-hidden="true">⭐</span><span class="th-label">スコア</span></th>
 							<th><span class="th-icon" aria-hidden="true">🗓️</span><span class="th-label">プレイ日</span></th>
 						</tr>
