@@ -315,12 +315,15 @@
 						<h3 class="user-display">{returnCurrentUser()} のスコア</h3>
 						<div class="score-number">{score}</div>
 						<p class="unit-label">正解数</p>
-						<h3 class="user-display">歴代ランキング：
-							{#if ranking !== null}
-								#{ranking}
-							{:else}
-								取得中...
-							{/if}
+						<h3 class="user-display ranking-display">
+							<span>歴代ランキング：</span>
+							<span class="ranking-value">
+								{#if ranking !== null}
+									#{ranking}
+								{:else}
+									取得中...
+								{/if}
+							</span>
 						</h3>
 
 						<!-- <button class="ranking-pill">ランキング</button> -->
@@ -331,7 +334,7 @@
 							<button class="btn-circle green-dark" on:click={() => { audioManager.playClick(); goto('/'); }} aria-label="Go back to home page">
 								<svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
 							</button>
-							<button class="btn-circle green-light" on:click={() => { audioManager.playClick(); startGame(); }} aria-label="Play again">
+							<button class="btn-circle green-light" on:click={() => { audioManager.playClick(); goto('/loading'); }} aria-label="Play again">
 								<svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
 							</button>
 						</div>

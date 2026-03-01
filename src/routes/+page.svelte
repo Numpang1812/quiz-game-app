@@ -9,7 +9,7 @@
 		audioManager.playStart();
 		audioManager.playClick();
 		getUsername(username);
-		goto('/game');
+		goto('/loading');
 	}
 
 	function onRankingClick(): void {

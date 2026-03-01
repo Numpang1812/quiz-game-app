@@ -1245,6 +1245,21 @@ body {
     margin: 0;
     font-size: 3.5vh;
 }
+
+.ranking-display {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25rem;
+	padding: 0 0.45rem;
+	margin-top: -0.6rem;
+	margin-bottom: 1rem;
+}
+
+.ranking-value {
+	display: inline-block;
+}
+
 .score-number {
     font-size: 10vh;
     color: #ffb300;
@@ -1547,4 +1562,121 @@ body {
 .credit-page-wrap .home-button:active {
 	transform: translateY(6px);
 	box-shadow: 0 2px 0 #175e0f;
+}
+
+/* Loading page */
+.loading-bg {
+	padding-bottom: 6rem;
+}
+
+.loading-content {
+	position: relative;
+	z-index: 30;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+}
+
+.loading-content .mascot {
+	animation: home-bounce 2.8s ease-in-out infinite;
+}
+
+.loading-content .face {
+	position: relative;
+	margin-top: 0.9rem;
+}
+
+.loading-eyes {
+	display: flex;
+	gap: 2.2rem;
+	margin-bottom: 0.3rem;
+}
+
+.loading-eyes .mascot-eye {
+	width: 9px;
+	height: 9px;
+	border-radius: 999px;
+	background: #2e7d32;
+}
+
+.mascot.is-sleeping .mascot-eye {
+	height: 2px;
+	width: 8px;
+	border-radius: 0;
+	background: #666;
+}
+
+.mascot-mouth {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: -10px;
+	width: 10px;
+	height: 5px;
+	border-bottom: 2px solid black;
+	border-radius: 50%;
+}
+
+.zzz-wrapper {
+	position: absolute;
+	top: -40px;
+	right: -20px;
+	pointer-events: none;
+}
+
+.zzz {
+	position: absolute;
+	font-weight: 900;
+	color: var(--daikon-dark, #2e7d32);
+	opacity: 0;
+	animation: zzz-float 3s infinite;
+}
+
+.zzz:nth-child(1) {
+	animation-delay: 0s;
+	font-size: 1rem;
+}
+
+.zzz:nth-child(2) {
+	animation-delay: 1s;
+	font-size: 1.5rem;
+}
+
+.zzz:nth-child(3) {
+	animation-delay: 2s;
+	font-size: 2rem;
+}
+
+.loading-text {
+	margin: 0;
+	font-size: clamp(1rem, 2.5vw, 1.4rem);
+	font-weight: 900;
+	color: #ffffff;
+	text-shadow:
+		-2px -2px 0 #5cc45f,
+		2px -2px 0 #5cc45f,
+		-2px 2px 0 #5cc45f,
+		2px 2px 0 #5cc45f;
+}
+
+@keyframes zzz-float {
+	0% {
+		transform: translate(0, 0) scale(0.5);
+		opacity: 0;
+	}
+
+	20% {
+		opacity: 1;
+	}
+
+	80% {
+		opacity: 0.5;
+	}
+
+	100% {
+		transform: translate(30px, -50px) scale(1.2);
+		opacity: 0;
+	}
 }
