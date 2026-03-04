@@ -9,8 +9,10 @@
 
     let isMenuOpen = false;
 
-    function toggleMenu() {
-        isMenuOpen = !isMenuOpen;
+    function handlePointerEnter(e: PointerEvent) {
+        if (e.pointerType === 'mouse') {
+            isMenuOpen = true;
+        }
     }
 
     function closeMenu() {
@@ -55,7 +57,7 @@
         audioManager.playClick();
     }
 
-    function handleTriggerClick(event: MouseEvent | TouchEvent) {
+    function toggleMenu() {
         isMenuOpen = !isMenuOpen;
     }
 </script>
@@ -64,7 +66,8 @@
     <button 
         type="button" 
         class="audio-trigger" 
-        on:mouseenter={handleTriggerClick}
+        on:click={toggleMenu}
+        on:pointerenter={handlePointerEnter}
         aria-label="Audio Settings"
     >
         <svg viewBox="0 0 24 24" width="28" height="28">
@@ -174,9 +177,11 @@
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
 
-    .audio-trigger:hover {
-        transform: scale(1.1);
-        background: #f0ffe7;
+    @media (hover: hover) and (pointer: fine) { 
+        .audio-trigger:hover {
+            transform: scale(1.1);
+            background: #f0ffe7;
+        }
     }
 
     .audio-panel {
