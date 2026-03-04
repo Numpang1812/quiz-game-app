@@ -23,6 +23,7 @@
 
 	let top10Scores: RankingRow[] = [];
 	let selectedDate: string = getTodayString();
+	let selectedToDate: string = getTodayString();
 	let filterRange: string = 'custom';
 	let rankingMode: 'daily' | 'global' = 'daily';
 
@@ -38,6 +39,10 @@
 		if (Number.isNaN(date.getTime())) {
 			return '-';
 		}
+		return toDateString(date);
+	}
+
+	function toDateString(date: Date): string {
 		return date.toISOString().split('T')[0];
 	}
 
@@ -131,7 +136,7 @@
 					params.set('to', selectedDate);
 				} else {
 					params.set('from', selectedDate);
-					params.set('to', TODAY_STR);
+					params.set('to', selectedToDate);
 				}
 			} else {
 				params.set('uniquePlayers', 'true');
@@ -164,22 +169,69 @@
 		await loadScores();
 	}
 
+	function shiftRangeDate(baseDate: Date, direction: 'prev' | 'next'): Date {
+		const shiftedDate = new Date(baseDate);
+		const step = direction === 'prev' ? -1 : 1;
+
+		if (filterRange === '1month') {
+			shiftedDate.setMonth(shiftedDate.getMonth() + step);
+			return shiftedDate;
+		}
+
+		if (filterRange === '2months') {
+			shiftedDate.setMonth(shiftedDate.getMonth() + step * 2);
+			return shiftedDate;
+		}
+
+		if (filterRange === '2weeks') {
+			shiftedDate.setDate(shiftedDate.getDate() + step * 14);
+			return shiftedDate;
+		}
+
+		if (filterRange === '1week') {
+			shiftedDate.setDate(shiftedDate.getDate() + step * 7);
+			return shiftedDate;
+		}
+
+		shiftedDate.setDate(shiftedDate.getDate() + step);
+		return shiftedDate;
+	}
+
+	function isNextDisabled(): boolean {
+		if (rankingMode !== 'daily') return true;
+		if (filterRange === 'custom') return selectedDate === TODAY_STR;
+		return selectedToDate === TODAY_STR;
+	}
+
 	async function handlePrevDay(): Promise<void> {
 		if (rankingMode !== 'daily') return;
-		const date = new Date(selectedDate);
-		date.setDate(date.getDate() - 1);
-		selectedDate = date.toISOString().split('T')[0];
-		filterRange = 'custom';
+		const fromDate = new Date(selectedDate);
+		const toDate = new Date(selectedToDate);
+		const prevFromDate = shiftRangeDate(fromDate, 'prev');
+		const prevToDate = shiftRangeDate(toDate, 'prev');
+
+		selectedDate = toDateString(prevFromDate);
+		selectedToDate = toDateString(prevToDate);
+
 		await updateScoresForDate();
 	}
 
 	async function handleNextDay(): Promise<void> {
 		if (rankingMode !== 'daily') return;
-		if (selectedDate === TODAY_STR) return;
-		const date = new Date(selectedDate);
-		date.setDate(date.getDate() + 1);
-		selectedDate = date.toISOString().split('T')[0];
-		filterRange = 'custom';
+
+		const fromDate = new Date(selectedDate);
+		const toDate = new Date(selectedToDate);
+		const nextFromDate = shiftRangeDate(fromDate, 'next');
+		const nextToDate = shiftRangeDate(toDate, 'next');
+		const todayDate = new Date(TODAY_STR);
+
+		if (nextToDate.getTime() > todayDate.getTime()) {
+			return;
+		}
+
+		selectedDate = toDateString(nextFromDate);
+		selectedToDate = toDateString(nextToDate);
+
 		await updateScoresForDate();
 	}
 
@@ -192,6 +244,7 @@
 
 		if (val === 'custom') {
 			selectedDate = TODAY_STR;
+			selectedToDate = TODAY_STR;
 			await updateScoresForDate();
 			return;
 		}
@@ -202,7 +255,8 @@
 		else if (val === '2months') date.setMonth(date.getMonth() - 2);
 		else return;
 
-		selectedDate = date.toISOString().split('T')[0];
+		selectedDate = toDateString(date);
+		selectedToDate = TODAY_STR;
 		await updateScoresForDate();
 	}
 
@@ -211,6 +265,7 @@
 		rankingMode = target.value === 'global' ? 'global' : 'daily';
 		if (rankingMode === 'global') {
 			filterRange = 'custom';
+			selectedToDate = selectedDate;
 		}
 		await loadScores();
 	}
@@ -276,7 +331,7 @@
 							on:click={handlePrevDay}
 							disabled={rankingMode !== 'daily'}
 							class="nav-button"
-							aria-label="Previous day"
+							aria-label="Previous range"
 						>
 							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 								<polyline points="15 18 9 12 15 6"></polyline>
@@ -287,16 +342,16 @@
 							{rankingMode === 'daily'
 								? filterRange === 'custom'
 									? selectedDate
-									: `${selectedDate} ~ ${TODAY_STR}`
+									: `${selectedDate} ~ ${selectedToDate}`
 								: '歴代 TOP 10'}
 						</span>
 
 						<button 
 							on:click={handleNextDay}
-							disabled={rankingMode !== 'daily' || selectedDate === TODAY_STR}
+							disabled={isNextDisabled()}
 							class="nav-button"
-							class:disabled={rankingMode !== 'daily' || selectedDate === TODAY_STR}
-							aria-label="Next day"
+							class:disabled={isNextDisabled()}
+							aria-label="Next range"
 						>
 							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 								<polyline points="9 18 15 12 9 6"></polyline>
