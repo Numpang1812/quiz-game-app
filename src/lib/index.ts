@@ -33,14 +33,14 @@ export type ConfettiPiece = {
 export const totalTime = 30;
 export const penaltySeconds = 3;
 
-export const questions: Question[] = Object.values(questionnaires as Record<string, QuestionnaireItem>).map(
-	(item) => ({
-		id: item.id,
-		prompt: item.message,
-		answers: item.answers[0],
-		correct: item.correct_answer
-	})
-);
+export const questions: Question[] = Object.values(
+	questionnaires as Record<string, QuestionnaireItem>
+).map((item) => ({
+	id: item.id,
+	prompt: item.message,
+	answers: item.answers[0],
+	correct: item.correct_answer
+}));
 
 export function randomQuestion(): Question {
 	const index = Math.floor(Math.random() * questions.length);
@@ -89,7 +89,7 @@ export function plantSvg(level: number): string {
 	}
 
 	if (level < 15) {
-        return `
+		return `
             <!-- Stem -->
             <path d="M10 20 Q10 12 10 7" fill="none" stroke="#1b5e20" stroke-width="1.5" stroke-linecap="round"/>
             <!-- Leaves -->
@@ -99,9 +99,9 @@ export function plantSvg(level: number): string {
             <path d="M10 7 C7 7, 7 1, 10 0 C13 1, 13 7, 10 7" fill="#F472B6" stroke="#DB2777" stroke-width="0.5"/>
             <path d="M8.5 6.5 Q10 5 11.5 6.5" fill="none" stroke="#1b5e20" stroke-width="1" stroke-linecap="round"/>
         `;
-    }
+	}
 
-    return `
+	return `
         <!-- Stem -->
         <path d="M10 20 Q10 12 10 6" fill="none" stroke="#1b5e20" stroke-width="1.5" stroke-linecap="round"/>
         <!-- Leaf -->

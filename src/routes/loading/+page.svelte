@@ -18,7 +18,10 @@
 	});
 </script>
 
-<main class="menu-bg loading-bg" style={`--custom-background-image: url('${defaultBackgroundImage}');`}>
+<main
+	class="menu-bg loading-bg"
+	style={`--custom-background-image: url('${defaultBackgroundImage}');`}
+>
 	<section class="loading-content" aria-label="Loading screen">
 		<div class="mascot is-sleeping" aria-hidden="true">
 			<div class="mascot-body">
@@ -39,8 +42,18 @@
 							fill="none"
 							stroke-linecap="round"
 						/>
-						<path d="M20 15 Q35 0 38 18 Q28 25 20 15" fill="#91d685" stroke="#1d5f22" stroke-width="2.5" />
-						<path d="M20 15 Q5 0 2 18 Q12 25 20 15" fill="#91d685" stroke="#1d5f22" stroke-width="2.5" />
+						<path
+							d="M20 15 Q35 0 38 18 Q28 25 20 15"
+							fill="#91d685"
+							stroke="#1d5f22"
+							stroke-width="2.5"
+						/>
+						<path
+							d="M20 15 Q5 0 2 18 Q12 25 20 15"
+							fill="#91d685"
+							stroke="#1d5f22"
+							stroke-width="2.5"
+						/>
 					</svg>
 				</div>
 
