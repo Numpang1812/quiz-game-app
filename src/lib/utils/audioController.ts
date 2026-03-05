@@ -3,289 +3,266 @@ import { browser } from '$app/environment';
 type TrackType = 'mainMenu' | 'game' | 'result';
 
 class AudioManager {
-    currentTrack: TrackType | null = null;
+	currentTrack: TrackType | null = null;
 
-    mainMenuMusic: HTMLAudioElement | null = null;
-    gameMusic: HTMLAudioElement | null = null;
-    
+	mainMenuMusic: HTMLAudioElement | null = null;
+	gameMusic: HTMLAudioElement | null = null;
 
-    startSound: HTMLAudioElement | null = null;
-    clickSound: HTMLAudioElement | null = null;
-    correctSound: HTMLAudioElement | null = null;
-    wrongSound: HTMLAudioElement | null = null;
-    gameOverSound: HTMLAudioElement | null = null;
+	startSound: HTMLAudioElement | null = null;
+	clickSound: HTMLAudioElement | null = null;
+	correctSound: HTMLAudioElement | null = null;
+	wrongSound: HTMLAudioElement | null = null;
+	gameOverSound: HTMLAudioElement | null = null;
 
-    musicVolume = 0.6;
-    sfxVolume = 0.8;
-    musicMuted = true; 
-    sfxMuted = false;
-    isGameOver = false;
+	musicVolume = 0.6;
+	sfxVolume = 0.8;
+	musicMuted = true;
+	sfxMuted = false;
+	isGameOver = false;
 
-    init() {
-        if (!browser) return;
+	init() {
+		if (!browser) return;
 
-        this.musicMuted = true;
-        localStorage.setItem('musicMuted', 'true');
+		this.musicMuted = true;
+		localStorage.setItem('musicMuted', 'true');
 
-        if (this.mainMenuMusic) {
-            this.applyVolumes();
-            return;
-        }
+		if (this.mainMenuMusic) {
+			this.applyVolumes();
+			return;
+		}
 
-        const sfxMuted = localStorage.getItem('sfxMuted');
-        const musicVolume = localStorage.getItem('musicVolume');
-        const sfxVolume = localStorage.getItem('sfxVolume');
+		const sfxMuted = localStorage.getItem('sfxMuted');
+		const musicVolume = localStorage.getItem('musicVolume');
+		const sfxVolume = localStorage.getItem('sfxVolume');
 
-        if (sfxMuted !== null) this.sfxMuted = sfxMuted === 'true';
-        if (musicVolume !== null) this.musicVolume = Number(musicVolume);
-        if (sfxVolume !== null) this.sfxVolume = Number(sfxVolume);
+		if (sfxMuted !== null) this.sfxMuted = sfxMuted === 'true';
+		if (musicVolume !== null) this.musicVolume = Number(musicVolume);
+		if (sfxVolume !== null) this.sfxVolume = Number(sfxVolume);
 
-        this.mainMenuMusic = new Audio('/sound/bgMusic.mp3');
-        this.mainMenuMusic.loop = true;
+		this.mainMenuMusic = new Audio('/sound/bgMusic.mp3');
+		this.mainMenuMusic.loop = true;
 
-        this.gameMusic = new Audio('/sound/game.mp3');
-        this.gameMusic.loop = true;
+		this.gameMusic = new Audio('/sound/game.mp3');
+		this.gameMusic.loop = true;
 
-        this.startSound = new Audio('/sound/start.mp3');
-        this.clickSound = new Audio('/sound/button.mp3');
-        this.correctSound = new Audio('/sound/right.mp3');
-        this.wrongSound = new Audio('/sound/wrong.mp3');
-        this.gameOverSound = new Audio('/sound/complete.mp3');
+		this.startSound = new Audio('/sound/start.mp3');
+		this.clickSound = new Audio('/sound/button.mp3');
+		this.correctSound = new Audio('/sound/right.mp3');
+		this.wrongSound = new Audio('/sound/wrong.mp3');
+		this.gameOverSound = new Audio('/sound/complete.mp3');
 
-        this.applyVolumes();
-    }
+		this.applyVolumes();
+	}
 
-    applyVolumes() {
-        if (this.mainMenuMusic)
-            this.mainMenuMusic.volume = this.musicMuted ? 0 : this.musicVolume;
+	applyVolumes() {
+		if (this.mainMenuMusic) this.mainMenuMusic.volume = this.musicMuted ? 0 : this.musicVolume;
 
-        if (this.gameMusic)
-            this.gameMusic.volume = this.musicMuted ? 0 : this.musicVolume;
-    }
-    
+		if (this.gameMusic) this.gameMusic.volume = this.musicMuted ? 0 : this.musicVolume;
+	}
 
-    // bg music
-    async playTrack(type: TrackType, fadeDuration = 0) {
-        if (!browser || this.musicMuted) return;
-        if (!this.mainMenuMusic || !this.gameMusic) return;
+	// bg music
+	async playTrack(type: TrackType, fadeDuration = 0) {
+		if (!browser || this.musicMuted) return;
+		if (!this.mainMenuMusic || !this.gameMusic) return;
 
-        const targetTrack = type === 'mainMenu' ? this.mainMenuMusic : this.gameMusic;
-        const otherTrack = type === 'mainMenu' ? this.gameMusic : this.mainMenuMusic;
+		const targetTrack = type === 'mainMenu' ? this.mainMenuMusic : this.gameMusic;
+		const otherTrack = type === 'mainMenu' ? this.gameMusic : this.mainMenuMusic;
 
-        if (!targetTrack.paused && targetTrack.currentTime > 0) {
-            this.currentTrack = type;
-            return;
-        }
+		if (!targetTrack.paused && targetTrack.currentTime > 0) {
+			this.currentTrack = type;
+			return;
+		}
 
-        if (otherTrack && !otherTrack.paused) {
-            if (fadeDuration > 0) {
-                this.fade(otherTrack, otherTrack.volume, 0, fadeDuration, () => {
-                    otherTrack.pause();
-                    otherTrack.currentTime = 0;
-                });
-            } else {
-                otherTrack.pause();
-                otherTrack.currentTime = 0;
-            }
-        }
-        
-        if (this.currentTrack !== type) {
-            targetTrack.currentTime = 0;
-        }
+		if (otherTrack && !otherTrack.paused) {
+			if (fadeDuration > 0) {
+				this.fade(otherTrack, otherTrack.volume, 0, fadeDuration, () => {
+					otherTrack.pause();
+					otherTrack.currentTime = 0;
+				});
+			} else {
+				otherTrack.pause();
+				otherTrack.currentTime = 0;
+			}
+		}
 
-        this.currentTrack = type;
+		if (this.currentTrack !== type) {
+			targetTrack.currentTime = 0;
+		}
 
-        try {
-            if (fadeDuration > 0) {
-                targetTrack.volume = 0;
-                await targetTrack.play();
-                this.fade(targetTrack, 0, this.musicVolume, fadeDuration);
-            } else {
-                targetTrack.volume = this.musicVolume;
-                await targetTrack.play();
-            }
-        } catch (e) {
-            console.log("Autoplay blocked or interrupted");
-        }
-    }
+		this.currentTrack = type;
 
-    stopGameMusic() {
-        if (this.gameMusic && !this.gameMusic.paused) {
-            this.fade(this.gameMusic, this.gameMusic.volume, 0, 500, () => {
-                this.currentTrack = null;
-            });
-        }
-    }
+		try {
+			if (fadeDuration > 0) {
+				targetTrack.volume = 0;
+				await targetTrack.play();
+				this.fade(targetTrack, 0, this.musicVolume, fadeDuration);
+			} else {
+				targetTrack.volume = this.musicVolume;
+				await targetTrack.play();
+			}
+		} catch (e) {
+			console.log('Autoplay blocked or interrupted');
+		}
+	}
 
-    stopAllMusic() {
-        this.mainMenuMusic?.pause();
-        this.gameMusic?.pause();
-        this.currentTrack = null;
-    }
+	stopGameMusic() {
+		if (this.gameMusic && !this.gameMusic.paused) {
+			this.fade(this.gameMusic, this.gameMusic.volume, 0, 500, () => {
+				this.currentTrack = null;
+			});
+		}
+	}
 
-    toggleMusicMute() {
-        this.musicMuted = !this.musicMuted;
-        localStorage.setItem('musicMuted', String(this.musicMuted));
+	stopAllMusic() {
+		this.mainMenuMusic?.pause();
+		this.gameMusic?.pause();
+		this.currentTrack = null;
+	}
 
-        if (this.musicMuted) {
-            this.stopAllMusic();
-        } else {
-            this.resumeByRoute();
-        }
-    }
+	toggleMusicMute() {
+		this.musicMuted = !this.musicMuted;
+		localStorage.setItem('musicMuted', String(this.musicMuted));
 
-    resumeByRoute() {
-        if (!browser) return;
+		if (this.musicMuted) {
+			this.stopAllMusic();
+		} else {
+			this.resumeByRoute();
+		}
+	}
 
-        const path = window.location.pathname;
+	resumeByRoute() {
+		if (!browser) return;
 
-        if (path.startsWith('/game') && !this.isGameOver) {
-            this.playTrack('game');
-        } else {
-            this.playTrack('mainMenu');
-        }
-    }
+		const path = window.location.pathname;
 
-    setMusicVolume(vol: number) {
-        const previousVolume = this.musicVolume;
-        this.musicVolume = vol;
-        localStorage.setItem('musicVolume', String(vol));
+		if (path.startsWith('/game') && !this.isGameOver) {
+			this.playTrack('game');
+		} else {
+			this.playTrack('mainMenu');
+		}
+	}
 
-        if (vol === 0) {
-            this.musicMuted = true;
-            localStorage.setItem('musicMuted', 'true');
-            this.stopAllMusic();
-        } else {
-            if (this.musicMuted) {
-                if (vol > previousVolume) {
-                    this.musicMuted = false;
-                    localStorage.setItem('musicMuted', 'false');
-                    this.resumeByRoute();
-                }
-            }
-        }
-    
-        if (this.mainMenuMusic) this.mainMenuMusic.volume = vol;
-        if (this.gameMusic) this.gameMusic.volume = vol;
-    }
+	setMusicVolume(vol: number) {
+		const previousVolume = this.musicVolume;
+		this.musicVolume = vol;
+		localStorage.setItem('musicVolume', String(vol));
 
-    // sfx
-    playClick() {
-        if (this.sfxMuted) return;
-        this.playSfx(this.clickSound);
-    }
+		if (vol === 0) {
+			this.musicMuted = true;
+			localStorage.setItem('musicMuted', 'true');
+			this.stopAllMusic();
+		} else {
+			if (this.musicMuted) {
+				if (vol > previousVolume) {
+					this.musicMuted = false;
+					localStorage.setItem('musicMuted', 'false');
+					this.resumeByRoute();
+				}
+			}
+		}
 
-    playCorrect() {
-        if (this.sfxMuted) return;
-        this.playSfx(this.correctSound);
-    }
+		if (this.mainMenuMusic) this.mainMenuMusic.volume = vol;
+		if (this.gameMusic) this.gameMusic.volume = vol;
+	}
 
-    playWrong() {
-        if (this.sfxMuted) return;
-        this.playSfx(this.wrongSound);
-    }
+	// sfx
+	playClick() {
+		if (this.sfxMuted) return;
+		this.playSfx(this.clickSound);
+	}
 
-    playStart() {
-        if (this.sfxMuted) return;
-        this.playSfx(this.startSound);
-    }
+	playCorrect() {
+		if (this.sfxMuted) return;
+		this.playSfx(this.correctSound);
+	}
 
-    playSfx(audio: HTMLAudioElement | null) {
-        if (!audio) return;
+	playWrong() {
+		if (this.sfxMuted) return;
+		this.playSfx(this.wrongSound);
+	}
 
-        const clone = audio.cloneNode(true) as HTMLAudioElement;
-        clone.volume = this.sfxVolume;
-        clone.play();
-    }
+	playStart() {
+		if (this.sfxMuted) return;
+		this.playSfx(this.startSound);
+	}
 
-    setSfxVolume(vol: number) {
-        const previousVolume = this.sfxVolume;
-        this.sfxVolume = vol;
-        localStorage.setItem('sfxVolume', String(vol));
+	playSfx(audio: HTMLAudioElement | null) {
+		if (!audio) return;
 
-        if (vol === 0) {
-            this.sfxMuted = true;
-            localStorage.setItem('sfxMuted', 'true');
-        } else {
-            if (this.sfxMuted) {
-                if (vol > previousVolume) {
-                    this.sfxMuted = false;
-                    localStorage.setItem('sfxMuted', 'false');
-                }
-            }
-        }
-    }
+		const clone = audio.cloneNode(true) as HTMLAudioElement;
+		clone.volume = this.sfxVolume;
+		clone.play();
+	}
 
-    toggleSfxMute() {
-        this.sfxMuted = !this.sfxMuted;
-        localStorage.setItem('sfxMuted', String(this.sfxMuted));
-    }
+	setSfxVolume(vol: number) {
+		const previousVolume = this.sfxVolume;
+		this.sfxVolume = vol;
+		localStorage.setItem('sfxVolume', String(vol));
 
-    playGameOver() {
-        this.isGameOver = true;
-        if (!this.sfxMuted) this.playSfx(this.gameOverSound);
-        this.playTrack('mainMenu');
-    }  
+		if (vol === 0) {
+			this.sfxMuted = true;
+			localStorage.setItem('sfxMuted', 'true');
+		} else {
+			if (this.sfxMuted) {
+				if (vol > previousVolume) {
+					this.sfxMuted = false;
+					localStorage.setItem('sfxMuted', 'false');
+				}
+			}
+		}
+	}
 
-    // utils
-    duckMusic(level = 0.25) {
-        if (this.mainMenuMusic && !this.mainMenuMusic.paused) {
-            this.fade(this.mainMenuMusic, this.mainMenuMusic.volume, level, 200);
-        }
-        if (this.gameMusic && !this.gameMusic.paused) {
-            this.fade(this.gameMusic, this.gameMusic.volume, level, 200);
-        }
-    }
+	toggleSfxMute() {
+		this.sfxMuted = !this.sfxMuted;
+		localStorage.setItem('sfxMuted', String(this.sfxMuted));
+	}
 
-    restoreMusic() {
-        if (!this.musicMuted) {
-            if (this.mainMenuMusic && !this.mainMenuMusic.paused) {
-                this.fade(
-                    this.mainMenuMusic,
-                    this.mainMenuMusic.volume,
-                    this.musicVolume,
-                    300
-                );
-            }
-            if (this.gameMusic && !this.gameMusic.paused) {
-                this.fade(
-                    this.gameMusic,
-                    this.gameMusic.volume,
-                    this.musicVolume,
-                    300
-                );
-            }
-        }
-    }
+	playGameOver() {
+		this.isGameOver = true;
+		if (!this.sfxMuted) this.playSfx(this.gameOverSound);
+		this.playTrack('mainMenu');
+	}
 
-    fade(
-        audio: HTMLAudioElement,
-        from: number,
-        to: number,
-        duration: number,
-        callback?: () => void
-    ) {
-        const stepTime = 50;
-        const steps = duration / stepTime;
-        const stepSize = (to - from) / steps;
+	// utils
+	duckMusic(level = 0.25) {
+		if (this.mainMenuMusic && !this.mainMenuMusic.paused) {
+			this.fade(this.mainMenuMusic, this.mainMenuMusic.volume, level, 200);
+		}
+		if (this.gameMusic && !this.gameMusic.paused) {
+			this.fade(this.gameMusic, this.gameMusic.volume, level, 200);
+		}
+	}
 
-        let current = from;
-        audio.volume = from;
+	restoreMusic() {
+		if (!this.musicMuted) {
+			if (this.mainMenuMusic && !this.mainMenuMusic.paused) {
+				this.fade(this.mainMenuMusic, this.mainMenuMusic.volume, this.musicVolume, 300);
+			}
+			if (this.gameMusic && !this.gameMusic.paused) {
+				this.fade(this.gameMusic, this.gameMusic.volume, this.musicVolume, 300);
+			}
+		}
+	}
 
-        const interval = setInterval(() => {
-            current += stepSize;
-            audio.volume = Math.max(0, Math.min(1, current));
+	fade(audio: HTMLAudioElement, from: number, to: number, duration: number, callback?: () => void) {
+		const stepTime = 50;
+		const steps = duration / stepTime;
+		const stepSize = (to - from) / steps;
 
-            if (
-                (stepSize > 0 && current >= to) ||
-                (stepSize < 0 && current <= to)
-            ) {
-                clearInterval(interval);
-                audio.volume = to;
-                callback?.();
-            }
-        }, stepTime);
-    }
+		let current = from;
+		audio.volume = from;
+
+		const interval = setInterval(() => {
+			current += stepSize;
+			audio.volume = Math.max(0, Math.min(1, current));
+
+			if ((stepSize > 0 && current >= to) || (stepSize < 0 && current <= to)) {
+				clearInterval(interval);
+				audio.volume = to;
+				callback?.();
+			}
+		}, stepTime);
+	}
 }
 
 export const audioManager = new AudioManager();
