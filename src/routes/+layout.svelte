@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
-	
+
 	import { audioManager } from '$lib/utils/audioController';
 	import AudioControls from '$lib/components/audioControls.svelte';
 
