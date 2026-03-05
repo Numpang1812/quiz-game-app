@@ -12,7 +12,7 @@
 		getResultTier,
 		timerPercent,
 		plantStyle,
-		plantSvg
+		plantSvg,
 	} from '$lib';
 	import { returnCurrentUser } from '$lib/utils/saveUsername';
 	import { audioManager } from '$lib/utils/audioController';
@@ -45,8 +45,8 @@
 				name: returnCurrentUser(),
 				score,
 				sessionId: data.sessionId,
-				signature: data.signature
-			})
+				signature: data.signature,
+			}),
 		});
 		const result = await res.json();
 		if (!res.ok) {
@@ -128,7 +128,7 @@
 			left: Math.random() * 100,
 			duration: 2000 + Math.random() * 2000,
 			rotation: 360 + Math.random() * 540,
-			color: colors[Math.floor(Math.random() * colors.length)]
+			color: colors[Math.floor(Math.random() * colors.length)],
 		}));
 	}
 

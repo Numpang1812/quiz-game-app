@@ -11,7 +11,7 @@ export function db(): Client {
 	if (!client) {
 		client = createClient({
 			url: TURSO_DATABASE_URL!,
-			authToken: TURSO_AUTH_TOKEN!
+			authToken: TURSO_AUTH_TOKEN!,
 		});
 	}
 	return client;
@@ -26,15 +26,15 @@ async function initializeTableOnce(): Promise<void> {
     )`);
 
 	await db().execute(
-		`CREATE INDEX IF NOT EXISTS idx_score_created_time ON score_table(score DESC, created_time ASC)`
+		`CREATE INDEX IF NOT EXISTS idx_score_created_time ON score_table(score DESC, created_time ASC)`,
 	);
 	await db().execute(
-		`CREATE INDEX IF NOT EXISTS idx_name_score_created_time ON score_table(name, score DESC, created_time ASC)`
+		`CREATE INDEX IF NOT EXISTS idx_name_score_created_time ON score_table(name, score DESC, created_time ASC)`,
 	);
 
 	await db().execute({
 		sql: `DELETE FROM score_table WHERE (score < 0 OR score > ?) AND name != ?`,
-		args: [MAX_VALID_SCORE, SPECIAL_NAME]
+		args: [MAX_VALID_SCORE, SPECIAL_NAME],
 	});
 }
 
@@ -100,13 +100,13 @@ export async function getScore(options: GetScoresOptions = {}) {
                 ORDER BY score DESC, datetime(created_time) ASC
                 ${limitClause}
             `,
-			args
+			args,
 		});
 
 		return result.rows.map((row) => ({
 			name: String(row.name),
 			score: Number(row.score),
-			created_time: String(row.created_time)
+			created_time: String(row.created_time),
 		}));
 	}
 
@@ -138,13 +138,13 @@ export async function getScore(options: GetScoresOptions = {}) {
             ORDER BY score DESC, datetime(created_time) ASC
             ${limitClause}
         `,
-		args
+		args,
 	});
 
 	return result.rows.map((row) => ({
 		name: String(row.name),
 		score: Number(row.score),
-		created_time: String(row.created_time)
+		created_time: String(row.created_time),
 	}));
 }
 
@@ -153,7 +153,7 @@ export async function postScore(name: string, score: number) {
 	const now = toSqliteDateTimeUtc(new Date());
 	await db().execute({
 		sql: `INSERT INTO score_table (name, score, created_time) VALUES (?, ?, ?)`,
-		args: [name, score, now]
+		args: [name, score, now],
 	});
 	return now;
 }
@@ -166,7 +166,7 @@ export async function getRank(score: number, created_time: string): Promise<numb
             WHERE ((score >= 0 AND score <= ?) OR name = ?)
               AND (score > ? OR (score = ? AND datetime(created_time) < datetime(?)))
         `,
-		args: [MAX_VALID_SCORE, SPECIAL_NAME, score, score, created_time]
+		args: [MAX_VALID_SCORE, SPECIAL_NAME, score, score, created_time],
 	});
 
 	const higher = Number(result.rows[0].higher);
