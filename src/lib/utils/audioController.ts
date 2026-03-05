@@ -1,268 +1,268 @@
-import { browser } from '$app/environment';
+import { browser } from '$app/environment'
 
-type TrackType = 'mainMenu' | 'game' | 'result';
+type TrackType = 'mainMenu' | 'game' | 'result'
 
 class AudioManager {
-	currentTrack: TrackType | null = null;
+	currentTrack: TrackType | null = null
 
-	mainMenuMusic: HTMLAudioElement | null = null;
-	gameMusic: HTMLAudioElement | null = null;
+	mainMenuMusic: HTMLAudioElement | null = null
+	gameMusic: HTMLAudioElement | null = null
 
-	startSound: HTMLAudioElement | null = null;
-	clickSound: HTMLAudioElement | null = null;
-	correctSound: HTMLAudioElement | null = null;
-	wrongSound: HTMLAudioElement | null = null;
-	gameOverSound: HTMLAudioElement | null = null;
+	startSound: HTMLAudioElement | null = null
+	clickSound: HTMLAudioElement | null = null
+	correctSound: HTMLAudioElement | null = null
+	wrongSound: HTMLAudioElement | null = null
+	gameOverSound: HTMLAudioElement | null = null
 
-	musicVolume = 0.6;
-	sfxVolume = 0.8;
-	musicMuted = true;
-	sfxMuted = false;
-	isGameOver = false;
+	musicVolume = 0.6
+	sfxVolume = 0.8
+	musicMuted = true
+	sfxMuted = false
+	isGameOver = false
 
 	init() {
-		if (!browser) return;
+		if (!browser) return
 
-		this.musicMuted = true;
-		localStorage.setItem('musicMuted', 'true');
+		this.musicMuted = true
+		localStorage.setItem('musicMuted', 'true')
 
 		if (this.mainMenuMusic) {
-			this.applyVolumes();
-			return;
+			this.applyVolumes()
+			return
 		}
 
-		const sfxMuted = localStorage.getItem('sfxMuted');
-		const musicVolume = localStorage.getItem('musicVolume');
-		const sfxVolume = localStorage.getItem('sfxVolume');
+		const sfxMuted = localStorage.getItem('sfxMuted')
+		const musicVolume = localStorage.getItem('musicVolume')
+		const sfxVolume = localStorage.getItem('sfxVolume')
 
-		if (sfxMuted !== null) this.sfxMuted = sfxMuted === 'true';
-		if (musicVolume !== null) this.musicVolume = Number(musicVolume);
-		if (sfxVolume !== null) this.sfxVolume = Number(sfxVolume);
+		if (sfxMuted !== null) this.sfxMuted = sfxMuted === 'true'
+		if (musicVolume !== null) this.musicVolume = Number(musicVolume)
+		if (sfxVolume !== null) this.sfxVolume = Number(sfxVolume)
 
-		this.mainMenuMusic = new Audio('/sound/bgMusic.mp3');
-		this.mainMenuMusic.loop = true;
+		this.mainMenuMusic = new Audio('/sound/bgMusic.mp3')
+		this.mainMenuMusic.loop = true
 
-		this.gameMusic = new Audio('/sound/game.mp3');
-		this.gameMusic.loop = true;
+		this.gameMusic = new Audio('/sound/game.mp3')
+		this.gameMusic.loop = true
 
-		this.startSound = new Audio('/sound/start.mp3');
-		this.clickSound = new Audio('/sound/button.mp3');
-		this.correctSound = new Audio('/sound/right.mp3');
-		this.wrongSound = new Audio('/sound/wrong.mp3');
-		this.gameOverSound = new Audio('/sound/complete.mp3');
+		this.startSound = new Audio('/sound/start.mp3')
+		this.clickSound = new Audio('/sound/button.mp3')
+		this.correctSound = new Audio('/sound/right.mp3')
+		this.wrongSound = new Audio('/sound/wrong.mp3')
+		this.gameOverSound = new Audio('/sound/complete.mp3')
 
-		this.applyVolumes();
+		this.applyVolumes()
 	}
 
 	applyVolumes() {
-		if (this.mainMenuMusic) this.mainMenuMusic.volume = this.musicMuted ? 0 : this.musicVolume;
+		if (this.mainMenuMusic) this.mainMenuMusic.volume = this.musicMuted ? 0 : this.musicVolume
 
-		if (this.gameMusic) this.gameMusic.volume = this.musicMuted ? 0 : this.musicVolume;
+		if (this.gameMusic) this.gameMusic.volume = this.musicMuted ? 0 : this.musicVolume
 	}
 
 	// bg music
 	async playTrack(type: TrackType, fadeDuration = 0) {
-		if (!browser || this.musicMuted) return;
-		if (!this.mainMenuMusic || !this.gameMusic) return;
+		if (!browser || this.musicMuted) return
+		if (!this.mainMenuMusic || !this.gameMusic) return
 
-		const targetTrack = type === 'mainMenu' ? this.mainMenuMusic : this.gameMusic;
-		const otherTrack = type === 'mainMenu' ? this.gameMusic : this.mainMenuMusic;
+		const targetTrack = type === 'mainMenu' ? this.mainMenuMusic : this.gameMusic
+		const otherTrack = type === 'mainMenu' ? this.gameMusic : this.mainMenuMusic
 
 		if (!targetTrack.paused && targetTrack.currentTime > 0) {
-			this.currentTrack = type;
-			return;
+			this.currentTrack = type
+			return
 		}
 
 		if (otherTrack && !otherTrack.paused) {
 			if (fadeDuration > 0) {
 				this.fade(otherTrack, otherTrack.volume, 0, fadeDuration, () => {
-					otherTrack.pause();
-					otherTrack.currentTime = 0;
-				});
+					otherTrack.pause()
+					otherTrack.currentTime = 0
+				})
 			} else {
-				otherTrack.pause();
-				otherTrack.currentTime = 0;
+				otherTrack.pause()
+				otherTrack.currentTime = 0
 			}
 		}
 
 		if (this.currentTrack !== type) {
-			targetTrack.currentTime = 0;
+			targetTrack.currentTime = 0
 		}
 
-		this.currentTrack = type;
+		this.currentTrack = type
 
 		try {
 			if (fadeDuration > 0) {
-				targetTrack.volume = 0;
-				await targetTrack.play();
-				this.fade(targetTrack, 0, this.musicVolume, fadeDuration);
+				targetTrack.volume = 0
+				await targetTrack.play()
+				this.fade(targetTrack, 0, this.musicVolume, fadeDuration)
 			} else {
-				targetTrack.volume = this.musicVolume;
-				await targetTrack.play();
+				targetTrack.volume = this.musicVolume
+				await targetTrack.play()
 			}
 		} catch (e) {
-			console.log('Autoplay blocked or interrupted');
+			console.log('Autoplay blocked or interrupted')
 		}
 	}
 
 	stopGameMusic() {
 		if (this.gameMusic && !this.gameMusic.paused) {
 			this.fade(this.gameMusic, this.gameMusic.volume, 0, 500, () => {
-				this.currentTrack = null;
-			});
+				this.currentTrack = null
+			})
 		}
 	}
 
 	stopAllMusic() {
-		this.mainMenuMusic?.pause();
-		this.gameMusic?.pause();
-		this.currentTrack = null;
+		this.mainMenuMusic?.pause()
+		this.gameMusic?.pause()
+		this.currentTrack = null
 	}
 
 	toggleMusicMute() {
-		this.musicMuted = !this.musicMuted;
-		localStorage.setItem('musicMuted', String(this.musicMuted));
+		this.musicMuted = !this.musicMuted
+		localStorage.setItem('musicMuted', String(this.musicMuted))
 
 		if (this.musicMuted) {
-			this.stopAllMusic();
+			this.stopAllMusic()
 		} else {
-			this.resumeByRoute();
+			this.resumeByRoute()
 		}
 	}
 
 	resumeByRoute() {
-		if (!browser) return;
+		if (!browser) return
 
-		const path = window.location.pathname;
+		const path = window.location.pathname
 
 		if (path.startsWith('/game') && !this.isGameOver) {
-			this.playTrack('game');
+			this.playTrack('game')
 		} else {
-			this.playTrack('mainMenu');
+			this.playTrack('mainMenu')
 		}
 	}
 
 	setMusicVolume(vol: number) {
-		const previousVolume = this.musicVolume;
-		this.musicVolume = vol;
-		localStorage.setItem('musicVolume', String(vol));
+		const previousVolume = this.musicVolume
+		this.musicVolume = vol
+		localStorage.setItem('musicVolume', String(vol))
 
 		if (vol === 0) {
-			this.musicMuted = true;
-			localStorage.setItem('musicMuted', 'true');
-			this.stopAllMusic();
+			this.musicMuted = true
+			localStorage.setItem('musicMuted', 'true')
+			this.stopAllMusic()
 		} else {
 			if (this.musicMuted) {
 				if (vol > previousVolume) {
-					this.musicMuted = false;
-					localStorage.setItem('musicMuted', 'false');
-					this.resumeByRoute();
+					this.musicMuted = false
+					localStorage.setItem('musicMuted', 'false')
+					this.resumeByRoute()
 				}
 			}
 		}
 
-		if (this.mainMenuMusic) this.mainMenuMusic.volume = vol;
-		if (this.gameMusic) this.gameMusic.volume = vol;
+		if (this.mainMenuMusic) this.mainMenuMusic.volume = vol
+		if (this.gameMusic) this.gameMusic.volume = vol
 	}
 
 	// sfx
 	playClick() {
-		if (this.sfxMuted) return;
-		this.playSfx(this.clickSound);
+		if (this.sfxMuted) return
+		this.playSfx(this.clickSound)
 	}
 
 	playCorrect() {
-		if (this.sfxMuted) return;
-		this.playSfx(this.correctSound);
+		if (this.sfxMuted) return
+		this.playSfx(this.correctSound)
 	}
 
 	playWrong() {
-		if (this.sfxMuted) return;
-		this.playSfx(this.wrongSound);
+		if (this.sfxMuted) return
+		this.playSfx(this.wrongSound)
 	}
 
 	playStart() {
-		if (this.sfxMuted) return;
-		this.playSfx(this.startSound);
+		if (this.sfxMuted) return
+		this.playSfx(this.startSound)
 	}
 
 	playSfx(audio: HTMLAudioElement | null) {
-		if (!audio) return;
+		if (!audio) return
 
-		const clone = audio.cloneNode(true) as HTMLAudioElement;
-		clone.volume = this.sfxVolume;
-		clone.play();
+		const clone = audio.cloneNode(true) as HTMLAudioElement
+		clone.volume = this.sfxVolume
+		clone.play()
 	}
 
 	setSfxVolume(vol: number) {
-		const previousVolume = this.sfxVolume;
-		this.sfxVolume = vol;
-		localStorage.setItem('sfxVolume', String(vol));
+		const previousVolume = this.sfxVolume
+		this.sfxVolume = vol
+		localStorage.setItem('sfxVolume', String(vol))
 
 		if (vol === 0) {
-			this.sfxMuted = true;
-			localStorage.setItem('sfxMuted', 'true');
+			this.sfxMuted = true
+			localStorage.setItem('sfxMuted', 'true')
 		} else {
 			if (this.sfxMuted) {
 				if (vol > previousVolume) {
-					this.sfxMuted = false;
-					localStorage.setItem('sfxMuted', 'false');
+					this.sfxMuted = false
+					localStorage.setItem('sfxMuted', 'false')
 				}
 			}
 		}
 	}
 
 	toggleSfxMute() {
-		this.sfxMuted = !this.sfxMuted;
-		localStorage.setItem('sfxMuted', String(this.sfxMuted));
+		this.sfxMuted = !this.sfxMuted
+		localStorage.setItem('sfxMuted', String(this.sfxMuted))
 	}
 
 	playGameOver() {
-		this.isGameOver = true;
-		if (!this.sfxMuted) this.playSfx(this.gameOverSound);
-		this.playTrack('mainMenu');
+		this.isGameOver = true
+		if (!this.sfxMuted) this.playSfx(this.gameOverSound)
+		this.playTrack('mainMenu')
 	}
 
 	// utils
 	duckMusic(level = 0.25) {
 		if (this.mainMenuMusic && !this.mainMenuMusic.paused) {
-			this.fade(this.mainMenuMusic, this.mainMenuMusic.volume, level, 200);
+			this.fade(this.mainMenuMusic, this.mainMenuMusic.volume, level, 200)
 		}
 		if (this.gameMusic && !this.gameMusic.paused) {
-			this.fade(this.gameMusic, this.gameMusic.volume, level, 200);
+			this.fade(this.gameMusic, this.gameMusic.volume, level, 200)
 		}
 	}
 
 	restoreMusic() {
 		if (!this.musicMuted) {
 			if (this.mainMenuMusic && !this.mainMenuMusic.paused) {
-				this.fade(this.mainMenuMusic, this.mainMenuMusic.volume, this.musicVolume, 300);
+				this.fade(this.mainMenuMusic, this.mainMenuMusic.volume, this.musicVolume, 300)
 			}
 			if (this.gameMusic && !this.gameMusic.paused) {
-				this.fade(this.gameMusic, this.gameMusic.volume, this.musicVolume, 300);
+				this.fade(this.gameMusic, this.gameMusic.volume, this.musicVolume, 300)
 			}
 		}
 	}
 
 	fade(audio: HTMLAudioElement, from: number, to: number, duration: number, callback?: () => void) {
-		const stepTime = 50;
-		const steps = duration / stepTime;
-		const stepSize = (to - from) / steps;
+		const stepTime = 50
+		const steps = duration / stepTime
+		const stepSize = (to - from) / steps
 
-		let current = from;
-		audio.volume = from;
+		let current = from
+		audio.volume = from
 
 		const interval = setInterval(() => {
-			current += stepSize;
-			audio.volume = Math.max(0, Math.min(1, current));
+			current += stepSize
+			audio.volume = Math.max(0, Math.min(1, current))
 
 			if ((stepSize > 0 && current >= to) || (stepSize < 0 && current <= to)) {
-				clearInterval(interval);
-				audio.volume = to;
-				callback?.();
+				clearInterval(interval)
+				audio.volume = to
+				callback?.()
 			}
-		}, stepTime);
+		}, stepTime)
 	}
 }
 
-export const audioManager = new AudioManager();
+export const audioManager = new AudioManager()

@@ -1,106 +1,106 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
-	import defaultBackgroundImage from '$lib/assets/Background image.png';
-	import { returnCurrentUser } from '$lib/utils/saveUsername';
-	import { audioManager } from '$lib/utils/audioController';
+	import { goto } from '$app/navigation'
+	import { onMount } from 'svelte'
+	import defaultBackgroundImage from '$lib/assets/Background image.png'
+	import { returnCurrentUser } from '$lib/utils/saveUsername'
+	import { audioManager } from '$lib/utils/audioController'
 
 	type ApiScore = {
-		name: string;
-		score: number;
-		created_time: string;
-	};
+		name: string
+		score: number
+		created_time: string
+	}
 
 	type RankingRow = {
-		id: string;
-		rank: number;
-		name: string;
-		score: number | string;
-		date: string;
-		isCurrentUser: boolean;
-	};
+		id: string
+		rank: number
+		name: string
+		score: number | string
+		date: string
+		isCurrentUser: boolean
+	}
 
-	let top10Scores: RankingRow[] = [];
-	let selectedDate: string = getTodayString();
-	let selectedToDate: string = getTodayString();
-	let filterRange: string = 'custom';
-	let rankingMode: 'daily' | 'global' = 'daily';
+	let top10Scores: RankingRow[] = []
+	let selectedDate: string = getTodayString()
+	let selectedToDate: string = getTodayString()
+	let filterRange: string = 'custom'
+	let rankingMode: 'daily' | 'global' = 'daily'
 
-	const TODAY_STR = getTodayString();
+	const TODAY_STR = getTodayString()
 
 	function getTodayString(): string {
-		const today = new Date();
-		return today.toISOString().split('T')[0];
+		const today = new Date()
+		return today.toISOString().split('T')[0]
 	}
 
 	function formatDate(dateValue: string): string {
-		const date = new Date(dateValue);
+		const date = new Date(dateValue)
 		if (Number.isNaN(date.getTime())) {
-			return '-';
+			return '-'
 		}
-		return toDateString(date);
+		return toDateString(date)
 	}
 
 	function toDateString(date: Date): string {
-		return date.toISOString().split('T')[0];
+		return date.toISOString().split('T')[0]
 	}
 
 	function parseCreatedTime(createdTime: string): number {
 		if (createdTime.includes('T')) {
-			const parsed = Date.parse(createdTime);
-			return Number.isFinite(parsed) ? parsed : -1;
+			const parsed = Date.parse(createdTime)
+			return Number.isFinite(parsed) ? parsed : -1
 		}
 
-		const normalized = `${createdTime.replace(' ', 'T')}Z`;
-		const parsed = Date.parse(normalized);
-		return Number.isFinite(parsed) ? parsed : -1;
+		const normalized = `${createdTime.replace(' ', 'T')}Z`
+		const parsed = Date.parse(normalized)
+		return Number.isFinite(parsed) ? parsed : -1
 	}
 
 	function getScoresCacheKey(params: URLSearchParams): string {
-		return `ranking-cache:${params.toString()}`;
+		return `ranking-cache:${params.toString()}`
 	}
 
 	function readScoresCache(cacheKey: string): ApiScore[] | null {
 		try {
-			const raw = sessionStorage.getItem(cacheKey);
-			if (!raw) return null;
-			const parsed = JSON.parse(raw) as ApiScore[];
-			return Array.isArray(parsed) ? parsed : null;
+			const raw = sessionStorage.getItem(cacheKey)
+			if (!raw) return null
+			const parsed = JSON.parse(raw) as ApiScore[]
+			return Array.isArray(parsed) ? parsed : null
 		} catch {
-			return null;
+			return null
 		}
 	}
 
 	function writeScoresCache(cacheKey: string, scores: ApiScore[]): void {
 		try {
-			sessionStorage.setItem(cacheKey, JSON.stringify(scores));
+			sessionStorage.setItem(cacheKey, JSON.stringify(scores))
 		} catch {
 			// ignore cache write failures
 		}
 	}
 
 	function buildRows(scores: ApiScore[]): RankingRow[] {
-		const currentUser = returnCurrentUser().trim().toLowerCase();
-		const sorted = [...scores].sort((a, b) => b.score - a.score);
-		const topScores = sorted.slice(0, 10);
+		const currentUser = returnCurrentUser().trim().toLowerCase()
+		const sorted = [...scores].sort((a, b) => b.score - a.score)
+		const topScores = sorted.slice(0, 10)
 
-		let latestCurrentUserId: string | null = null;
-		let latestCurrentUserTime = -1;
+		let latestCurrentUserId: string | null = null
+		let latestCurrentUserTime = -1
 
 		topScores.forEach((score, index) => {
 			if (score.name.trim().toLowerCase() !== currentUser) {
-				return;
+				return
 			}
 
-			const timeValue = parseCreatedTime(score.created_time);
+			const timeValue = parseCreatedTime(score.created_time)
 			if (timeValue > latestCurrentUserTime) {
-				latestCurrentUserTime = timeValue;
-				latestCurrentUserId = `${score.name}-${score.created_time}-${index}`;
+				latestCurrentUserTime = timeValue
+				latestCurrentUserId = `${score.name}-${score.created_time}-${index}`
 			}
-		});
+		})
 
 		const rows: RankingRow[] = topScores.map((score, index) => {
-			const id = `${score.name}-${score.created_time}-${index}`;
+			const id = `${score.name}-${score.created_time}-${index}`
 			return {
 				id,
 				rank: index + 1,
@@ -108,8 +108,8 @@
 				score: score.score,
 				date: formatDate(score.created_time),
 				isCurrentUser: latestCurrentUserId !== null && id === latestCurrentUserId,
-			};
-		});
+			}
+		})
 
 		for (let rank = rows.length + 1; rank <= 10; rank += 1) {
 			rows.push({
@@ -119,164 +119,164 @@
 				score: '-',
 				date: '-',
 				isCurrentUser: false,
-			});
+			})
 		}
 
-		return rows;
+		return rows
 	}
 
 	async function loadScores(): Promise<void> {
 		try {
-			const params = new URLSearchParams({ limit: '10' });
+			const params = new URLSearchParams({ limit: '10' })
 
 			if (rankingMode === 'daily') {
 				if (filterRange === 'custom') {
-					params.set('from', selectedDate);
-					params.set('to', selectedDate);
+					params.set('from', selectedDate)
+					params.set('to', selectedDate)
 				} else {
-					params.set('from', selectedDate);
-					params.set('to', selectedToDate);
+					params.set('from', selectedDate)
+					params.set('to', selectedToDate)
 				}
 			} else {
-				params.set('uniquePlayers', 'true');
+				params.set('uniquePlayers', 'true')
 			}
 
-			const cacheKey = getScoresCacheKey(params);
-			const cachedScores = readScoresCache(cacheKey);
+			const cacheKey = getScoresCacheKey(params)
+			const cachedScores = readScoresCache(cacheKey)
 			if (cachedScores) {
-				top10Scores = buildRows(cachedScores);
+				top10Scores = buildRows(cachedScores)
 			}
 
-			const response = await fetch(`/api/scores?${params.toString()}`);
+			const response = await fetch(`/api/scores?${params.toString()}`)
 			if (!response.ok) {
 				if (!cachedScores) {
-					top10Scores = buildRows([]);
+					top10Scores = buildRows([])
 				}
-				return;
+				return
 			}
-			const scores = (await response.json()) as ApiScore[];
-			top10Scores = buildRows(scores);
-			writeScoresCache(cacheKey, scores);
+			const scores = (await response.json()) as ApiScore[]
+			top10Scores = buildRows(scores)
+			writeScoresCache(cacheKey, scores)
 		} catch {
 			if (top10Scores.length === 0) {
-				top10Scores = buildRows([]);
+				top10Scores = buildRows([])
 			}
 		}
 	}
 
 	async function updateScoresForDate(): Promise<void> {
-		await loadScores();
+		await loadScores()
 	}
 
 	function shiftRangeDate(baseDate: Date, direction: 'prev' | 'next'): Date {
-		const shiftedDate = new Date(baseDate);
-		const step = direction === 'prev' ? -1 : 1;
+		const shiftedDate = new Date(baseDate)
+		const step = direction === 'prev' ? -1 : 1
 
 		if (filterRange === '1month') {
-			shiftedDate.setMonth(shiftedDate.getMonth() + step);
-			return shiftedDate;
+			shiftedDate.setMonth(shiftedDate.getMonth() + step)
+			return shiftedDate
 		}
 
 		if (filterRange === '2months') {
-			shiftedDate.setMonth(shiftedDate.getMonth() + step * 2);
-			return shiftedDate;
+			shiftedDate.setMonth(shiftedDate.getMonth() + step * 2)
+			return shiftedDate
 		}
 
 		if (filterRange === '2weeks') {
-			shiftedDate.setDate(shiftedDate.getDate() + step * 14);
-			return shiftedDate;
+			shiftedDate.setDate(shiftedDate.getDate() + step * 14)
+			return shiftedDate
 		}
 
 		if (filterRange === '1week') {
-			shiftedDate.setDate(shiftedDate.getDate() + step * 7);
-			return shiftedDate;
+			shiftedDate.setDate(shiftedDate.getDate() + step * 7)
+			return shiftedDate
 		}
 
-		shiftedDate.setDate(shiftedDate.getDate() + step);
-		return shiftedDate;
+		shiftedDate.setDate(shiftedDate.getDate() + step)
+		return shiftedDate
 	}
 
 	function isNextDisabled(): boolean {
-		if (rankingMode !== 'daily') return true;
-		if (filterRange === 'custom') return selectedDate === TODAY_STR;
-		return selectedToDate === TODAY_STR;
+		if (rankingMode !== 'daily') return true
+		if (filterRange === 'custom') return selectedDate === TODAY_STR
+		return selectedToDate === TODAY_STR
 	}
 
 	async function handlePrevDay(): Promise<void> {
-		if (rankingMode !== 'daily') return;
-		const fromDate = new Date(selectedDate);
-		const toDate = new Date(selectedToDate);
-		const prevFromDate = shiftRangeDate(fromDate, 'prev');
-		const prevToDate = shiftRangeDate(toDate, 'prev');
+		if (rankingMode !== 'daily') return
+		const fromDate = new Date(selectedDate)
+		const toDate = new Date(selectedToDate)
+		const prevFromDate = shiftRangeDate(fromDate, 'prev')
+		const prevToDate = shiftRangeDate(toDate, 'prev')
 
-		selectedDate = toDateString(prevFromDate);
-		selectedToDate = toDateString(prevToDate);
+		selectedDate = toDateString(prevFromDate)
+		selectedToDate = toDateString(prevToDate)
 
-		await updateScoresForDate();
+		await updateScoresForDate()
 	}
 
 	async function handleNextDay(): Promise<void> {
-		if (rankingMode !== 'daily') return;
+		if (rankingMode !== 'daily') return
 
-		const fromDate = new Date(selectedDate);
-		const toDate = new Date(selectedToDate);
-		const nextFromDate = shiftRangeDate(fromDate, 'next');
-		const nextToDate = shiftRangeDate(toDate, 'next');
-		const todayDate = new Date(TODAY_STR);
+		const fromDate = new Date(selectedDate)
+		const toDate = new Date(selectedToDate)
+		const nextFromDate = shiftRangeDate(fromDate, 'next')
+		const nextToDate = shiftRangeDate(toDate, 'next')
+		const todayDate = new Date(TODAY_STR)
 
 		if (nextToDate.getTime() > todayDate.getTime()) {
-			return;
+			return
 		}
 
-		selectedDate = toDateString(nextFromDate);
-		selectedToDate = toDateString(nextToDate);
+		selectedDate = toDateString(nextFromDate)
+		selectedToDate = toDateString(nextToDate)
 
-		await updateScoresForDate();
+		await updateScoresForDate()
 	}
 
 	async function handleRangeChange(e: Event): Promise<void> {
-		if (rankingMode !== 'daily') return;
-		const target = e.target as HTMLSelectElement;
-		const val = target.value;
-		filterRange = val;
-		const date = new Date(TODAY_STR);
+		if (rankingMode !== 'daily') return
+		const target = e.target as HTMLSelectElement
+		const val = target.value
+		filterRange = val
+		const date = new Date(TODAY_STR)
 
 		if (val === 'custom') {
-			selectedDate = TODAY_STR;
-			selectedToDate = TODAY_STR;
-			await updateScoresForDate();
-			return;
+			selectedDate = TODAY_STR
+			selectedToDate = TODAY_STR
+			await updateScoresForDate()
+			return
 		}
 
-		if (val === '1week') date.setDate(date.getDate() - 7);
-		else if (val === '2weeks') date.setDate(date.getDate() - 14);
-		else if (val === '1month') date.setMonth(date.getMonth() - 1);
-		else if (val === '2months') date.setMonth(date.getMonth() - 2);
-		else return;
+		if (val === '1week') date.setDate(date.getDate() - 7)
+		else if (val === '2weeks') date.setDate(date.getDate() - 14)
+		else if (val === '1month') date.setMonth(date.getMonth() - 1)
+		else if (val === '2months') date.setMonth(date.getMonth() - 2)
+		else return
 
-		selectedDate = toDateString(date);
-		selectedToDate = TODAY_STR;
-		await updateScoresForDate();
+		selectedDate = toDateString(date)
+		selectedToDate = TODAY_STR
+		await updateScoresForDate()
 	}
 
 	async function handleModeChange(e: Event): Promise<void> {
-		const target = e.target as HTMLSelectElement;
-		rankingMode = target.value === 'global' ? 'global' : 'daily';
+		const target = e.target as HTMLSelectElement
+		rankingMode = target.value === 'global' ? 'global' : 'daily'
 		if (rankingMode === 'global') {
-			filterRange = 'custom';
-			selectedToDate = selectedDate;
+			filterRange = 'custom'
+			selectedToDate = selectedDate
 		}
-		await loadScores();
+		await loadScores()
 	}
 
 	function goHome(): void {
-		audioManager.playClick();
-		goto('/');
+		audioManager.playClick()
+		goto('/')
 	}
 
 	onMount(async () => {
-		await loadScores();
-	});
+		await loadScores()
+	})
 </script>
 
 <main

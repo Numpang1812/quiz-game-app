@@ -1,10 +1,10 @@
 <script lang="ts">
-	import defaultBackgroundImage from '$lib/assets/Background image.png';
-	import { goto } from '$app/navigation';
-	import { audioManager } from '$lib/utils/audioController';
+	import defaultBackgroundImage from '$lib/assets/Background image.png'
+	import { goto } from '$app/navigation'
+	import { audioManager } from '$lib/utils/audioController'
 	function goHome(): void {
-		audioManager.playClick();
-		goto('/');
+		audioManager.playClick()
+		goto('/')
 	}
 </script>
 

@@ -1,59 +1,59 @@
 <script lang="ts">
-	import defaultBackgroundImage from '$lib/assets/Background image.png';
-	import { getUsername } from '$lib/utils/saveUsername';
-	import { audioManager } from '$lib/utils/audioController';
-	import { goto } from '$app/navigation';
+	import defaultBackgroundImage from '$lib/assets/Background image.png'
+	import { getUsername } from '$lib/utils/saveUsername'
+	import { audioManager } from '$lib/utils/audioController'
+	import { goto } from '$app/navigation'
 
-	let showModal = false;
+	let showModal = false
 
 	function onPlayClick(): void {
 		if (username.trim() === '') {
-			audioManager.playClick();
-			showModal = true;
+			audioManager.playClick()
+			showModal = true
 		} else {
-			proceedToGame();
+			proceedToGame()
 		}
 	}
 
 	function proceedToGame(): void {
-		audioManager.playStart();
-		audioManager.playClick();
-		getUsername(username || 'Player');
-		goto('/loading');
+		audioManager.playStart()
+		audioManager.playClick()
+		getUsername(username || 'Player')
+		goto('/loading')
 	}
 
 	function confirmDefaultName(): void {
-		username = 'Player';
-		showModal = false;
-		proceedToGame();
+		username = 'Player'
+		showModal = false
+		proceedToGame()
 	}
 
 	function onRankingClick(): void {
-		audioManager.playClick();
-		goto('/ranking');
+		audioManager.playClick()
+		goto('/ranking')
 	}
 
 	function onInputClick(): void {
-		audioManager.playClick();
+		audioManager.playClick()
 	}
 
 	function onCreditsClick(): void {
-		audioManager.playClick();
-		goto('/credits');
+		audioManager.playClick()
+		goto('/credits')
 	}
 
-	import { onMount } from 'svelte';
-	let username = '';
+	import { onMount } from 'svelte'
+	let username = ''
 
 	onMount(() => {
-		const stored = localStorage.getItem('quiz-username');
+		const stored = localStorage.getItem('quiz-username')
 		if (stored && stored !== 'Player') {
-			username = stored;
+			username = stored
 		} else {
-			username = '';
+			username = ''
 		}
-	});
-	let mascotHovered = false;
+	})
+	let mascotHovered = false
 </script>
 
 <main class="menu-bg" style={`--custom-background-image: url('${defaultBackgroundImage}');`}>
@@ -195,8 +195,8 @@
 								type="button"
 								class="btn ranking"
 								on:click={() => {
-									audioManager.playClick();
-									showModal = false;
+									audioManager.playClick()
+									showModal = false
 								}}>いいえ</button
 							>
 						</div>

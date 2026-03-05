@@ -1,6 +1,6 @@
-import { createGameToken } from '$lib/server/gameSession.server';
+import { createGameToken } from '$lib/server/gameSession.server'
 
 export function load() {
-	const { sessionId, signature } = createGameToken();
-	return { sessionId, signature };
+	const { sessionId, signature } = createGameToken()
+	return { sessionId, signature }
 }
