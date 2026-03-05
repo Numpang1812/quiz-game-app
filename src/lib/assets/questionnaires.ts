@@ -614,4 +614,4 @@ export const questionnaires = {
 		],
 		correct_answer: 'answer2'
 	}
-};
+}
