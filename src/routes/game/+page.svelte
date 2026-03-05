@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
-	import defaultBackgroundImage from '$lib/assets/Background image.png';
+	import { onDestroy, onMount } from 'svelte'
+	import defaultBackgroundImage from '$lib/assets/Background image.png'
 	import {
 		type Question,
 		type ConfettiPiece,
@@ -13,29 +13,29 @@
 		timerPercent,
 		plantStyle,
 		plantSvg,
-	} from '$lib';
-	import { returnCurrentUser } from '$lib/utils/saveUsername';
-	import { audioManager } from '$lib/utils/audioController';
-	import { goto } from '$app/navigation';
+	} from '$lib'
+	import { returnCurrentUser } from '$lib/utils/saveUsername'
+	import { audioManager } from '$lib/utils/audioController'
+	import { goto } from '$app/navigation'
 
-	export let data: { sessionId: string; signature: string };
+	export let data: { sessionId: string; signature: string }
 
-	let score = 0;
-	let ranking: number | null = null;
+	let score = 0
+	let ranking: number | null = null
 
-	let timeLeft = totalTime;
-	let isLowTime = false;
-	let gameOver = false;
+	let timeLeft = totalTime
+	let isLowTime = false
+	let gameOver = false
 
-	let penaltyVisible = false;
-	let timerId: number | null = null;
-	let penaltyId: number | null = null;
-	let confetti: ConfettiPiece[] = [];
+	let penaltyVisible = false
+	let timerId: number | null = null
+	let penaltyId: number | null = null
+	let confetti: ConfettiPiece[] = []
 
-	let currentQuestion: Question | null = null;
-	let choices: Array<[QuestionnaireAnswerKey, string]> = [];
+	let currentQuestion: Question | null = null
+	let choices: Array<[QuestionnaireAnswerKey, string]> = []
 
-	$: resultTier = getResultTier(score);
+	$: resultTier = getResultTier(score)
 
 	async function saveNameAndScore() {
 		const res = await fetch('/api/scores', {
@@ -47,140 +47,140 @@
 				sessionId: data.sessionId,
 				signature: data.signature,
 			}),
-		});
-		const result = await res.json();
+		})
+		const result = await res.json()
 		if (!res.ok) {
-			console.error('unable to save score', result);
+			console.error('unable to save score', result)
 			// either throw or return a sentinel
-			throw new Error(result.error || 'save failed');
+			throw new Error(result.error || 'save failed')
 		}
 
-		console.log('server returned rank', result.rank);
+		console.log('server returned rank', result.rank)
 		// coerce to number just in case it comes back as a string
-		return Number(result.rank);
+		return Number(result.rank)
 	}
 
 	async function getNameAndScore() {
-		const response = await fetch('/api/scores');
-		const scores = await response.json();
-		return scores;
+		const response = await fetch('/api/scores')
+		const scores = await response.json()
+		return scores
 	}
 
 	function nextQuestion(): void {
-		currentQuestion = randomQuestion();
-		choices = currentQuestion ? shuffleOptions(currentQuestion) : [];
+		currentQuestion = randomQuestion()
+		choices = currentQuestion ? shuffleOptions(currentQuestion) : []
 	}
 
 	function clearTimers(): void {
 		if (timerId !== null) {
-			window.clearInterval(timerId);
-			timerId = null;
+			window.clearInterval(timerId)
+			timerId = null
 		}
 		if (penaltyId !== null) {
-			window.clearTimeout(penaltyId);
-			penaltyId = null;
+			window.clearTimeout(penaltyId)
+			penaltyId = null
 		}
 	}
 
 	function startTimer(): void {
 		timerId = window.setInterval(() => {
-			if (gameOver) return;
-			timeLeft -= 0.05;
+			if (gameOver) return
+			timeLeft -= 0.05
 
-			isLowTime = timeLeft <= 7 && timeLeft > 0;
+			isLowTime = timeLeft <= 7 && timeLeft > 0
 
 			if (timeLeft <= 0) {
-				isLowTime = false;
-				endGame();
+				isLowTime = false
+				endGame()
 			}
-		}, 50);
+		}, 50)
 	}
 
 	function startGame(): void {
-		clearTimers();
-		score = 0;
-		timeLeft = totalTime;
-		gameOver = false;
-		penaltyVisible = false;
+		clearTimers()
+		score = 0
+		timeLeft = totalTime
+		gameOver = false
+		penaltyVisible = false
 
-		audioManager.isGameOver = false;
-		audioManager.playTrack('game');
+		audioManager.isGameOver = false
+		audioManager.playTrack('game')
 
-		confetti = [];
-		nextQuestion();
-		startTimer();
+		confetti = []
+		nextQuestion()
+		startTimer()
 	}
 
 	function showPenalty(): void {
-		penaltyVisible = true;
+		penaltyVisible = true
 		if (penaltyId !== null) {
-			window.clearTimeout(penaltyId);
+			window.clearTimeout(penaltyId)
 		}
 		penaltyId = window.setTimeout(() => {
-			penaltyVisible = false;
-		}, 400);
+			penaltyVisible = false
+		}, 400)
 	}
 
 	function spawnConfetti(count: number): void {
-		const colors = ['#77c66e', '#facc15', '#ffffff', '#43a047'];
+		const colors = ['#77c66e', '#facc15', '#ffffff', '#43a047']
 		confetti = Array.from({ length: count }, (_, index) => ({
 			id: index,
 			left: Math.random() * 100,
 			duration: 2000 + Math.random() * 2000,
 			rotation: 360 + Math.random() * 540,
 			color: colors[Math.floor(Math.random() * colors.length)],
-		}));
+		}))
 	}
 
 	async function endGame(): Promise<void> {
-		audioManager.stopGameMusic();
-		audioManager.playGameOver();
-		audioManager.playTrack('mainMenu');
-		isLowTime = false;
+		audioManager.stopGameMusic()
+		audioManager.playGameOver()
+		audioManager.playTrack('mainMenu')
+		isLowTime = false
 
-		gameOver = true;
-		penaltyVisible = false;
-		clearTimers();
+		gameOver = true
+		penaltyVisible = false
+		clearTimers()
 
 		if (score > 15) {
-			spawnConfetti(60);
+			spawnConfetti(60)
 		} else if (score > 5) {
-			spawnConfetti(20);
+			spawnConfetti(20)
 		} else {
-			confetti = [];
+			confetti = []
 		}
 		try {
-			const r = await saveNameAndScore();
-			ranking = Number.isFinite(r) ? r : null;
+			const r = await saveNameAndScore()
+			ranking = Number.isFinite(r) ? r : null
 		} catch (err) {
-			ranking = null;
+			ranking = null
 		}
 	}
 
 	function chooseAnswer(choice: QuestionnaireAnswerKey): void {
 		if (!currentQuestion || gameOver) {
-			return;
+			return
 		}
 
 		if (choice === currentQuestion.correct) {
-			score += 1;
-			audioManager.playCorrect();
-			nextQuestion();
+			score += 1
+			audioManager.playCorrect()
+			nextQuestion()
 		} else {
-			audioManager.playWrong();
-			timeLeft -= penaltySeconds;
-			showPenalty();
+			audioManager.playWrong()
+			timeLeft -= penaltySeconds
+			showPenalty()
 		}
 	}
 
 	onMount(() => {
-		startGame();
-	});
+		startGame()
+	})
 
 	onDestroy(() => {
-		clearTimers();
-		audioManager.stopGameMusic();
-	});
+		clearTimers()
+		audioManager.stopGameMusic()
+	})
 </script>
 
 <main
@@ -358,8 +358,8 @@
 						<button
 							class="ranking-pill"
 							on:click={() => {
-								audioManager.playClick();
-								goto('/ranking');
+								audioManager.playClick()
+								goto('/ranking')
 							}}>ランキング</button
 						>
 
@@ -367,8 +367,8 @@
 							<button
 								class="btn-circle green-dark"
 								on:click={() => {
-									audioManager.playClick();
-									goto('/');
+									audioManager.playClick()
+									goto('/')
 								}}
 								aria-label="Go back to home page"
 							>
@@ -379,8 +379,8 @@
 							<button
 								class="btn-circle green-light"
 								on:click={() => {
-									audioManager.playClick();
-									goto('/loading');
+									audioManager.playClick()
+									goto('/loading')
 								}}
 								aria-label="Play again"
 							>

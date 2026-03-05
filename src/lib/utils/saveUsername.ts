@@ -1,11 +1,11 @@
 export function getUsername(username: string) {
-	localStorage.setItem('quiz-username', username.trim() || 'Player');
+	localStorage.setItem('quiz-username', username.trim() || 'Player')
 }
 
 export function returnCurrentUser() {
-	return localStorage.getItem('quiz-username') || 'Player';
+	return localStorage.getItem('quiz-username') || 'Player'
 }
 
 export function clearUsername() {
-	localStorage.removeItem('quiz-username');
+	localStorage.removeItem('quiz-username')
 }

@@ -1,64 +1,64 @@
 <script lang="ts">
-	import { audioManager } from '$lib/utils/audioController';
-	import { onMount } from 'svelte';
+	import { audioManager } from '$lib/utils/audioController'
+	import { onMount } from 'svelte'
 
-	let musicMuted = true;
-	let sfxMuted = false;
-	let musicVolume = 0.6;
-	let sfxVolume = 0.8;
+	let musicMuted = true
+	let sfxMuted = false
+	let musicVolume = 0.6
+	let sfxVolume = 0.8
 
-	let isMenuOpen = false;
+	let isMenuOpen = false
 
 	function handlePointerEnter(e: PointerEvent) {
 		if (e.pointerType === 'mouse') {
-			isMenuOpen = true;
+			isMenuOpen = true
 		}
 	}
 
 	function closeMenu() {
-		isMenuOpen = false;
+		isMenuOpen = false
 	}
 
 	onMount(() => {
-		audioManager.init();
-		syncFromManager();
-	});
+		audioManager.init()
+		syncFromManager()
+	})
 
 	function syncFromManager() {
-		musicMuted = audioManager.musicMuted;
-		sfxMuted = audioManager.sfxMuted;
-		musicVolume = audioManager.musicVolume;
-		sfxVolume = audioManager.sfxVolume;
+		musicMuted = audioManager.musicMuted
+		sfxMuted = audioManager.sfxMuted
+		musicVolume = audioManager.musicVolume
+		sfxVolume = audioManager.sfxVolume
 	}
 
 	function toggleMusic() {
-		audioManager.playClick();
-		audioManager.toggleMusicMute();
-		syncFromManager();
+		audioManager.playClick()
+		audioManager.toggleMusicMute()
+		syncFromManager()
 	}
 
 	function toggleSfx() {
-		audioManager.playClick();
-		audioManager.toggleSfxMute();
-		syncFromManager();
+		audioManager.playClick()
+		audioManager.toggleSfxMute()
+		syncFromManager()
 	}
 
 	function updateMusicVolume(value: number) {
-		audioManager.setMusicVolume(value);
-		syncFromManager();
+		audioManager.setMusicVolume(value)
+		syncFromManager()
 	}
 
 	function updateSfxVolume(value: number) {
-		audioManager.setSfxVolume(value);
-		syncFromManager();
+		audioManager.setSfxVolume(value)
+		syncFromManager()
 	}
 
 	function onSliderInteraction() {
-		audioManager.playClick();
+		audioManager.playClick()
 	}
 
 	function toggleMenu() {
-		isMenuOpen = !isMenuOpen;
+		isMenuOpen = !isMenuOpen
 	}
 </script>
 

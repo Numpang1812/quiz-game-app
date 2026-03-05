@@ -1,21 +1,21 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
-	import { goto } from '$app/navigation';
-	import defaultBackgroundImage from '$lib/assets/Background image.png';
+	import { onDestroy, onMount } from 'svelte'
+	import { goto } from '$app/navigation'
+	import defaultBackgroundImage from '$lib/assets/Background image.png'
 
-	let redirectTimer: ReturnType<typeof setTimeout> | null = null;
+	let redirectTimer: ReturnType<typeof setTimeout> | null = null
 
 	onMount(() => {
 		redirectTimer = setTimeout(() => {
-			goto('/game', { replaceState: true });
-		}, 1800);
-	});
+			goto('/game', { replaceState: true })
+		}, 1800)
+	})
 
 	onDestroy(() => {
 		if (redirectTimer) {
-			clearTimeout(redirectTimer);
+			clearTimeout(redirectTimer)
 		}
-	});
+	})
 </script>
 
 <main

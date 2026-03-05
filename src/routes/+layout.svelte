@@ -1,25 +1,25 @@
 <script lang="ts">
-	import favicon from '$lib/assets/favicon.svg';
-	import '../styles/global.css';
-	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
-	import { page } from '$app/stores';
+	import favicon from '$lib/assets/favicon.svg'
+	import '../styles/global.css'
+	import { onMount } from 'svelte'
+	import { browser } from '$app/environment'
+	import { page } from '$app/stores'
 
-	import { audioManager } from '$lib/utils/audioController';
-	import AudioControls from '$lib/components/audioControls.svelte';
+	import { audioManager } from '$lib/utils/audioController'
+	import AudioControls from '$lib/components/audioControls.svelte'
 
 	onMount(() => {
-		audioManager.init();
-	});
+		audioManager.init()
+	})
 
 	// route-based music control
 	$: if (browser && !audioManager.musicMuted) {
-		const path = $page.url.pathname;
+		const path = $page.url.pathname
 
 		if (path.startsWith('/game')) {
-			audioManager.playTrack('game');
+			audioManager.playTrack('game')
 		} else {
-			audioManager.playTrack('mainMenu');
+			audioManager.playTrack('mainMenu')
 		}
 	}
 </script>
