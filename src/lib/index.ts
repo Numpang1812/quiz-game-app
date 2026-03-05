@@ -34,12 +34,12 @@ export const totalTime = 30;
 export const penaltySeconds = 3;
 
 export const questions: Question[] = Object.values(
-	questionnaires as Record<string, QuestionnaireItem>
+	questionnaires as Record<string, QuestionnaireItem>,
 ).map((item) => ({
 	id: item.id,
 	prompt: item.message,
 	answers: item.answers[0],
-	correct: item.correct_answer
+	correct: item.correct_answer,
 }));
 
 export function randomQuestion(): Question {

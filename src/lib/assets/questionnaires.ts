@@ -7,10 +7,10 @@ export const questionnaires = {
 				answer1: '連',
 				answer2: '軍',
 				answer3: '東',
-				answer4: '車'
-			}
+				answer4: '車',
+			},
 		],
-		correct_answer: 'answer4'
+		correct_answer: 'answer4',
 	},
 	'questionnaire-2': {
 		id: '2',
@@ -20,10 +20,10 @@ export const questionnaires = {
 				answer1: 'お元気ですか？',
 				answer2: 'お久しぶりです！',
 				answer3: 'こんにちは！',
-				answer4: '大丈夫ですか？'
-			}
+				answer4: '大丈夫ですか？',
+			},
 		],
-		correct_answer: 'answer1'
+		correct_answer: 'answer1',
 	},
 	'questionnaire-3': {
 		id: '3',
@@ -33,10 +33,10 @@ export const questionnaires = {
 				answer1: 'どこに行くの？',
 				answer2: 'どこに行くつもりですか？',
 				answer3: 'どこに行ったの？',
-				answer4: 'どこに行ってるの？'
-			}
+				answer4: 'どこに行ってるの？',
+			},
 		],
-		correct_answer: 'answer3'
+		correct_answer: 'answer3',
 	},
 	'questionnaire-4': {
 		id: '4',
@@ -46,10 +46,10 @@ export const questionnaires = {
 				answer1: '日本で働きます！',
 				answer2: '日本に行きました！',
 				answer3: '日本で勉強します！',
-				answer4: '日本で働いています！'
-			}
+				answer4: '日本で働いています！',
+			},
 		],
-		correct_answer: 'answer4'
+		correct_answer: 'answer4',
 	},
 	'questionnaire-5': {
 		id: '5',
@@ -59,10 +59,10 @@ export const questionnaires = {
 				answer1: '変数',
 				answer2: '関数',
 				answer3: '配列',
-				answer4: '変更'
-			}
+				answer4: '変更',
+			},
 		],
-		correct_answer: 'answer1'
+		correct_answer: 'answer1',
 	},
 	'questionnaire-6': {
 		id: '6',
@@ -72,10 +72,10 @@ export const questionnaires = {
 				answer1: '君の名は？',
 				answer2: '僕の名は？',
 				answer3: '彼の名は？',
-				answer4: '私の名は？'
-			}
+				answer4: '私の名は？',
+			},
 		],
-		correct_answer: 'answer1'
+		correct_answer: 'answer1',
 	},
 	'questionnaire-7': {
 		id: '7',
@@ -85,10 +85,10 @@ export const questionnaires = {
 				answer1: '危険',
 				answer2: '納期',
 				answer3: '管理',
-				answer4: '可用性'
-			}
+				answer4: '可用性',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 	'questionnaire-8': {
 		id: '8',
@@ -98,10 +98,10 @@ export const questionnaires = {
 				answer1: '管理',
 				answer2: '担当',
 				answer3: '予算',
-				answer4: '品質'
-			}
+				answer4: '品質',
+			},
 		],
-		correct_answer: 'answer1'
+		correct_answer: 'answer1',
 	},
 	'questionnaire-9': {
 		id: '9',
@@ -111,10 +111,10 @@ export const questionnaires = {
 				answer1: 'ユーザーエクスペリエンス',
 				answer2: 'ユーザーインターフェース',
 				answer3: 'ユーザーサービス',
-				answer4: 'ユーザーフレンドリー'
-			}
+				answer4: 'ユーザーフレンドリー',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 	'questionnaire-10': {
 		id: '10',
@@ -124,10 +124,10 @@ export const questionnaires = {
 				answer1: '設計書',
 				answer2: '報告書',
 				answer3: '見積書',
-				answer4: '仕様書'
-			}
+				answer4: '仕様書',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 	'questionnaire-11': {
 		id: '11',
@@ -137,10 +137,10 @@ export const questionnaires = {
 				answer1: '開始しました！',
 				answer2: '了解です！',
 				answer3: '確認しました！',
-				answer4: '完了しました！'
-			}
+				answer4: '完了しました！',
+			},
 		],
-		correct_answer: 'answer4'
+		correct_answer: 'answer4',
 	},
 	'questionnaire-12': {
 		id: '12',
@@ -150,10 +150,10 @@ export const questionnaires = {
 				answer1: '高優先',
 				answer2: '低優先',
 				answer3: '中優先',
-				answer4: '優先度'
-			}
+				answer4: '優先度',
+			},
 		],
-		correct_answer: 'answer1'
+		correct_answer: 'answer1',
 	},
 	'questionnaire-13': {
 		id: '13',
@@ -163,10 +163,10 @@ export const questionnaires = {
 				answer1: '成功',
 				answer2: '開始',
 				answer3: '緊急',
-				answer4: '準備'
-			}
+				answer4: '準備',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 	'questionnaire-14': {
 		id: '14',
@@ -176,10 +176,10 @@ export const questionnaires = {
 				answer1: '終了',
 				answer2: '失敗',
 				answer3: '合間',
-				answer4: '完了'
-			}
+				answer4: '完了',
+			},
 		],
-		correct_answer: 'answer1'
+		correct_answer: 'answer1',
 	},
 	'questionnaire-15': {
 		id: '15',
@@ -189,10 +189,10 @@ export const questionnaires = {
 				answer1: 'デプロイ準備失敗',
 				answer2: 'デプロイ準備開始',
 				answer3: 'デプロイ準備中',
-				answer4: 'デプロイ準備完了'
-			}
+				answer4: 'デプロイ準備完了',
+			},
 		],
-		correct_answer: 'answer4'
+		correct_answer: 'answer4',
 	},
 	'questionnaire-16': {
 		id: '16',
@@ -202,10 +202,10 @@ export const questionnaires = {
 				answer1: 'あの色がきれいだろう？',
 				answer2: '好きな色は紫でしょうか？',
 				answer3: 'この色が好きですか？',
-				answer4: 'どの色が好きですか？'
-			}
+				answer4: 'どの色が好きですか？',
+			},
 		],
-		correct_answer: 'answer4'
+		correct_answer: 'answer4',
 	},
 	'questionnaire-17': {
 		id: '17',
@@ -215,10 +215,10 @@ export const questionnaires = {
 				answer1: '君が好きです！',
 				answer2: '月がきれいですね！',
 				answer3: '私を結婚してください！',
-				answer4: '君は花のようにきれいですね！'
-			}
+				answer4: '君は花のようにきれいですね！',
+			},
 		],
-		correct_answer: 'answer1'
+		correct_answer: 'answer1',
 	},
 	'questionnaire-18': {
 		id: '18',
@@ -228,10 +228,10 @@ export const questionnaires = {
 				answer1: 'かみ（神）',
 				answer2: 'かみ（紙）',
 				answer3: 'かみ（加味）',
-				answer4: 'かみ（髪）'
-			}
+				answer4: 'かみ（髪）',
+			},
 		],
-		correct_answer: 'answer4'
+		correct_answer: 'answer4',
 	},
 	'questionnaire-19': {
 		id: '19',
@@ -241,10 +241,10 @@ export const questionnaires = {
 				answer1: 'バグ',
 				answer2: 'バッグ',
 				answer3: 'ボッグ',
-				answer4: 'ボグ'
-			}
+				answer4: 'ボグ',
+			},
 		],
-		correct_answer: 'answer1'
+		correct_answer: 'answer1',
 	},
 	'questionnaire-20': {
 		id: '20',
@@ -254,10 +254,10 @@ export const questionnaires = {
 				answer1: '公園に行くよ',
 				answer2: '公園に行こうぜ',
 				answer3: '公園に行くな',
-				answer4: '公園に行きたい'
-			}
+				answer4: '公園に行きたい',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 	'questionnaire-21': {
 		id: '21',
@@ -267,10 +267,10 @@ export const questionnaires = {
 				answer1: '雨が降ってるのに、公園に行かない。',
 				answer2: '雨が降ってるので、公園に行きます。',
 				answer3: '雨が降ってるのは、公園に行きます。',
-				answer4: '雨が降ってるのに、公園に行きます。'
-			}
+				answer4: '雨が降ってるのに、公園に行きます。',
+			},
 		],
-		correct_answer: 'answer4'
+		correct_answer: 'answer4',
 	},
 	'questionnaire-22': {
 		id: '22',
@@ -280,10 +280,10 @@ export const questionnaires = {
 				answer1: '私は日本人です。',
 				answer2: '私は日本から来ました。',
 				answer3: '私は日本人じゃない。',
-				answer4: '私は日本から来なかった。'
-			}
+				answer4: '私は日本から来なかった。',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 	'questionnaire-23': {
 		id: '23',
@@ -293,10 +293,10 @@ export const questionnaires = {
 				answer1: '週末にサッカーをやるぞ。',
 				answer2: '今週にサッカーをやるぞ。',
 				answer3: '週末にサッカーをやるな。',
-				answer4: '週末にサッカーをやめる。'
-			}
+				answer4: '週末にサッカーをやめる。',
+			},
 		],
-		correct_answer: 'answer1'
+		correct_answer: 'answer1',
 	},
 	'questionnaire-24': {
 		id: '24',
@@ -306,10 +306,10 @@ export const questionnaires = {
 				answer1: '試合開始！',
 				answer2: '勝負開始！',
 				answer3: '練習開始！',
-				answer4: '試験開始！'
-			}
+				answer4: '試験開始！',
+			},
 		],
-		correct_answer: 'answer1'
+		correct_answer: 'answer1',
 	},
 	'questionnaire-25': {
 		id: '25',
@@ -319,10 +319,10 @@ export const questionnaires = {
 				answer1: '宿題を忘れてもいいよ！',
 				answer2: '宿題を忘れないでね！',
 				answer3: '宿題を忘れちゃった！',
-				answer4: '宿題を忘れなければならない！'
-			}
+				answer4: '宿題を忘れなければならない！',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 	'questionnaire-26': {
 		id: '26',
@@ -332,10 +332,10 @@ export const questionnaires = {
 				answer1: 'あとで電話するね。',
 				answer2: 'あとで電話して。',
 				answer3: 'あとで電話するな。',
-				answer4: '電話したほうがいい。'
-			}
+				answer4: '電話したほうがいい。',
+			},
 		],
-		correct_answer: 'answer1'
+		correct_answer: 'answer1',
 	},
 
 	'questionnaire-27': {
@@ -346,10 +346,10 @@ export const questionnaires = {
 				answer1: '窓を開けてください。',
 				answer2: '窓を閉めてください。',
 				answer3: '窓が閉まっています。',
-				answer4: '窓を閉めました。'
-			}
+				answer4: '窓を閉めました。',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 
 	'questionnaire-28': {
@@ -360,10 +360,10 @@ export const questionnaires = {
 				answer1: '今、晴れています。',
 				answer2: '今、雨が降っていません。',
 				answer3: '今、雨が降っています。',
-				answer4: '今、雨でしょう。'
-			}
+				answer4: '今、雨でしょう。',
+			},
 		],
-		correct_answer: 'answer3'
+		correct_answer: 'answer3',
 	},
 
 	'questionnaire-29': {
@@ -374,10 +374,10 @@ export const questionnaires = {
 				answer1: 'まだ食べていません。',
 				answer2: 'もう食べました。',
 				answer3: 'これから食べます。',
-				answer4: '毎日食べます。'
-			}
+				answer4: '毎日食べます。',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 
 	'questionnaire-30': {
@@ -388,10 +388,10 @@ export const questionnaires = {
 				answer1: '手伝ってくれますか？',
 				answer2: '手伝いましょうか？',
 				answer3: '手伝ってくれません。',
-				answer4: '手伝ってもいいですよ。'
-			}
+				answer4: '手伝ってもいいですよ。',
+			},
 		],
-		correct_answer: 'answer1'
+		correct_answer: 'answer1',
 	},
 
 	'questionnaire-31': {
@@ -402,10 +402,10 @@ export const questionnaires = {
 				answer1: '財布を忘れる？',
 				answer2: '財布を忘れました。',
 				answer3: '財布を忘れないでね。',
-				answer4: '財布を捨てました。'
-			}
+				answer4: '財布を捨てました。',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 
 	'questionnaire-32': {
@@ -416,10 +416,10 @@ export const questionnaires = {
 				answer1: '一緒に勉強しよう。',
 				answer2: '一緒に勉強した。',
 				answer3: '一緒に勉強しない。',
-				answer4: '一緒に勉強したい。'
-			}
+				answer4: '一緒に勉強したい。',
+			},
 		],
-		correct_answer: 'answer1'
+		correct_answer: 'answer1',
 	},
 
 	'questionnaire-33': {
@@ -430,10 +430,10 @@ export const questionnaires = {
 				answer1: '鍵を見つけました。',
 				answer2: '鍵を探しています。',
 				answer3: '鍵を忘れています',
-				answer4: '鍵を見てます。'
-			}
+				answer4: '鍵を見てます。',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 
 	'questionnaire-34': {
@@ -444,10 +444,10 @@ export const questionnaires = {
 				answer1: 'ここで持ってください。',
 				answer2: 'ここで待ってください。',
 				answer3: 'ここに触ってください。',
-				answer4: 'ここで立ってください。'
-			}
+				answer4: 'ここで立ってください。',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 	'questionnaire-35': {
 		id: '35',
@@ -457,10 +457,10 @@ export const questionnaires = {
 				answer1: '分かりにくい。',
 				answer2: '分かりません。',
 				answer3: '分かりやすい。',
-				answer4: '分かっていました。'
-			}
+				answer4: '分かっていました。',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 	'questionnaire-36': {
 		id: '36',
@@ -470,10 +470,10 @@ export const questionnaires = {
 				answer1: '疲れました。',
 				answer2: '疲れません。',
 				answer3: '疲れています。',
-				answer4: '疲れそうです。'
-			}
+				answer4: '疲れそうです。',
+			},
 		],
-		correct_answer: 'answer1'
+		correct_answer: 'answer1',
 	},
 	'questionnaire-37': {
 		id: '37',
@@ -483,10 +483,10 @@ export const questionnaires = {
 				answer1: '財布を持っていくのを忘れた。',
 				answer2: '財布を持ってくるのを忘れた。',
 				answer3: '財布を持ってきて忘れた。',
-				answer4: '財布を持ちながら忘れた。'
-			}
+				answer4: '財布を持ちながら忘れた。',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 
 	'questionnaire-38': {
@@ -497,10 +497,10 @@ export const questionnaires = {
 				answer1: '結局、買うことにした。',
 				answer2: '結局、買うようにした。',
 				answer3: '結局、買ってしまった。',
-				answer4: '結局、買うところだった。'
-			}
+				answer4: '結局、買うところだった。',
+			},
 		],
-		correct_answer: 'answer3'
+		correct_answer: 'answer3',
 	},
 
 	'questionnaire-39': {
@@ -511,10 +511,10 @@ export const questionnaires = {
 				answer1: '彼は何でも知るように話している。',
 				answer2: '彼は何でも知っているそうに話している。',
 				answer3: '彼は何でも知っているみたいに話している。',
-				answer4: '彼は何でも知っているために話している。'
-			}
+				answer4: '彼は何でも知っているために話している。',
+			},
 		],
-		correct_answer: 'answer3'
+		correct_answer: 'answer3',
 	},
 
 	'questionnaire-40': {
@@ -525,10 +525,10 @@ export const questionnaires = {
 				answer1: '明日までに終わるはずだ。',
 				answer2: '明日までに終わらせることになっている。',
 				answer3: '明日までに終わらなければならない。',
-				answer4: '明日までに終わるべきだった。'
-			}
+				answer4: '明日までに終わるべきだった。',
+			},
 		],
-		correct_answer: 'answer3'
+		correct_answer: 'answer3',
 	},
 
 	'questionnaire-41': {
@@ -539,10 +539,10 @@ export const questionnaires = {
 				answer1: '雨が降ると行く。',
 				answer2: '雨が降っても行く。',
 				answer3: '雨が降ったら行かない。',
-				answer4: '雨が降るので行く。'
-			}
+				answer4: '雨が降るので行く。',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 
 	'questionnaire-42': {
@@ -553,10 +553,10 @@ export const questionnaires = {
 				answer1: '彼は忙しいらしい。',
 				answer2: '彼は忙しそうだ。',
 				answer3: '彼は忙しいようにする。',
-				answer4: '彼は忙しくなさそうだ。'
-			}
+				answer4: '彼は忙しくなさそうだ。',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 
 	'questionnaire-43': {
@@ -567,10 +567,10 @@ export const questionnaires = {
 				answer1: '一人で住むことに慣れている。',
 				answer2: '一人で住むようにしている。',
 				answer3: '一人で住むことになっている。',
-				answer4: '一人で住みそうだ。'
-			}
+				answer4: '一人で住みそうだ。',
+			},
 		],
-		correct_answer: 'answer1'
+		correct_answer: 'answer1',
 	},
 
 	'questionnaire-44': {
@@ -581,10 +581,10 @@ export const questionnaires = {
 				answer1: 'この問題は解けないほど難しい。',
 				answer2: 'この問題は解くほど難しい。',
 				answer3: 'この問題は解けるほど難しい。',
-				answer4: 'この問題は解いてしまうほど難しい。'
-			}
+				answer4: 'この問題は解いてしまうほど難しい。',
+			},
 		],
-		correct_answer: 'answer1'
+		correct_answer: 'answer1',
 	},
 
 	'questionnaire-45': {
@@ -595,10 +595,10 @@ export const questionnaires = {
 				answer1: '出かけたばかりだ。',
 				answer2: '出かけるところだった。',
 				answer3: '出かけてしまった。',
-				answer4: '出かけることにした。'
-			}
+				answer4: '出かけることにした。',
+			},
 		],
-		correct_answer: 'answer2'
+		correct_answer: 'answer2',
 	},
 
 	'questionnaire-46': {
@@ -609,9 +609,9 @@ export const questionnaires = {
 				answer1: 'あなたのせいで、試験に合格した。',
 				answer2: 'あなたのおかげで、試験に合格した。',
 				answer3: 'あなたによって、試験に合格した。',
-				answer4: 'あなたについて、試験に合格した。'
-			}
+				answer4: 'あなたについて、試験に合格した。',
+			},
 		],
-		correct_answer: 'answer2'
-	}
+		correct_answer: 'answer2',
+	},
 };

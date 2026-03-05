@@ -107,7 +107,7 @@
 				name: score.name,
 				score: score.score,
 				date: formatDate(score.created_time),
-				isCurrentUser: latestCurrentUserId !== null && id === latestCurrentUserId
+				isCurrentUser: latestCurrentUserId !== null && id === latestCurrentUserId,
 			};
 		});
 
@@ -118,7 +118,7 @@
 				name: '- - -',
 				score: '-',
 				date: '-',
-				isCurrentUser: false
+				isCurrentUser: false,
 			});
 		}
 
