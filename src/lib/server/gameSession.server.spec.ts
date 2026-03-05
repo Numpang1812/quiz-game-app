@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Mock $env/static/private before importing the module
 vi.mock('$env/static/private', () => ({
-	GAME_SESSION_SECRET: 'test-secret-key-for-unit-tests'
+	GAME_SESSION_SECRET: 'test-secret-key-for-unit-tests',
 }));
 
 // Import after mocking

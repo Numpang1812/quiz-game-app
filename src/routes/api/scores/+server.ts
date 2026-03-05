@@ -5,7 +5,7 @@ import {
 	initTable,
 	getRank,
 	MAX_VALID_SCORE,
-	SPECIAL_NAME
+	SPECIAL_NAME,
 } from '../../../database/turso.server';
 import { verifyGameToken, consumeGameToken } from '$lib/server/gameSession.server';
 
@@ -92,13 +92,13 @@ export async function POST({ request }) {
 	if (score > MAX_VALID_SCORE)
 		return json(
 			{ error: `Score must be less than or equal to ${MAX_VALID_SCORE}` },
-			{ status: 400 }
+			{ status: 400 },
 		);
 	if (!name) return json({ error: 'Name is required' }, { status: 400 });
 	if (name.toUpperCase() === SPECIAL_NAME.toUpperCase())
 		return json(
 			{ error: 'This name is reserved for THE ONE AND ONLY!! NO ONE HACKS MY GAME!!' },
-			{ status: 403 }
+			{ status: 403 },
 		);
 
 	const created_time = await postScore(name, score);
