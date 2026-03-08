@@ -468,7 +468,7 @@ body {
 	border-radius: 0.75rem;
 	border: 1px solid #d1d5db;
 	flex: 1;
-	min-width: 170px;
+	min-width: 0;
 	min-height: 50px;
 	box-sizing: border-box;
 }
@@ -517,6 +517,7 @@ body {
 	min-height: 50px;
 	box-sizing: border-box;
 	overflow: hidden;
+	min-width: 0;
 }
 
 .ranking-page .nav-button {
@@ -562,7 +563,7 @@ body {
 	font-size: 0.95rem;
 	letter-spacing: 0.05em;
 	font-family: 'Monaco', 'Courier New', monospace;
-	min-width: 140px;
+	min-width: 0;
 	flex: 1;
 	text-align: center;
 	white-space: nowrap;
@@ -656,6 +657,7 @@ body {
 
 .ranking-page .ranking-table {
 	width: 100%;
+	min-width: 620px;
 	border-collapse: collapse;
 	border-spacing: 0;
 	font-size: 0.9rem;
@@ -843,9 +845,13 @@ body {
 
 	.ranking-page .date-controls-wrapper {
 		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 		align-items: stretch;
 		gap: 0.75rem;
+	}
+
+	.ranking-page .date-filter {
+		grid-column: 1 / -1;
 	}
 
 	.ranking-page .filter-select-container,
@@ -883,7 +889,7 @@ body {
 
 	.ranking-page .ranking-table {
 		font-size: 0.78rem;
-		min-width: 100%;
+		min-width: 560px;
 		table-layout: fixed;
 	}
 
@@ -1020,7 +1026,7 @@ body {
 
 	.ranking-page .ranking-table {
 		font-size: 0.72rem;
-		min-width: 100%;
+		min-width: 500px;
 		table-layout: fixed;
 	}
 
