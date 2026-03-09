@@ -130,8 +130,9 @@
 		/>
 
 		<div class="actions">
-			<button type="button" class="btn play" on:click={onPlayClick}>スタート🌱</button>
-			<button type="button" class="btn ranking" on:click={onRankingClick}>ランク🏆</button>
+		<!-- Professor said the 🌱 and 🏆 should be on the left side instead -->
+			<button type="button" class="btn play" on:click={onPlayClick}>🌱スタート</button>
+			<button type="button" class="btn ranking" on:click={onRankingClick}>🏆ランク</button>
 		</div>
 
 		{#if showModal}
