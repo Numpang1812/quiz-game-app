@@ -1,0 +1,129 @@
+/* ===================================
+   Loading Page Specific Styles
+   =================================== */
+
+/* Loading Background - extends menu-bg */
+.loading-bg {
+	padding-bottom: 6rem;
+}
+
+/* Loading Content */
+.loading-content {
+	position: relative;
+	z-index: var(--z-ui);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--spacing-md);
+}
+
+/* Loading Mascot */
+.loading-content .mascot {
+	animation: home-bounce 2.8s ease-in-out infinite;
+}
+
+.loading-content .face {
+	position: relative;
+	margin-top: 0.9rem;
+}
+
+/* Sleeping Eyes */
+.loading-eyes {
+	display: flex;
+	gap: 2.2rem;
+	margin-bottom: 0.3rem;
+}
+
+.loading-eyes .mascot-eye {
+	width: 9px;
+	height: 9px;
+	border-radius: var(--radius-pill);
+	background: var(--color-green-medium);
+}
+
+/* Sleeping state */
+.mascot.is-sleeping .mascot-eye {
+	height: 2px;
+	width: 8px;
+	border-radius: 0;
+	background: #666;
+}
+
+/* Mouth */
+.mascot-mouth {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: -10px;
+	width: 10px;
+	height: 5px;
+	border-bottom: 2px solid black;
+	border-radius: 50%;
+}
+
+/* Zzz Animation Wrapper */
+.zzz-wrapper {
+	position: absolute;
+	top: -40px;
+	right: -20px;
+	pointer-events: none;
+}
+
+/* Zzz Animation */
+.zzz {
+	position: absolute;
+	font-weight: 900;
+	color: var(--color-green-medium);
+	opacity: 0;
+	animation: zzz-float 3s infinite;
+}
+
+.zzz:nth-child(1) {
+	animation-delay: 0s;
+	font-size: 1rem;
+}
+
+.zzz:nth-child(2) {
+	animation-delay: 1s;
+	font-size: 1.5rem;
+}
+
+.zzz:nth-child(3) {
+	animation-delay: 2s;
+	font-size: 2rem;
+}
+
+/* Loading Text */
+.loading-text {
+	margin: 0;
+	font-size: clamp(1rem, 2.5vw, 1.4rem);
+	font-weight: 900;
+	color: #ffffff;
+	text-shadow:
+		-2px -2px 0 #5cc45f,
+		2px -2px 0 #5cc45f,
+		-2px 2px 0 #5cc45f,
+		2px 2px 0 #5cc45f;
+}
+
+/* Zzz Float Animation */
+@keyframes zzz-float {
+	0% {
+		transform: translate(0, 0) scale(0.5);
+		opacity: 0;
+	}
+
+	20% {
+		opacity: 1;
+	}
+
+	80% {
+		opacity: 0.5;
+	}
+
+	100% {
+		transform: translate(30px, -50px) scale(1.2);
+		opacity: 0;
+	}
+}

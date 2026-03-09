@@ -1,14 +1,23 @@
 <script lang="ts">
+	import '../styles/homepage.css'
 	import defaultBackgroundImage from '$lib/assets/Background image.png'
 	import { getUsername } from '$lib/utils/saveUsername'
 	import { audioManager } from '$lib/utils/audioController'
 	import { goto } from '$app/navigation'
+	import { onMount } from 'svelte'
 
-	let showModal = false
+	let username = $state('')
+	let showModal = $state(false)
+	let mascotHovered = $state(false)
+
+	onMount(() => {
+		const stored = localStorage.getItem('quiz-username')
+		username = stored && stored !== 'Player' ? stored : ''
+	})
 
 	function onPlayClick(): void {
+		audioManager.playClick()
 		if (username.trim() === '') {
-			audioManager.playClick()
 			showModal = true
 		} else {
 			proceedToGame()
@@ -17,7 +26,6 @@
 
 	function proceedToGame(): void {
 		audioManager.playStart()
-		audioManager.playClick()
 		getUsername(username || 'Player')
 		goto('/loading')
 	}
@@ -33,27 +41,10 @@
 		goto('/ranking')
 	}
 
-	function onInputClick(): void {
-		audioManager.playClick()
-	}
-
 	function onCreditsClick(): void {
 		audioManager.playClick()
 		goto('/credits')
 	}
-
-	import { onMount } from 'svelte'
-	let username = ''
-
-	onMount(() => {
-		const stored = localStorage.getItem('quiz-username')
-		if (stored && stored !== 'Player') {
-			username = stored
-		} else {
-			username = ''
-		}
-	})
-	let mascotHovered = false
 </script>
 
 <main class="menu-bg" style={`--custom-background-image: url('${defaultBackgroundImage}');`}>
@@ -65,9 +56,10 @@
 		<button
 			type="button"
 			class="mascot-btn"
-			on:click={onCreditsClick}
-			on:mouseenter={() => (mascotHovered = true)}
-			on:mouseleave={() => (mascotHovered = false)}
+			onclick={onCreditsClick}
+			onmouseenter={() => (mascotHovered = true)}
+			onmouseleave={() => (mascotHovered = false)}
+			aria-label="View credits"
 		>
 			<div class="mascot" aria-hidden="true">
 				<div class="mascot-body">
@@ -126,13 +118,13 @@
 			placeholder="あなたの名前は？"
 			aria-label="Username"
 			bind:value={username}
-			on:click={onInputClick}
+			onclick={() => audioManager.playClick()}
 		/>
 
 		<div class="actions">
 		<!-- Professor said the 🌱 and 🏆 should be on the left side instead -->
-			<button type="button" class="btn play" on:click={onPlayClick}>🌱スタート</button>
-			<button type="button" class="btn ranking" on:click={onRankingClick}>🏆ランク</button>
+			<button type="button" class="btn play" onclick={onPlayClick}>🌱スタート</button>
+			<button type="button" class="btn ranking" onclick={onRankingClick}>🏆ランク</button>
 		</div>
 
 		{#if showModal}
@@ -191,15 +183,19 @@
 							名前が入力されていません。<br />「Player」として進みますか？
 						</p>
 						<div class="modal-actions">
-							<button type="button" class="btn play" on:click={confirmDefaultName}>はい</button>
+							<button type="button" class="btn play" onclick={confirmDefaultName}>
+								はい
+							</button>
 							<button
 								type="button"
 								class="btn ranking"
-								on:click={() => {
+								onclick={() => {
 									audioManager.playClick()
 									showModal = false
-								}}>いいえ</button
+								}}
 							>
+								いいえ
+							</button>
 						</div>
 					</div>
 				</div>
@@ -209,57 +205,8 @@
 </main>
 
 <style>
-	.modal-overlay {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: rgba(0, 0, 0, 0.4);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		z-index: 1000;
-		backdrop-filter: blur(3px);
-	}
-
-	.modal-box {
-		width: min(450px, 90vw) !important;
-		height: auto !important;
-		min-height: auto !important;
-		padding: 50px 30px 40px !important;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	.modal-message {
-		font-size: clamp(1rem, 4vw, 1.3rem);
-		font-weight: 800;
-		color: #1b5e20;
-		margin-bottom: 2.5rem;
-		line-height: 1.6;
-		white-space: pre-line;
-	}
-
-	.modal-actions {
-		display: flex;
-		gap: 1.5rem;
-		justify-content: center;
-		width: 100%;
-	}
-
-	.modal-actions .btn {
-		min-width: 120px !important;
-		padding: 10px 20px !important;
-		font-size: 1.1rem !important;
-	}
-
-	.header-decoration {
-		position: absolute;
-		top: 0;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		z-index: 10;
+	:global(.menu-content) input::placeholder {
+		color: #9c9c9c;
+		font-weight: 600;
 	}
 </style>

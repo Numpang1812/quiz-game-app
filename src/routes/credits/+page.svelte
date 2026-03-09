@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import '../../styles/credits.css'
+	import { onMount } from 'svelte'
 	import defaultBackgroundImage from '$lib/assets/Background image.png'
 	import { goto } from '$app/navigation'
 	import { audioManager } from '$lib/utils/audioController'
+
 	function goHome(): void {
 		audioManager.playClick()
 		goto('/')
@@ -38,7 +40,7 @@
 
 <main
 	class="credits-page credit-page-wrap"
-	style={`--custom-background-image: url('${defaultBackgroundImage}');  background-size: cover;`}
+	style={`--custom-background-image: url('${defaultBackgroundImage}'); background-size: cover;`}
 >
 	<div class="fence" aria-hidden="true"></div>
 	<div class="garden-floor" aria-hidden="true">
