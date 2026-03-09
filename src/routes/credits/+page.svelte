@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import '../../styles/credits.css'
+	import { onMount } from 'svelte'
 	import defaultBackgroundImage from '$lib/assets/Background image.png'
 	import { goto } from '$app/navigation'
 	import { audioManager } from '$lib/utils/audioController'

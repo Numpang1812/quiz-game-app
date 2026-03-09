@@ -3,7 +3,7 @@
    =================================== */
 
 /* Page Layout */
-.credits-page.credit-page-wrap {
+.credit-page-wrap {
 	position: relative;
 	height: 100dvh;
 	width: 100%;
@@ -13,7 +13,7 @@
 	background-position: center;
 	background-repeat: no-repeat;
 	background-attachment: scroll;
-	padding: 0;
+	padding: 1rem 1rem 7rem;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
@@ -26,30 +26,64 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding-top: 50px;
-	box-sizing: border-box;
 	width: 100%;
-	margin-top: -5rem;
+	padding-top: 5rem;
+	box-sizing: border-box;
+}
+
+/* Credits Viewport (scrollable area) */
+.credits-viewport {
+	flex: 1;
+	overflow-y: auto;
+	overflow-x: hidden;
+	position: relative;
+	margin-top: -3.5rem;
+	margin-bottom: -1.5rem;
+	scrollbar-width: none;
+}
+
+.credits-viewport::-webkit-scrollbar {
+	display: none;
+}
+
+/* Credits Spacer (for auto-scroll effect) */
+.credits-spacer {
+	flex-shrink: 0;
+}
+
+/* Credits Box */
+.credit-box {
+	background: white;
+	border: 4px solid #7ed321;
+	border-radius: 40px;
+	width: min(600px, 92vw);
+	min-width: 0;
+	height: min(70dvh, 720px);
+	min-height: 420px;
+	position: relative;
+	padding: 3.5rem 1.25rem 1.5rem;
+	text-align: center;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+	display: flex;
+	flex-direction: column;
+	overflow: visible;
 }
 
 /* Credits Stack (scrollable list) */
 .credits-stack {
 	flex: 1;
-	overflow-y: auto;
-	overflow-x: hidden;
+	overflow: hidden;
 	display: flex;
 	flex-direction: column;
-	gap: 2.2rem;
+	gap: 1.6rem;
 	width: 100%;
-	max-width: min(720px, 90vw);
 	box-sizing: border-box;
-	padding-bottom: 1rem;
-	scrollbar-width: thin;
-	scrollbar-color: #7ed321 transparent;
+	padding: 0.5rem 0.25rem 1rem;
 }
 
-/* Credits Page Header Decoration Override */
-.credits-page .header-decoration {
+/* Credits Page Header Decoration */
+.credit-page-wrap .header-decoration {
+	position: absolute;
 	top: 0;
 	left: 50%;
 	transform: translate(-50%, -50%);
@@ -60,7 +94,7 @@
 .credit-block {
 	display: flex;
 	flex-direction: column;
-	gap: 0.5rem;
+	gap: 0.45rem;
 }
 
 /* Credit Label (role/title) */
@@ -69,32 +103,36 @@
 	font-weight: 700;
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
-	font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+	font-size: clamp(0.8rem, 2vw, 1rem);
 	opacity: 0.85;
 	margin: 0;
+	line-height: 1.4;
 }
 
 /* Creator (person name) */
 .creator {
 	color: #1b5e20;
 	font-weight: 900;
-	letter-spacing: 0.06em;
-	font-size: clamp(1.2rem, 3.2vw, 1.8rem);
+	letter-spacing: 0.04em;
+	font-size: clamp(1rem, 3vw, 1.5rem);
 	margin: 0;
+	line-height: 1.35;
+	word-break: break-word;
 }
 
 /* Home Button - Credits Page variant */
-.credits-page .home-button {
-	margin-top: 0.5rem;
+.credit-page-wrap .home-button {
+	margin-top: 1rem;
 	z-index: 30;
 	background-color: #2b8a22;
 	color: white;
 	font-family: inherit;
-	font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+	font-size: clamp(1rem, 3.5vw, 1.25rem);
 	font-weight: 800;
 	border: none;
 	border-radius: 14px;
-	padding: 14px 60px;
+	padding: 12px 32px;
+	width: min(260px, 90vw);
 	cursor: pointer;
 	box-shadow: 0 8px 0 #175e0f;
 	transition:
@@ -102,41 +140,103 @@
 		box-shadow 0.1s ease;
 }
 
-.credits-page .home-button:hover {
+.credit-page-wrap .home-button:hover {
 	transform: translateY(-4px);
 	filter: brightness(1.05);
 }
 
-.credits-page .home-button:active {
+.credit-page-wrap .home-button:active {
 	transform: translateY(6px);
 	box-shadow: 0 2px 0 #175e0f;
 }
 
 /* ===================================
-   Responsive - Mobile
+   Responsive - Tablet (max-width: 768px)
    =================================== */
-@media (max-width: 640px) {
-	.credits-page.credit-page-wrap {
-		background-attachment: scroll;
+@media (max-width: 768px) {
+	.credits-viewport {
+		margin-top: -3rem;
+		margin-bottom: -1rem;
 	}
 
-	.credits-page .credit-box {
-		width: 90vw;
-		height: 65vh;
+	.credit-page-wrap {
+		padding: 0.75rem 0.75rem 6rem;
+		justify-content: flex-start;
 	}
 
-	.credits-page .home-button {
+	.credits-container {
+		padding-top: 2.75rem;
+	}
+
+	.credit-box {
 		width: 100%;
-		max-width: 200px;
-		padding: 12px 40px;
-		font-size: clamp(1rem, 3vw, 1.2rem);
+		height: min(68dvh, 640px);
+		min-height: 380px;
+		border-radius: 28px;
+		padding: 3rem 1rem 1.25rem;
 	}
 
 	.credit-label {
-		font-size: clamp(0.8rem, 2vw, 1rem);
+		font-size: 0.78rem;
+		letter-spacing: 0.1em;
 	}
 
 	.creator {
-		font-size: clamp(1rem, 2.8vw, 1.5rem);
+		font-size: 1rem;
+	}
+
+	.credit-page-wrap .home-button {
+		margin-top: 0.9rem;
+		padding: 11px 24px;
+		box-shadow: 0 6px 0 #175e0f;
+	}
+}
+
+/* ===================================
+   Responsive - Mobile (max-width: 480px)
+   =================================== */
+@media (max-width: 480px) {
+	.credits-viewport {
+		margin-top: -3rem;
+		margin-bottom: -1rem;
+	}
+
+	.credit-page-wrap {
+		padding: 0.5rem 0.5rem 5.5rem;
+	}
+
+	.credits-container {
+		padding-top: 2.5rem;
+	}
+
+	.credit-box {
+		width: 100%;
+		height: min(66dvh, 560px);
+		min-height: 340px;
+		border-radius: 22px;
+		padding: 2.8rem 0.85rem 1rem;
+		border-width: 3px;
+	}
+
+	.credits-stack {
+		gap: 1.25rem;
+		padding: 0.35rem 0.1rem 0.75rem;
+	}
+
+	.credit-label {
+		font-size: 0.72rem;
+	}
+
+	.creator {
+		font-size: 0.95rem;
+		line-height: 1.3;
+	}
+
+	.credit-page-wrap .home-button {
+		width: min(260px, 90vw);
+		max-width: 260px;
+		font-size: 0.95rem;
+		padding: 10px 18px;
+		border-radius: 12px;
 	}
 }
