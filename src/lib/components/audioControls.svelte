@@ -269,7 +269,6 @@
 		.audio-trigger {
 			transform: scale(0.9);
 			margin-top: 1vh;
-
 		}
 		.audio-settings {
 			left: 50%;
