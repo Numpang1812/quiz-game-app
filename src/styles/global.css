@@ -1066,7 +1066,6 @@ body {
 .game-view {
 	position: relative;
 	z-index: 30;
-	
 }
 
 .game-container {
@@ -1253,7 +1252,6 @@ body {
 }
 
 @media (max-width: 640px) {
-
 	.question-text {
 		font-size: 20px;
 	}
@@ -1283,7 +1281,6 @@ body {
 
 	.hud-value {
 		font-size: 3vw;
-		
 	}
 
 	.hud-label {
@@ -1292,16 +1289,15 @@ body {
 	.hud {
 		width: 80vw;
 		margin-left: -10vw;
-
 	}
-	
+
 	.game-view {
 		width: 100%;
 	}
 
 	.timer-container {
 		height: 2.5vh;
-		width: 80vw;	
+		width: 80vw;
 		margin-left: -10vw;
 	}
 

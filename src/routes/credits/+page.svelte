@@ -10,32 +10,34 @@
 		goto('/')
 	}
 
-	let creditsViewport: HTMLDivElement | null = null;
-	let isHovering = false;
-	let frameId: number;
-	let scrollSpeed = 1;
-	let viewportHeight = 0;
+	let creditsViewport: HTMLDivElement | null = null
+	let isHovering = false
+	let frameId: number
+	let scrollSpeed = 1
+	let viewportHeight = 0
 
 	function tick() {
-		
 		if (creditsViewport && !isHovering) {
-			creditsViewport.scrollTop += scrollSpeed;
+			creditsViewport.scrollTop += scrollSpeed
 
-			const maxScroll = creditsViewport.scrollHeight - creditsViewport.clientHeight;
+			const maxScroll = creditsViewport.scrollHeight - creditsViewport.clientHeight
 
-			if (creditsViewport.scrollTop + creditsViewport.clientHeight >= creditsViewport.scrollHeight - 2) {
-				creditsViewport.scrollTop = 0;
+			if (
+				creditsViewport.scrollTop + creditsViewport.clientHeight >=
+				creditsViewport.scrollHeight - 2
+			) {
+				creditsViewport.scrollTop = 0
 			}
 		}
 
-		frameId = requestAnimationFrame(tick);
+		frameId = requestAnimationFrame(tick)
 	}
 
 	onMount(() => {
-		frameId = requestAnimationFrame(tick);
+		frameId = requestAnimationFrame(tick)
 
-		return () => cancelAnimationFrame(frameId);
-	});
+		return () => cancelAnimationFrame(frameId)
+	})
 </script>
 
 <main
