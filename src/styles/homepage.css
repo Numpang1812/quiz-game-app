@@ -1,0 +1,207 @@
+/* ===================================
+   Home Page Specific Styles
+   =================================== */
+
+/* Menu Layout */
+.menu-bg {
+	position: relative;
+	min-height: 100dvh;
+	height: 100dvh;
+	display: grid;
+	place-items: center;
+	padding: var(--spacing-xl) var(--spacing-md) var(--spacing-lg);
+	overflow: hidden;
+	box-sizing: border-box;
+	background-image: var(--custom-background-image);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+
+.menu-content {
+	position: relative;
+	z-index: var(--z-ui);
+	width: min(720px, 95%);
+	max-height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1.8rem;
+	text-align: center;
+}
+
+/* Title */
+.title-wrap h1 {
+	margin: 0;
+	font-size: clamp(2.8rem, 7vw, 4.5rem);
+	font-weight: 900;
+	letter-spacing: 2px;
+}
+
+.title-stroke {
+	color: var(--color-white);
+	text-shadow:
+		-4px -4px 0 var(--color-green-accent),
+		4px -4px 0 var(--color-green-accent),
+		-4px 4px 0 var(--color-green-accent),
+		4px 4px 0 var(--color-green-accent),
+		0 10px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* Menu Input */
+.menu-content input {
+	width: min(420px, 95%);
+	padding: 0.85rem 1rem;
+	border-radius: 18px;
+	border: 4px solid #7ed957;
+	background: #f2f2f2;
+	outline: none;
+	text-align: center;
+	font-size: 1rem;
+	font-weight: 600;
+	color: #555;
+	box-shadow: 0 6px 0 #5bbf4c;
+	transition: 0.2s ease;
+}
+
+.menu-content input::placeholder {
+	color: #9c9c9c;
+	font-weight: 600;
+}
+
+.menu-content input:focus {
+	background: #ffffff;
+	transform: translateY(-2px);
+}
+
+/* Menu Actions */
+.menu-content .actions {
+	display: flex;
+	gap: 1.2rem;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+/* ===================================
+   Modal (Home Page Specific)
+   =================================== */
+.modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.4);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+	backdrop-filter: blur(3px);
+}
+
+.modal-box {
+	width: min(450px, 90vw) !important;
+	height: auto !important;
+	min-height: auto !important;
+	padding: 50px 30px 40px !important;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.modal-message {
+	font-size: clamp(1rem, 4vw, 1.3rem);
+	font-weight: 800;
+	color: var(--color-green-dark);
+	margin-bottom: 2.5rem;
+	line-height: 1.6;
+	white-space: pre-line;
+}
+
+.modal-actions {
+	display: flex;
+	gap: 1.5rem;
+	justify-content: center;
+	width: 100%;
+}
+
+.modal-actions .btn {
+	min-width: 120px !important;
+	padding: 10px 20px !important;
+	font-size: 1.1rem !important;
+}
+
+/* ===================================
+   Responsive - Tablet
+   =================================== */
+@media (max-width: 900px) {
+	.menu-content {
+		width: min(620px, 96%);
+		gap: 1.4rem;
+	}
+
+	.menu-content .btn {
+		font-size: clamp(1.1rem, 2.8vw, 1.3rem);
+		padding: 0.85rem 1.3rem;
+	}
+}
+
+/* ===================================
+   Responsive - Mobile
+   =================================== */
+@media (max-width: 640px) {
+	.menu-bg {
+		padding: 1.2rem 0.8rem 2rem;
+		background-attachment: scroll;
+	}
+
+	.title-wrap h1 {
+		font-size: clamp(2rem, 9vw, 3rem);
+	}
+
+	.mascot {
+		width: 150px;
+		height: 120px;
+	}
+
+	.mascot-body {
+		width: 126px;
+		height: 95px;
+	}
+
+	.menu-content input {
+		width: min(440px, 100%);
+		padding: 0.85rem 1rem;
+		font-size: 1rem;
+	}
+
+	.menu-content .actions {
+		width: 100%;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0.75rem;
+	}
+
+	.menu-content .btn {
+		width: 100%;
+		padding: 0.85rem 1rem;
+	}
+
+	.modal-actions {
+		gap: 1rem;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.modal-actions .btn {
+		width: 100%;
+		max-width: 200px;
+	}
+
+	.modal-message {
+		font-size: clamp(0.9rem, 4vw, 1.1rem);
+		margin-bottom: 1.5rem;
+	}
+}
