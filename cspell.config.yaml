@@ -1,0 +1,16 @@
+version: "0.2"
+language: en
+ignorePaths:
+  - node_modules
+  - .svelte-kit
+  - build
+  - .git
+  - package-lock.json
+  - cspell.config.yaml
+words:
+  - AUTOINCREMENT
+  - libsql
+  - linecap
+  - linejoin
+  - turso
+  - TURSO

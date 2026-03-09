@@ -14,7 +14,9 @@
 		"format": "prettier --write .",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run && npm run test:e2e",
-		"test:e2e": "playwright test"
+		"test:e2e": "playwright test",
+		"spell": "cspell lint /*",
+		"spell:check": "cspell lint --no-progress /*"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^2.0.2",
@@ -42,6 +44,7 @@
 	},
 	"dependencies": {
 		"@libsql/client": "^0.17.0",
+		"cspell": "^9.7.0",
 		"lib": "^5.1.0",
 		"libsql": "^0.5.22"
 	}
