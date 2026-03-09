@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '../../styles/credits.css'
+	import { onMount } from 'svelte';
 	import defaultBackgroundImage from '$lib/assets/Background image.png'
 	import { goto } from '$app/navigation'
 	import { audioManager } from '$lib/utils/audioController'
@@ -8,6 +8,33 @@
 		audioManager.playClick()
 		goto('/')
 	}
+
+	let creditsViewport: HTMLDivElement | null = null;
+	let isHovering = false;
+	let frameId: number;
+	let scrollSpeed = 1;
+	let viewportHeight = 0;
+
+	function tick() {
+		
+		if (creditsViewport && !isHovering) {
+			creditsViewport.scrollTop += scrollSpeed;
+
+			const maxScroll = creditsViewport.scrollHeight - creditsViewport.clientHeight;
+
+			if (creditsViewport.scrollTop + creditsViewport.clientHeight >= creditsViewport.scrollHeight - 2) {
+				creditsViewport.scrollTop = 0;
+			}
+		}
+
+		frameId = requestAnimationFrame(tick);
+	}
+
+	onMount(() => {
+		frameId = requestAnimationFrame(tick);
+
+		return () => cancelAnimationFrame(frameId);
+	});
 </script>
 
 <main
@@ -72,97 +99,128 @@
 					</div>
 				</div>
 
-				<div class="credits-stack">
-					<div class="credit-block">
-						<div class="credit-label">プロジェクトリーダー</div>
-						<div class="creator">ピセット・ヂィヴィラックポング</div>
-					</div>
+				<!-- svelte-ignore a11y-no-static-element-interactions -->
+				<div
+					class="credits-viewport"
+					bind:this={creditsViewport}
+					bind:clientHeight={viewportHeight}
+					onmouseenter={() => (isHovering = true)}
+					onmouseleave={() => (isHovering = false)}
+				>
+					<div class="credits-stack">
+						<div class="credits-spacer" style={`height: ${viewportHeight}px;`}></div>
 
-					<div class="credit-block">
-						<div class="credit-label">データベース設計</div>
-						<div class="creator">スン・キングレック</div>
-					</div>
+						<div class="credit-block">
+							<div class="credit-label">プロジェクトリーダー</div>
+							<div class="creator">ピセット・ヂィヴィラックポング</div>
+						</div>
 
-					<div class="credit-block">
-						<div class="credit-label">ホームページ設計</div>
-						<div class="creator">ソク・チャンモニニアット</div>
-					</div>
+						<div class="credit-block">
+							<div class="credit-label">データベース設計</div>
+							<div class="creator">スン・キングレック</div>
+						</div>
 
-					<div class="credit-block">
-						<div class="credit-label">ゲームページ設計</div>
-						<div class="creator">ソク・チャンモニニアット</div>
-						<div class="creator">ロン・ホンニダ</div>
-					</div>
+						<div class="credit-block">
+							<div class="credit-label">ホームページ設計</div>
+							<div class="creator">ソク・チャンモニニアット</div>
+						</div>
 
-					<div class="credit-block">
-						<div class="credit-label">質問作成</div>
-						<div class="creator">ピセット・ヂィヴィラックポング</div>
-						<div class="creator">ソク・チャンモニニアット</div>
-						<div class="creator">ロン・ホンニダ</div>
-						<div class="creator">スン・キングレック</div>
-					</div>
+						<div class="credit-block">
+							<div class="credit-label">ゲームページ設計</div>
+							<div class="creator">ソク・チャンモニニアット</div>
+							<div class="creator">ロン・ホンニダ</div>
+						</div>
 
-					<div class="credit-block">
-						<div class="credit-label">質問と回答表示機能</div>
-						<div class="creator">ロン・ホンニダ</div>
-						<div class="creator">ソク・チャンモニニアット</div>
-					</div>
+						<div class="credit-block">
+							<div class="credit-label">質問作成</div>
+							<div class="creator">ピセット・ヂィヴィラックポング</div>
+							<div class="creator">ソク・チャンモニニアット</div>
+							<div class="creator">ロン・ホンニダ</div>
+							<div class="creator">スン・キングレック</div>
+						</div>
 
-					<div class="credit-block">
-						<div class="credit-label">回答確認機能</div>
-						<div class="creator">ピセット・ヂィヴィラックポング</div>
-					</div>
+						<div class="credit-block">
+							<div class="credit-label">質問と回答表示機能</div>
+							<div class="creator">ロン・ホンニダ</div>
+							<div class="creator">ソク・チャンモニニアット</div>
+						</div>
 
-					<div class="credit-block">
-						<div class="credit-label">ランクページ作成</div>
-						<div class="creator">ソク・チャンモニニアット</div>
-					</div>
+						<div class="credit-block">
+							<div class="credit-label">回答確認機能</div>
+							<div class="creator">ピセット・ヂィヴィラックポング</div>
+						</div>
 
-					<div class="credit-block">
-						<div class="credit-label">プレイヤー名とスコア保存機能</div>
-						<div class="creator">ピセット・ヂィヴィラックポング</div>
-						<div class="creator">スン・キングレック</div>
-					</div>
+						<div class="credit-block">
+							<div class="credit-label">ランクページ作成</div>
+							<div class="creator">ソク・チャンモニニアット</div>
+						</div>
 
-					<div class="credit-block">
-						<div class="credit-label">ゲーム結果ページ作成</div>
-						<div class="creator">ロン・ホンニダ</div>
-					</div>
+						<div class="credit-block">
+							<div class="credit-label">プレイヤー名とスコア保存機能</div>
+							<div class="creator">ピセット・ヂィヴィラックポング</div>
+							<div class="creator">スン・キングレック</div>
+						</div>
 
-					<div class="credit-block">
-						<div class="credit-label">スコアロジック作成</div>
-						<div class="creator">ピセット・ヂィヴィラックポング</div>
-					</div>
+						<div class="credit-block">
+							<div class="credit-label">ゲーム結果ページ作成</div>
+							<div class="creator">ロン・ホンニダ</div>
+						</div>
 
-					<div class="credit-block">
-						<div class="credit-label">クレジットページ作成</div>
-						<div class="creator">スン・キングレック</div>
-					</div>
+						<div class="credit-block">
+							<div class="credit-label">スコアロジック作成</div>
+							<div class="creator">ピセット・ヂィヴィラックポング</div>
+						</div>
 
-					<div class="credit-block">
-						<div class="credit-label">BGM コンポーザー</div>
-						<div class="creator">ロン・ホンニダ</div>
-					</div>
+						<div class="credit-block">
+							<div class="credit-label">クレジットページ作成</div>
+							<div class="creator">スン・キングレック</div>
+						</div>
 
-					<div class="credit-block">
-						<div class="credit-label">プレイヤーランク表示機能</div>
-						<div class="creator">ピセット・ヂィヴィラックポング</div>
-					</div>
+						<div class="credit-block">
+							<div class="credit-label">BGMコンポーザー</div>
+							<div class="creator">ロン・ホンニダ</div>
+						</div>
 
-					<div class="credit-block">
-						<div class="credit-label">ランク日付フィルター機能</div>
-						<div class="creator">ソク・チャンモニニアット</div>
-						<div class="creator">ロン・ホンニダ</div>
-					</div>
+						<div class="credit-block">
+							<div class="credit-label">プレイヤーランク表示機能</div>
+							<div class="creator">ピセット・ヂィヴィラックポング</div>
+						</div>
 
-					<div class="credit-block">
-						<div class="credit-label">ゲームデプロイ</div>
-						<div class="creator">ピセット・ヂィヴィラックポング</div>
+						<div class="credit-block">
+							<div class="credit-label">ランク日付フィルター機能</div>
+							<div class="creator">ソク・チャンモニニアット</div>
+							<div class="creator">ロン・ホンニダ</div>
+						</div>
+
+						<div class="credit-block">
+							<div class="credit-label">ゲームデプロイ</div>
+							<div class="creator">ピセット・ヂィヴィラックポング</div>
+						</div>
+
+						<div class="credit-block">
+							<div class="credit-label">セキュリティ</div>
+							<div class="creator">ピセット・ヂィヴィラックポング</div>
+						</div>
+
+						<div class="credit-block">
+							<div class="credit-label">レスポンシブデザイン</div>
+							<div class="creator">ソク・チャンモニニアット</div>
+							<div class="creator">ロン・ホンニダ</div>
+							<div class="creator">スン・キングレック</div>
+						</div>
+
+						<div class="credit-block">
+							<div class="credit-label">バグ修正</div>
+							<div class="creator">ピセット・ヂィヴィラックポング</div>
+							<div class="creator">ロン・ホンニダ</div>
+						</div>
+
+						<div class="credits-spacer" style={`height: ${viewportHeight}px;`}></div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<button class="home-button" type="button" on:click={goHome}>ホームへ戻る</button>
+	<button class="home-button" type="button" onclick={goHome}>ホームへ戻る</button>
 </main>
