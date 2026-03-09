@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../../styles/loading.css'
 	import { onDestroy, onMount } from 'svelte'
 	import { goto } from '$app/navigation'
 	import defaultBackgroundImage from '$lib/assets/Background image.png'

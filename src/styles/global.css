@@ -1449,124 +1449,102 @@ body {
 	position: absolute;
 	bottom: 10px;
 	transform-origin: bottom center;
-	animation: sprout-pop 0.6s /* ===================================
-   Shared Components (used by multiple pages)
+	animation: sprout-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+	z-index: 12;
+}
+
+/* ===================================
+   Animations
    =================================== */
+@keyframes home-sway {
+	0%,
+	100% {
+		transform: translateX(-50%) rotate(-2deg);
+	}
+	50% {
+		transform: translateX(-50%) rotate(2deg);
+	}
 }
 
-/* Loading page */
-.loading-bg {
-	padding-bottom: 6rem;
+@keyframes home-bounce {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
 }
 
-.loading-content {
-	position: relative;
-	z-index: 30;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	gap: 1rem;
-}
-
-.loading-content .mascot {
-	animation: home-bounce 2.8s ease-in-out infinite;
-}
-
-.loading-content .face {
-	position: relative;
-	margin-top: 0.9rem;
-}
-
-.loading-eyes {
-	display: flex;
-	gap: 2.2rem;
-	margin-bottom: 0.3rem;
-}
-
-.loading-eyes .mascot-eye {
-	width: 9px;
-	height: 9px;
-	border-radius: 999px;
-	background: #2e7d32;
-}
-
-.mascot.is-sleeping .mascot-eye {
-	height: 2px;
-	width: 8px;
-	border-radius: 0;
-	background: #666;
-}
-
-.mascot-mouth {
-	position: absolute;
-	left: 50%;
-	transform: translateX(-50%);
-	bottom: -10px;
-	width: 10px;
-	height: 5px;
-	border-bottom: 2px solid black;
-	border-radius: 50%;
-}
-
-.zzz-wrapper {
-	position: absolute;
-	top: -40px;
-	right: -20px;
-	pointer-events: none;
-}
-
-.zzz {
-	position: absolute;
-	font-weight: 900;
-	color: var(--daikon-dark, #2e7d32);
-	opacity: 0;
-	animation: zzz-float 3s infinite;
-}
-
-.zzz:nth-child(1) {
-	animation-delay: 0s;
-	font-size: 1rem;
-}
-
-.zzz:nth-child(2) {
-	animation-delay: 1s;
-	font-size: 1.5rem;
-}
-
-.zzz:nth-child(3) {
-	animation-delay: 2s;
-	font-size: 2rem;
-}
-
-.loading-text {
-	margin: 0;
-	font-size: clamp(1rem, 2.5vw, 1.4rem);
-	font-weight: 900;
-	color: #ffffff;
-	text-shadow:
-		-2px -2px 0 #5cc45f,
-		2px -2px 0 #5cc45f,
-		-2px 2px 0 #5cc45f,
-		2px 2px 0 #5cc45f;
-}
-
-@keyframes zzz-float {
+@keyframes game-shake {
 	0% {
-		transform: translate(0, 0) scale(0.5);
+		transform: translate(1px, 1px);
+	}
+	50% {
+		transform: translate(-1px, -1px);
+	}
+	100% {
+		transform: translate(1px, -1px);
+	}
+}
+
+@keyframes pop-in {
+	0% {
+		transform: scale(0.9);
 		opacity: 0;
 	}
-
-	20% {
+	100% {
+		transform: scale(1);
 		opacity: 1;
 	}
+}
 
-	80% {
-		opacity: 0.5;
-	}
-
-	100% {
-		transform: translate(30px, -50px) scale(1.2);
+@keyframes confetti-fall {
+	to {
+		transform: translateY(100vh) rotate(var(--rot));
 		opacity: 0;
+	}
+}
+
+@keyframes sprout-pop {
+	0% {
+		transform: scale(0) translateY(40px) rotate(-10deg);
+		opacity: 0;
+	}
+	60% {
+		transform: scale(1.2) translateY(-5px) rotate(5deg);
+	}
+	100% {
+		transform: scale(1) translateY(0) rotate(0);
+		opacity: 1;
+	}
+}
+
+@keyframes game-sway {
+	0%,
+	100% {
+		transform: rotate(-2deg);
+	}
+	50% {
+		transform: rotate(2deg);
+	}
+}
+
+@keyframes sway {
+	0%,
+	100% {
+		transform: translateX(-50%) rotate(-2deg);
+	}
+	50% {
+		transform: translateX(-50%) rotate(2deg);
+	}
+}
+
+@keyframes warning-flash-anim {
+	0% {
+		opacity: 0.2;
+	}
+	100% {
+		opacity: 0.6;
 	}
 }
