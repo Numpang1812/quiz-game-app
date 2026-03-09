@@ -41,12 +41,12 @@
 }
 
 .title-stroke {
-	color: var(--color-white);
+	color: #ffffff;
 	text-shadow:
-		-4px -4px 0 var(--color-green-accent),
-		4px -4px 0 var(--color-green-accent),
-		-4px 4px 0 var(--color-green-accent),
-		4px 4px 0 var(--color-green-accent),
+		-4px -4px 0 #5cc45f,
+		4px -4px 0 #5cc45f,
+		-4px 4px 0 #5cc45f,
+		4px 4px 0 #5cc45f,
 		0 10px 18px rgba(0, 0, 0, 0.2);
 }
 
@@ -114,7 +114,7 @@
 .modal-message {
 	font-size: clamp(1rem, 4vw, 1.3rem);
 	font-weight: 800;
-	color: var(--color-green-dark);
+	color: #1b5e20;
 	margin-bottom: 2.5rem;
 	line-height: 1.6;
 	white-space: pre-line;
