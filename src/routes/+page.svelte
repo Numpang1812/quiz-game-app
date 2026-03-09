@@ -122,7 +122,7 @@
 		/>
 
 		<div class="actions">
-		<!-- Professor said the 🌱 and 🏆 should be on the left side instead -->
+			<!-- Professor said the 🌱 and 🏆 should be on the left side instead -->
 			<button type="button" class="btn play" onclick={onPlayClick}>🌱スタート</button>
 			<button type="button" class="btn ranking" onclick={onRankingClick}>🏆ランク</button>
 		</div>
@@ -183,9 +183,7 @@
 							名前が入力されていません。<br />「Player」として進みますか？
 						</p>
 						<div class="modal-actions">
-							<button type="button" class="btn play" onclick={confirmDefaultName}>
-								はい
-							</button>
+							<button type="button" class="btn play" onclick={confirmDefaultName}> はい </button>
 							<button
 								type="button"
 								class="btn ranking"
