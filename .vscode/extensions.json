@@ -1,3 +1,10 @@
 {
+<<<<<<< HEAD
 	"recommendations": ["mhutchie.git-graph"]
 }
+=======
+    "recommendations": [
+        "mhutchie.git-graph"
+    ]
+}
+>>>>>>> main

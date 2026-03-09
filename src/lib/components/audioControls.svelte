@@ -265,13 +265,21 @@
 		}
 	}
 
-	@media (max-width: 768px) {
+	@media (max-width: 640px) {
 		.audio-trigger {
-			width: 60px;
-			height: 60px;
+			transform: scale(0.9);
+			margin-top: 1vh;
+
+		}
+		.audio-settings {
+			left: 50%;
+			transform: translateX(-50%);
+			align-items: center;
 		}
 		.audio-panel {
 			width: 220px;
+			margin-left: auto;
+			margin-right: auto;
 		}
 	}
 </style>
