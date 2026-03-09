@@ -206,6 +206,7 @@
 							<div class="creator">ソク・チャンモニニアット</div>
 							<div class="creator">ロン・ホンニダ</div>
 							<div class="creator">スン・キングレック</div>
+                            <div class="creator">ピセット・ヂィヴィラックポング</div>
 						</div>
 
 						<div class="credit-block">
