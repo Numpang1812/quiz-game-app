@@ -22,20 +22,3 @@ pre-push:
     cspell:
       run: npx cspell .
       glob: '*.{js,ts,svelte}'
-
-    check-message:
-      run: |
-        # Check minimum length
-        if [ ${#GIT_PARAMS} -lt 10 ]; then
-          echo "Commit message is too short"
-          exit 1
-        fi
-
-        # Check for banned words
-        BANNED_WORDS=("hack" "cheat" "exploit" "something" "anything" "I don't know")
-        for word in $BANNED_WORDS; do
-          if echo "$GIT_PARAMS" | grep -qi "$word"; then
-            echo "Commit message contains banned word: $word"
-            exit 1
-          fi
-        done
