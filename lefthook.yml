@@ -12,7 +12,7 @@ pre-commit:
     audit:
       run: pnpm audit
       fail: error
-      message: "Security audit failed. Please run 'npm audit' and fix issues."
+      message: "Security audit failed. Please run 'pnpm audit' and fix issues."
 
 pre-push:
   parallel: true
