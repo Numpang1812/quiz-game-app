@@ -10,7 +10,7 @@ pre-commit:
       glob: '*.{js,ts,svelte,json,css,md,yml,yaml}'
 
     audit:
-      run: npm audit 
+      run: pnpm audit
       fail: error
       message: "Security audit failed. Please run 'npm audit' and fix issues."
 
