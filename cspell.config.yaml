@@ -7,6 +7,8 @@ ignorePaths:
   - .git
   - package-lock.json
   - cspell.config.yaml
+  - pnpm-lock.yaml
+  - pnpm-workspace.yaml
 words:
   - AUTOINCREMENT
   - lefthook
