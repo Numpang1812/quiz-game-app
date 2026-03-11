@@ -1,24 +1,30 @@
 pre-commit:
   parallel: true
   commands:
-    format:
-      run: npm run format
+    prettier:
+      run: pnpm prettier --write {staged_files}
       glob: '*.{js,ts,svelte,json,css,md,yml,yaml}'
 
     lint:
-      run: npm run lint
+      run: pnpm lint --fix {staged_files}
       glob: '*.{js,ts,svelte,json,css,md,yml,yaml}'
 
+    audit:
+      run: npm audit 
+      fail: error
+      message: "Security audit failed. Please run 'npm audit' and fix issues."
+
 pre-push:
+  parallel: true
   commands:
     type-check:
-      run: npm run check
+      run: pnpm check
       glob: '*.{js,ts,svelte}'
 
     test:
-      run: npm run test
+      run: pnpm test
       glob: '*.{js,ts,svelte}'
 
     cspell:
-      run: npx cspell .
+      run: pnpm cspell .
       glob: '*.{js,ts,svelte}'
