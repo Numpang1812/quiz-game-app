@@ -1,3 +1,7 @@
 {
-	"recommendations": ["mhutchie.git-graph", "streetsidesoftware.code-spell-checker"]
+	"recommendations": [
+		"mhutchie.git-graph",
+		"streetsidesoftware.code-spell-checker",
+		"pkief.material-icon-theme"
+	]
 }

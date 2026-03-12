@@ -9,6 +9,9 @@ ignorePaths:
   - cspell.config.yaml
   - pnpm-lock.yaml
   - pnpm-workspace.yaml
+  - .vscode
+  - lefthook.yml
+  - package.json
 words:
   - AUTOINCREMENT
   - lefthook
