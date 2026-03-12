@@ -14,6 +14,9 @@ pre-commit:
       fail: error
       message: "Security audit failed. Please run 'pnpm audit' and fix issues."
 
+    cspell:
+      run: pnpm exec cspell {staged_files}
+
 pre-push:
   parallel: true
   commands:
