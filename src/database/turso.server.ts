@@ -104,9 +104,9 @@ export async function getScore(options: GetScoresOptions = {}) {
 		})
 
 		return result.rows.map((row) => ({
-			name: String(row.name),
-			score: Number(row.score),
-			created_time: String(row.created_time),
+			name: String(row['name']),
+			score: Number(row['score']),
+			created_time: String(row['created_time']),
 		}))
 	}
 
@@ -142,9 +142,9 @@ export async function getScore(options: GetScoresOptions = {}) {
 	})
 
 	return result.rows.map((row) => ({
-		name: String(row.name),
-		score: Number(row.score),
-		created_time: String(row.created_time),
+		name: String(row['name']),
+		score: Number(row['score']),
+		created_time: String(row['created_time']),
 	}))
 }
 
@@ -169,6 +169,6 @@ export async function getRank(score: number, created_time: string): Promise<numb
 		args: [MAX_VALID_SCORE, SPECIAL_NAME, score, score, created_time],
 	})
 
-	const higher = Number(result.rows[0].higher)
+	const higher = Number(result.rows[0]['higher'])
 	return higher + 1
 }
