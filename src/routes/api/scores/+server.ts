@@ -76,7 +76,12 @@ export async function GET({ url }: RequestEvent) {
 
 	const { limit, uniquePlayers } = paramsResult as { limit?: number; uniquePlayers: boolean }
 
-	const scores = await getScore({ from, to, limit, uniquePlayers })
+	const scores = await getScore({
+		...(from ? { from } : {}),
+		...(to ? { to } : {}),
+		...(limit !== undefined ? { limit } : {}),
+		uniquePlayers,
+	})
 	return json(scores)
 }
 
