@@ -17,6 +17,9 @@ importers:
       cspell:
         specifier: ^9.7.0
         version: 9.7.0
+      dompurify:
+        specifier: ^3.3.3
+        version: 3.3.3
       lib:
         specifier: ^5.1.0
         version: 5.1.0
@@ -1155,6 +1158,9 @@ packages:
 
   devalue@5.6.4:
     resolution: {integrity: sha512-Gp6rDldRsFh/7XuouDbxMH3Mx8GMCcgzIb1pDTvNyn8pZGQ22u+Wa+lGV9dQCltFQ7uVw0MhRyb8XDskNFOReA==}
+
+  dompurify@3.3.3:
+    resolution: {integrity: sha512-Oj6pzI2+RqBfFG+qOaOLbFXLQ90ARpcGG6UePL82bJLtdsa6CYJD7nmiU8MW9nQNOtCHV3lZ/Bzq1X0QYbBZCA==}
 
   env-paths@4.0.0:
     resolution: {integrity: sha512-pxP8eL2SwwaTRi/KHYwLYXinDs7gL3jxFcBYmEdYfZmZXbaVDvdppd0XBU8qVz03rDfKZMXg1omHCbsJjZrMsw==}
@@ -2906,6 +2912,10 @@ snapshots:
   detect-libc@2.0.2: {}
 
   devalue@5.6.4: {}
+
+  dompurify@3.3.3:
+    optionalDependencies:
+      '@types/trusted-types': 2.0.7
 
   env-paths@4.0.0:
     dependencies:
