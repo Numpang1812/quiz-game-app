@@ -5,6 +5,7 @@
 	import { audioManager } from '$lib/utils/audioController'
 	import { goto } from '$app/navigation'
 	import { onMount } from 'svelte'
+	import { resolve } from '$app/paths';
 
 	let username = $state('')
 	let showModal = $state(false)
@@ -27,7 +28,7 @@
 	function proceedToGame(): void {
 		audioManager.playStart()
 		getUsername(username || 'Player')
-		goto('/loading')
+		goto(resolve('/loading'))
 	}
 
 	function confirmDefaultName(): void {
@@ -38,12 +39,12 @@
 
 	function onRankingClick(): void {
 		audioManager.playClick()
-		goto('/ranking')
+		goto(resolve('/ranking'))
 	}
 
 	function onCreditsClick(): void {
 		audioManager.playClick()
-		goto('/credits')
+		goto(resolve('/credits'))
 	}
 </script>
 

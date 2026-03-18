@@ -17,6 +17,7 @@
 	import { returnCurrentUser } from '$lib/utils/saveUsername'
 	import { audioManager } from '$lib/utils/audioController'
 	import { goto } from '$app/navigation'
+	import { resolve } from '$app/paths'
 
 	export let data: { sessionId: string; signature: string }
 
@@ -55,7 +56,6 @@
 			throw new Error(result.error || 'save failed')
 		}
 
-		console.log('server returned rank', result.rank)
 		// coerce to number just in case it comes back as a string
 		return Number(result.rank)
 	}
@@ -181,6 +181,8 @@
 		clearTimers()
 		audioManager.stopGameMusic()
 	})
+
+
 </script>
 
 <main
@@ -192,9 +194,12 @@
 		<div class="grass-top"></div>
 		<div class="garden-plants">
 			{#if !gameOver}
-				{#each Array(score) as _, index}
+				{#each Array(score) as _, index (index)}
 					<div class="harvest-item sprout-sway" style={plantStyle(index)}>
-						<svg width="50" height="50" viewBox="0 0 20 20">{@html plantSvg(index + 1)}</svg>
+						<svg width="50" height="50" viewBox="0 0 20 20">
+							<!-- eslint-disable svelte/no-at-html-tags -->
+							<g>{@html plantSvg(index + 1)}</g>
+						</svg>
 					</div>
 				{/each}
 			{/if}
@@ -276,7 +281,7 @@
 					</div>
 
 					<div class="choices-layout">
-						{#each choices as [key, text]}
+						{#each choices as [key, text] (key)}
 							<button type="button" class="choice-item" on:click={() => chooseAnswer(key)}
 								>{text}</button
 							>
@@ -359,7 +364,7 @@
 							class="ranking-pill"
 							on:click={() => {
 								audioManager.playClick()
-								goto('/ranking')
+								goto(resolve('/ranking'))
 							}}>ランキング</button
 						>
 
@@ -368,7 +373,7 @@
 								class="btn-circle green-dark"
 								on:click={() => {
 									audioManager.playClick()
-									goto('/')
+									goto(resolve('/'))
 								}}
 								aria-label="Go back to home page"
 							>
@@ -380,7 +385,7 @@
 								class="btn-circle green-light"
 								on:click={() => {
 									audioManager.playClick()
-									goto('/loading')
+									goto(resolve('/loading'))
 								}}
 								aria-label="Play again"
 							>

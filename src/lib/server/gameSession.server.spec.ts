@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi} from 'vitest'
 
 // Mock $env/static/private before importing the module
 vi.mock('$env/static/private', () => ({
@@ -50,8 +50,11 @@ describe('gameSession.server', () => {
 		})
 
 		it('rejects non-string inputs', () => {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			expect(verifyGameToken(null as any, 'abc')).toBe(false)
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			expect(verifyGameToken('abc', undefined as any)).toBe(false)
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			expect(verifyGameToken(123 as any, 456 as any)).toBe(false)
 		})
 	})
