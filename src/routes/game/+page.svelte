@@ -9,7 +9,6 @@
 		penaltySeconds,
 		randomQuestion,
 		shuffleOptions,
-		getResultTier,
 		timerPercent,
 		plantStyle,
 		plantSvg,
@@ -35,8 +34,6 @@
 	let currentQuestion: Question | null = null
 	let choices: Array<[QuestionnaireAnswerKey, string]> = []
 
-	$: resultTier = getResultTier(score)
-
 	async function saveNameAndScore() {
 		const res = await fetch('/api/scores', {
 			method: 'POST',
@@ -58,12 +55,6 @@
 		console.log('server returned rank', result.rank)
 		// coerce to number just in case it comes back as a string
 		return Number(result.rank)
-	}
-
-	async function getNameAndScore() {
-		const response = await fetch('/api/scores')
-		const scores = await response.json()
-		return scores
 	}
 
 	function nextQuestion(): void {

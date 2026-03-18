@@ -20,8 +20,6 @@
 		if (creditsViewport && !isHovering) {
 			creditsViewport.scrollTop += scrollSpeed
 
-			const maxScroll = creditsViewport.scrollHeight - creditsViewport.clientHeight
-
 			if (
 				creditsViewport.scrollTop + creditsViewport.clientHeight >=
 				creditsViewport.scrollHeight - 2
