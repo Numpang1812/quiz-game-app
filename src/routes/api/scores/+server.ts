@@ -57,7 +57,12 @@ export async function GET({ url }) {
 
 	const uniquePlayers = uniquePlayersParam === 'true'
 
-	const scores = await getScore({ from, to, limit, uniquePlayers })
+	const scores = await getScore({
+		...(from ? { from } : {}),
+		...(to ? { to } : {}),
+		...(limit !== undefined ? { limit } : {}),
+		uniquePlayers,
+	})
 	return json(scores)
 }
 
