@@ -181,8 +181,6 @@
 		clearTimers()
 		audioManager.stopGameMusic()
 	})
-
-
 </script>
 
 <main

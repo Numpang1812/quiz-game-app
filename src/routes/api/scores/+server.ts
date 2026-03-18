@@ -92,10 +92,18 @@ function validateScoreData(body: Record<string, unknown> | null): ScoreValidatio
 	if (!Number.isInteger(score) || score < 0)
 		return { valid: false, error: 'Score must be a non-negative integer', status: 400 }
 	if (score > MAX_VALID_SCORE)
-		return { valid: false, error: `Score must be less than or equal to ${MAX_VALID_SCORE}`, status: 400 }
+		return {
+			valid: false,
+			error: `Score must be less than or equal to ${MAX_VALID_SCORE}`,
+			status: 400,
+		}
 	if (!name) return { valid: false, error: 'Name is required', status: 400 }
 	if (name.toUpperCase() === SPECIAL_NAME.toUpperCase())
-		return { valid: false, error: 'This name is reserved for THE ONE AND ONLY!! NO ONE HACKS MY GAME!!', status: 403 }
+		return {
+			valid: false,
+			error: 'This name is reserved for THE ONE AND ONLY!! NO ONE HACKS MY GAME!!',
+			status: 403,
+		}
 
 	return { valid: true, name, score }
 }

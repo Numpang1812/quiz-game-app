@@ -52,8 +52,8 @@ export default [
 			'prefer-const': 'error',
 			// 'no-useless-return': 'error',
 			// 'no-useless-catch': 'error',
-			'complexity': ['error', 15],
-			'max-depth': ['error', 3]
+			complexity: ['error', 15],
+			'max-depth': ['error', 3],
 		},
 	},
 ]

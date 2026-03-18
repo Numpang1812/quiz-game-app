@@ -3,7 +3,7 @@
 	import { onDestroy, onMount } from 'svelte'
 	import { goto } from '$app/navigation'
 	import defaultBackgroundImage from '$lib/assets/Background image.png'
-	import { resolve } from '$app/paths';
+	import { resolve } from '$app/paths'
 
 	let redirectTimer: ReturnType<typeof setTimeout> | null = null
 

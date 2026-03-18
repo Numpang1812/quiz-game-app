@@ -5,7 +5,7 @@
 	import { audioManager } from '$lib/utils/audioController'
 	import { goto } from '$app/navigation'
 	import { onMount } from 'svelte'
-	import { resolve } from '$app/paths';
+	import { resolve } from '$app/paths'
 
 	let username = $state('')
 	let showModal = $state(false)

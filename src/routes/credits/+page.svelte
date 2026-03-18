@@ -4,7 +4,7 @@
 	import defaultBackgroundImage from '$lib/assets/Background image.png'
 	import { goto } from '$app/navigation'
 	import { audioManager } from '$lib/utils/audioController'
-	import { resolve } from '$app/paths';
+	import { resolve } from '$app/paths'
 
 	function goHome(): void {
 		audioManager.playClick()
