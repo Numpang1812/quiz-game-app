@@ -2,6 +2,7 @@
 	"recommendations": [
 		"mhutchie.git-graph",
 		"streetsidesoftware.code-spell-checker",
-		"pkief.material-icon-theme"
+		"pkief.material-icon-theme",
+		"coderabbit.coderabbit-vscode"
 	]
 }
