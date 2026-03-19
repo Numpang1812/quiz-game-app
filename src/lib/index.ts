@@ -35,16 +35,32 @@ export const penaltySeconds = 3
 
 export const questions: Question[] = Object.values(
 	questionnaires as Record<string, QuestionnaireItem>,
-).map((item) => ({
-	id: item.id,
-	prompt: item.message,
-	answers: item.answers[0],
-	correct: item.correct_answer,
-}))
+).map((item) => {
+	const answers = Object.assign({}, ...item.answers) as Record<QuestionnaireAnswerKey, string>
+
+	const requiredKeys: QuestionnaireAnswerKey[] = ['answer1', 'answer2', 'answer3']
+
+	for (const key of requiredKeys) {
+		if (!(key in answers)) {
+			throw new Error(`Missing ${key} for question ${item.id}`)
+		}
+	}
+
+	return {
+		id: item.id,
+		prompt: item.message,
+		answers,
+		correct: item.correct_answer,
+	}
+})
 
 export function randomQuestion(): Question {
+	if (questions.length === 0) {
+		throw new Error('No questions available')
+	}
+
 	const index = Math.floor(Math.random() * questions.length)
-	return questions[index]
+	return questions[index]!
 }
 
 export function shuffleOptions(question: Question): Array<[QuestionnaireAnswerKey, string]> {

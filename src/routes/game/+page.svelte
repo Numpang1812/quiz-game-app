@@ -9,7 +9,6 @@
 		penaltySeconds,
 		randomQuestion,
 		shuffleOptions,
-		getResultTier,
 		timerPercent,
 		plantStyle,
 		plantSvg,
@@ -36,8 +35,6 @@
 	let currentQuestion: Question | null = null
 	let choices: Array<[QuestionnaireAnswerKey, string]> = []
 
-	$: resultTier = getResultTier(score)
-
 	async function saveNameAndScore() {
 		const res = await fetch('/api/scores', {
 			method: 'POST',
@@ -58,12 +55,6 @@
 
 		// coerce to number just in case it comes back as a string
 		return Number(result.rank)
-	}
-
-	async function getNameAndScore() {
-		const response = await fetch('/api/scores')
-		const scores = await response.json()
-		return scores
 	}
 
 	function nextQuestion(): void {
@@ -128,7 +119,7 @@
 			left: Math.random() * 100,
 			duration: 2000 + Math.random() * 2000,
 			rotation: 360 + Math.random() * 540,
-			color: colors[Math.floor(Math.random() * colors.length)],
+			color: colors[Math.floor(Math.random() * colors.length)] ?? '#ffffff',
 		}))
 	}
 
