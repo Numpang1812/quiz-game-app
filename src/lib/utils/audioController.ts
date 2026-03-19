@@ -73,17 +73,7 @@ class AudioManager {
 			return
 		}
 
-		if (otherTrack && !otherTrack.paused) {
-			if (fadeDuration > 0) {
-				this.fade(otherTrack, otherTrack.volume, 0, fadeDuration, () => {
-					otherTrack.pause()
-					otherTrack.currentTime = 0
-				})
-			} else {
-				otherTrack.pause()
-				otherTrack.currentTime = 0
-			}
-		}
+		this.stopOtherTrack(otherTrack, fadeDuration)
 
 		if (this.currentTrack !== type) {
 			targetTrack.currentTime = 0
@@ -100,8 +90,23 @@ class AudioManager {
 				targetTrack.volume = this.musicVolume
 				await targetTrack.play()
 			}
-		} catch (e) {
-			console.log('Autoplay blocked or interrupted')
+		} catch {
+			console.warn('Autoplay blocked or interrupted')
+		}
+	}
+
+	// Refactored stopOtherTrack function for better complexity.
+	private stopOtherTrack(track: HTMLAudioElement, fadeDuration: number) {
+		if (!track.paused) {
+			if (fadeDuration > 0) {
+				this.fade(track, track.volume, 0, fadeDuration, () => {
+					track.pause()
+					track.currentTime = 0
+				})
+			} else {
+				track.pause()
+				track.currentTime = 0
+			}
 		}
 	}
 

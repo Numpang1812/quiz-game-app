@@ -4,16 +4,17 @@
 	import defaultBackgroundImage from '$lib/assets/Background image.png'
 	import { goto } from '$app/navigation'
 	import { audioManager } from '$lib/utils/audioController'
+	import { resolve } from '$app/paths'
 
 	function goHome(): void {
 		audioManager.playClick()
-		goto('/')
+		goto(resolve('/'))
 	}
 
 	let creditsViewport: HTMLDivElement | null = null
 	let isHovering = false
 	let frameId: number
-	let scrollSpeed = 1
+	const scrollSpeed = 1
 	let viewportHeight = 0
 
 	function tick() {

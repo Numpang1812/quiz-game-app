@@ -50,8 +50,11 @@ describe('gameSession.server', () => {
 		})
 
 		it('rejects non-string inputs', () => {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			expect(verifyGameToken(null as any, 'abc')).toBe(false)
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			expect(verifyGameToken('abc', undefined as any)).toBe(false)
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			expect(verifyGameToken(123 as any, 456 as any)).toBe(false)
 		})
 	})

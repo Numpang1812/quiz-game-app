@@ -4,6 +4,8 @@
 	import defaultBackgroundImage from '$lib/assets/Background image.png'
 	import { returnCurrentUser } from '$lib/utils/saveUsername'
 	import { audioManager } from '$lib/utils/audioController'
+	import { resolve } from '$app/paths'
+	import { SvelteDate, SvelteURLSearchParams } from 'svelte/reactivity'
 
 	type ApiScore = {
 		name: string
@@ -129,7 +131,7 @@
 
 	async function loadScores(): Promise<void> {
 		try {
-			const params = new URLSearchParams({ limit: '10' })
+			const params = new SvelteURLSearchParams({ limit: '10' })
 
 			if (rankingMode === 'daily') {
 				if (filterRange === 'custom') {
@@ -171,7 +173,7 @@
 	}
 
 	function shiftRangeDate(baseDate: Date, direction: 'prev' | 'next'): Date {
-		const shiftedDate = new Date(baseDate)
+		const shiftedDate = new SvelteDate(baseDate)
 		const step = direction === 'prev' ? -1 : 1
 
 		if (filterRange === '1month') {
@@ -241,7 +243,7 @@
 		const target = e.target as HTMLSelectElement
 		const val = target.value
 		filterRange = val
-		const date = new Date(TODAY_STR)
+		const date = new SvelteDate(TODAY_STR)
 
 		if (val === 'custom') {
 			selectedDate = TODAY_STR
@@ -273,7 +275,7 @@
 
 	function goHome(): void {
 		audioManager.playClick()
-		goto('/')
+		goto(resolve('/'))
 	}
 
 	onMount(async () => {
