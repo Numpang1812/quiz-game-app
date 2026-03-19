@@ -169,6 +169,10 @@ export async function getRank(score: number, created_time: string): Promise<numb
 		args: [MAX_VALID_SCORE, SPECIAL_NAME, score, score, created_time],
 	})
 
+	if (!result.rows[0]) {
+		return 0
+	}
+
 	const higher = Number(result.rows[0].higher)
 	return higher + 1
 }

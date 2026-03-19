@@ -38,13 +38,17 @@ export const questions: Question[] = Object.values(
 ).map((item) => ({
 	id: item.id,
 	prompt: item.message,
-	answers: item.answers[0],
+	answers: Object.assign({}, ...item.answers),
 	correct: item.correct_answer,
 }))
 
 export function randomQuestion(): Question {
+	if (questions.length === 0) {
+		throw new Error('No questions available')
+	}
+
 	const index = Math.floor(Math.random() * questions.length)
-	return questions[index]
+	return questions[index]!
 }
 
 export function shuffleOptions(question: Question): Array<[QuestionnaireAnswerKey, string]> {

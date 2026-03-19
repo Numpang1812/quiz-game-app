@@ -30,7 +30,8 @@
 
 	function getTodayString(): string {
 		const today = new Date()
-		return today.toISOString().split('T')[0]
+		const parts = today.toISOString().split('T')
+		return parts[0] ?? ''
 	}
 
 	function formatDate(dateValue: string): string {
@@ -42,7 +43,8 @@
 	}
 
 	function toDateString(date: Date): string {
-		return date.toISOString().split('T')[0]
+		const parts = date.toISOString().split('T')
+		return parts[0] ?? ''
 	}
 
 	function parseCreatedTime(createdTime: string): number {
